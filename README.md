@@ -22,8 +22,21 @@ pip install -e .[dev]
 pip install -e .[multimodal]
 ```
 
-Requires Python 3.11+. The training stack (PyTorch, Lightning, LightGBM) is part
+Requires Python 3.11. The training stack (PyTorch, Lightning, LightGBM) is part
 of the core dependencies because the baselines cannot run without it.
+
+**Exact reproduction.** To recreate the environment that produced the released
+results, use the pinned versions rather than the open ranges above:
+
+```bash
+conda env create -f environment.yml    # `critical-mm` env, Python 3.11.15
+conda activate critical-mm
+pip install -e .                        # install this package into it
+# without conda:  pip install -r requirements-lock.txt && pip install -e .
+```
+
+The reference environment used PyTorch 2.12.0 built for CUDA 13.0; see the note
+in `requirements-lock.txt` for matching your own CUDA / CPU-only setup.
 
 ## Data
 
