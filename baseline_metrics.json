@@ -1,0 +1,1127 @@
+{
+  "aki": {
+    "eicu": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.9047452410062155
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 2,
+        "seed_mean": 0.795451770867672
+      },
+      "LGBMClassifier+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.795069758613384
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.9075614809989929
+      },
+      "LSTM+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8832213481267294
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6507327585725154
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7650216991890849
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8984142740567526
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8567173083623251
+      }
+    },
+    "hirid": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7996644973754883
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 2,
+        "seed_mean": 0.7864166942227133
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8070176045099894
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7275266861987889
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7687316874734327
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.801054060459137
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7923649350802103
+      }
+    },
+    "miiv": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.9039917985598246
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 2,
+        "seed_mean": 0.7920586605407574
+      },
+      "LGBMClassifier+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7919415508703535
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.9078365365664164
+      },
+      "LSTM+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8696891268094381
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.652445876161881
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7572373414074227
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.9073300162951151
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8676633437474569
+      }
+    },
+    "nwicu": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8570574323336283
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.857491124564176
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8580231865247091
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7378203699670941
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7834414110384341
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8717026710510254
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.820159117380778
+      }
+    },
+    "omix": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8545912702878317
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8382103865778591
+      },
+      "LGBMClassifier+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.836284273014606
+      },
+      "LGBMClassifier+icd_notes": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8398186576167183
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8435258269309998
+      },
+      "LSTM+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8267102042833964
+      },
+      "LSTM+icd_notes": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6998897194862366
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7508486140813219
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7781963458463736
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8515617450078329
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7866666714350382
+      }
+    }
+  },
+  "kidney_function": {
+    "eicu": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.9456242671446641
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.3061668276786804
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.267954173261781
+      },
+      "LGBMRegressor+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.25953888982912016
+      },
+      "LGBMRegressor+icd_notes": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.25989437696140233
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2978422939777374
+      },
+      "LSTM+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.33199934164683026
+      },
+      "LSTM+icd_notes": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.3571924865245819
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.313472847143809
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.3260698616504669
+      }
+    },
+    "hirid": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.7867665556203797
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.3797078529993693
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.33360002009723866
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.4561224579811096
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.44275640447934467
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.44854145248730976
+      }
+    },
+    "miiv": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.9200384707776408
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2438428004582723
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2113155726386263
+      },
+      "LGBMRegressor+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.21377571324041625
+      },
+      "LGBMRegressor+icd_notes": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2098529891574122
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2610237201054891
+      },
+      "LSTM+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2798132697741191
+      },
+      "LSTM+icd_notes": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.30650906761487323
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2530738612016042
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2476379026969274
+      }
+    },
+    "nwicu": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 1.112171087203991
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.5406220952669779
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.4756553005675061
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.6405776143074036
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.6548097531000773
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.5458047986030579
+      }
+    },
+    "omix": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.6728774481079571
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.4753699103991191
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.3084291662893518
+      },
+      "LGBMRegressor+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.309250039639645
+      },
+      "LGBMRegressor+icd_notes": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.31535077951355556
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.4961388905843099
+      },
+      "LSTM+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.4797646601994832
+      },
+      "LSTM+icd_notes": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.4889268179734548
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.48585095008214313
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.4479322135448456
+      }
+    }
+  },
+  "los": {
+    "eicu": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 43.98922014196
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 37.16900761922201
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 38.499232248908925
+      },
+      "LGBMRegressor+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 38.17774246672302
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 37.366129557291664
+      },
+      "LSTM+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 37.225799560546875
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 37.6105105082194
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 37.10342280069987
+      }
+    },
+    "hirid": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 44.428773818138865
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 36.40353775024414
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 36.62015870977467
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 36.304378509521484
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 36.20567830403646
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 36.39264043172201
+      }
+    },
+    "miiv": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 49.04547175206684
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 38.49439493815104
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 40.35335413131043
+      },
+      "LGBMRegressor+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 40.30780581685455
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 40.26947021484375
+      },
+      "LSTM+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 39.79158274332682
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 39.744607289632164
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 38.08399454752604
+      }
+    },
+    "nwicu": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 49.43507891839911
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 48.60146713256836
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 41.02700643503909
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 44.99467468261719
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 42.55619812011719
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 42.02675247192383
+      }
+    },
+    "omix": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 48.02198155698175
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 74.21520233154297
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 39.26016897280324
+      },
+      "LGBMRegressor+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 38.16351942194694
+      },
+      "LGBMRegressor+icd_notes": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 38.45723523072733
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 74.0115254720052
+      },
+      "LSTM+icd": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 73.85545349121094
+      },
+      "LSTM+icd_notes": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 73.72744496663411
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 44.609169006347656
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 93.44898732503255
+      }
+    }
+  },
+  "mortality24": {
+    "eicu": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8434279561042786
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 2,
+        "seed_mean": 0.8609802778402569
+      },
+      "LGBMClassifier+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8744275508198202
+      },
+      "LGBMClassifier+icd_notes": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8776224563979241
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8509378433227539
+      },
+      "LSTM+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8437049388885498
+      },
+      "LSTM+icd_notes": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8283633987108866
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8326722041250184
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8481831240560517
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8416614731152853
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.848052183787028
+      }
+    },
+    "hirid": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8131287495295206
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 2,
+        "seed_mean": 0.8317878151495597
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8265615900357565
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8213509047436095
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8361968316255544
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8062618970870972
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8161508043607076
+      }
+    },
+    "miiv": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8427478869756063
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 2,
+        "seed_mean": 0.8613937955971998
+      },
+      "LGBMClassifier+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8611102509710089
+      },
+      "LGBMClassifier+icd_notes": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.86546419080365
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8522129058837891
+      },
+      "LSTM+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.825514038403829
+      },
+      "LSTM+icd_notes": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8138570388158163
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8167042112235996
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8405415196329771
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8392878572146097
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.850836455821991
+      }
+    },
+    "nwicu": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8014917174975077
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8563956719296527
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8120172619819641
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.775698734922036
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.841179213930023
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8045416474342346
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8153084317843119
+      }
+    },
+    "omix": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6755793293317159
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.4757130124777184
+      },
+      "LGBMClassifier+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.3499331550802139
+      },
+      "LGBMClassifier+icd_notes": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.4896390374331551
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6514408588409424
+      },
+      "LSTM+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7090017795562744
+      },
+      "LSTM+icd_notes": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7182115316390991
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6983065953654188
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6717914438502673
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6741681496302286
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6803698738416036
+      }
+    }
+  },
+  "sepsis": {
+    "eicu": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7481491367022196
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 2,
+        "seed_mean": 0.7408707002716612
+      },
+      "LGBMClassifier+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7518469624364442
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7578911979993185
+      },
+      "LSTM+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7607671022415161
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6792188821788855
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7174473639172062
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.760851263999939
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7519519130388895
+      }
+    },
+    "hirid": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8182233572006226
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 2,
+        "seed_mean": 0.7829048469087678
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8097070256868998
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7716793860841732
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7699097348175958
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8148237268129984
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8101393183072408
+      }
+    },
+    "miiv": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7997980912526449
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 2,
+        "seed_mean": 0.7809262710081748
+      },
+      "LGBMClassifier+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7689526215180926
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8073620200157166
+      },
+      "LSTM+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7552364667256674
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7060919617517141
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7735159281284348
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.800085723400116
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7911824385325114
+      }
+    },
+    "nwicu": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7338075439135233
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6548315876196376
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7591082056363424
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7221745512758284
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6680511214953562
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.757131040096283
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7274156014124552
+      }
+    },
+    "omix": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8115693728129069
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6765470759011082
+      },
+      "LGBMClassifier+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7032089511779914
+      },
+      "LGBMClassifier+icd_notes": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6865427346593972
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7527170777320862
+      },
+      "LSTM+icd": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6550765832265218
+      },
+      "LSTM+icd_notes": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6881535053253174
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7052581977305877
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7144042455695926
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8081271052360535
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7946465214093527
+      }
+    }
+  }
+}

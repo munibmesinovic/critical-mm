@@ -1,0 +1,58 @@
+# CRITICAL-MM v1 concept registry. nwicu_status values: {mapped, null, low_prevalence}. 'mapped' supersedes audit's 'mappable'; 'null' supersedes 'structurally_absent'. See verification_reports/v1_variable_candidates_quantitative.md appendix (2026-05-14) for taxonomy delta.
+name,category,description,v1_status,miiv_prevalence,eicu_prevalence,hirid_prevalence,nwicu_status,nwicu_itemid,nwicu_table,canonical_unit,valid_range_low,valid_range_high,loinc_code,notes
+age,demographic,Age at hospital admission,include,1.0000,0.9995,1.0000,mapped,,patients,years,18,130,30525-0,
+sex,demographic,Biological sex,include,1.0000,0.9991,1.0000,mapped,,patients,,,,46098-0,Encoded as M/F/U
+height,demographic,Patient height,include,0.4611,0.9779,0.9265,mapped,326707,chartevents,cm,50,250,8302-2,NWICU stores as inches; convert
+weight,demographic,Admission weight,include,0.9250,0.9165,0.9393,mapped,326531,chartevents,kg,10,400,29463-7,NWICU stores as ounces; convert
+hr,vital,Heart rate,include,0.9998,0.9573,0.9998,mapped,,chartevents,bpm,0,300,8867-4,
+sbp,vital,Systolic blood pressure,include,0.9976,0.9510,0.9995,mapped,,chartevents,mmHg,0,300,8480-6,
+dbp,vital,Diastolic blood pressure,include,0.9976,0.9511,0.9994,mapped,,chartevents,mmHg,0,200,8462-4,
+map,vital,Mean arterial pressure,include,0.9986,0.9512,0.9998,mapped,,chartevents,mmHg,0,250,8478-0,
+o2sat,vital,Peripheral oxygen saturation,include,0.9990,0.9511,0.9998,mapped,320277,chartevents,%,0,100,59408-5,Corrected from null per NWICU verification 2026-05-14
+resp,vital,Respiratory rate,include,0.9989,0.9795,0.9981,mapped,,chartevents,breaths/min,0,80,9279-1,
+temp,vital,Body temperature,include,0.9909,0.9371,0.5733,mapped,323761,chartevents,°C,25,45,8310-5,NWICU stores as Fahrenheit; convert
+fio2,vital,Fraction of inspired oxygen,include_with_nwicu_null,0.5123,0.5399,0.5987,null,,,%,21,100,3150-0,Not in NWICU chartevents or labevents
+urine,vital,Urine output,include_with_nwicu_null,0.9597,0.7890,0.9946,null,,,mL,0,5000,9192-6,NWICU has no outputevents.csv.gz
+gcs,vital,Glasgow Coma Scale total,include_with_nwicu_null,0.8000,0.8500,NA,null,,,points,3,15,9269-2,SOFA CNS component for B8 Sepsis-3; MIMIC-IV uses chartevents 226755 (GcsApacheIIScore numeric); eICU uses nurseCharting Glasgow coma score / GCS Total; HiRID has 3 sub-components (10000100/200/300) deferred to Phase 2; NWICU absent in d_items
+alb,lab,Albumin,include,0.5406,0.7131,0.0877,mapped,,labevents,g/dL,0.5,6.0,1751-7,
+alp,lab,Alkaline phosphatase,include,0.6461,0.6821,0.2399,mapped,,labevents,IU/L,0,2000,6768-6,
+alt,lab,Alanine aminotransferase,include,0.6491,0.6892,0.4648,mapped,,labevents,IU/L,0,10000,1742-6,
+ast,lab,Aspartate aminotransferase,include,0.6531,0.6953,0.4278,mapped,,labevents,IU/L,0,10000,1920-8,
+be,lab,Base excess,include_with_nwicu_null,0.6409,0.3416,0.8717,null,,,mmol/L,-30,30,1925-7,Not in NWICU catalog
+bicar,lab,Bicarbonate,include,0.9854,0.8959,0.8718,mapped,,labevents,mmol/L,0,50,1963-8,
+bili,lab,Total bilirubin,include,0.6460,0.6722,0.3472,mapped,,labevents,mg/dL,0,50,1975-2,
+bili_dir,lab,Direct bilirubin,include,0.0865,0.1695,0.0652,mapped,,labevents,mg/dL,0,30,1968-7,
+bnd,lab,Band form neutrophils,include_with_nwicu_null,0.1610,0.1348,0.2460,null,,,%,0,100,764-1,NWICU has Immature Granulocytes (100028) but semantically distinct
+bun,lab,Blood urea nitrogen,include,0.9856,0.9468,0.7565,mapped,,labevents,mg/dL,0,300,3094-0,
+ca,lab,Total calcium,include,0.9677,0.9304,0.0925,mapped,,labevents,mg/dL,4,15,17861-6,
+cai,lab,Ionised calcium,include,0.4630,0.0388,0.8688,mapped,,labevents,mmol/L,0.5,2.0,1995-0,
+ck,lab,Creatine kinase,include,0.3518,0.2448,0.5663,mapped,100085,labevents,IU/L,0,100000,2157-6,Corrected from null per NWICU verification 2026-05-14
+ckmb,lab,Creatine kinase MB,include,0.3399,0.1468,0.4965,mapped,100099,labevents,ng/mL,0,500,13969-1,Corrected from null per NWICU verification 2026-05-14
+cl,lab,Chloride,include,0.9855,0.9431,0.8533,mapped,,labevents,mmol/L,70,130,2075-0,
+crea,lab,Serum creatinine,include,0.9856,0.9475,0.8610,mapped,,labevents,mg/dL,0,30,2160-0,
+crp,lab,C-reactive protein,include,0.0795,0.0363,0.7920,mapped,,labevents,mg/L,0,10000,1988-5,Upper bound relaxed  (was 500) to match ricu's open-ended max; sensor noise in eICU lab reaches ~5800 mg/L which ricu accepts.
+urine_rate,vital,Urine rate per hour,include_with_nwicu_null,0,0,1,null,,,mL/h,0,2000,9192-6, (2026-05-21): ricu YAIB urine_rate concept used ONLY by the AKI urine arm. Hirid: variableid 10020000 (already mL/h) -- the urine arm uses this directly without applying /_tm_h. eICU/miiv/nwicu emit no urine_rate events; AKI urine arm there falls back to deriving rate from urine concept via /_tm_h. Not in dynamic_vars (not exported in dyn.parquet), only used internally by AKI scoring.
+fgn,lab,Fibrinogen,include,0.2899,0.0845,0.2120,mapped,,labevents,mg/dL,0,1500,3255-7,
+glu,lab,Serum glucose,include,0.9862,0.9597,0.9901,mapped,,labevents,mg/dL,0,2000,2345-7,
+hgb,lab,Haemoglobin,include,0.9847,0.9404,0.9463,mapped,,labevents,g/dL,2,25,718-7,
+inr_pt,lab,International normalised ratio,include,0.9132,0.6173,0.7366,mapped,,labevents,ratio,0.5,15,6301-6,Dimensionless ratio; canonical_unit `ratio` satisfies events_long non-null invariant
+k,lab,Potassium,include,0.9857,0.9468,0.9489,mapped,,labevents,mmol/L,1,10,2823-3,
+lact,lab,Lactate,include,0.6611,0.3567,0.8780,mapped,,labevents,mmol/L,0,30,32693-4,Arterial preferred where available
+lymph,lab,Lymphocytes percent,include,0.5720,0.7221,0.3173,mapped,,labevents,%,0,100,736-9,
+mch,lab,Mean corpuscular haemoglobin,include,0.9849,0.8735,0.9099,mapped,,labevents,pg,10,50,785-6,
+mchc,lab,Mean corpuscular haemoglobin concentration,include,0.9849,0.9125,0.9099,mapped,,labevents,g/dL,20,50,786-4,
+mcv,lab,Mean corpuscular volume,include,0.9849,0.9125,0.9101,mapped,,labevents,fL,50,150,787-2,
+methb,lab,Methaemoglobin,exclude_manual,0.0127,0.1187,0.8704,low_prevalence,,labevents,%,0,30,2614-6,Cross-dataset prevalence inconsistency (1.27% miiv / 11.87% eicu / 87.04% hirid / 0.1% nwicu) suggests measurement-context confounding; kept exclude_manual per audit
+mg,lab,Magnesium,include,0.9819,0.6801,0.5688,mapped,,labevents,mg/dL,0.5,10,19123-9,
+na,lab,Sodium,include,0.9856,0.9479,0.9491,mapped,,labevents,mmol/L,100,180,2951-2,
+neut,lab,Neutrophils percent,include,0.5720,0.6568,0.3173,mapped,,labevents,%,0,100,770-8,
+pco2,lab,Partial pressure of carbon dioxide,include_with_nwicu_null,0.6410,0.4205,0.7772,null,,,mmHg,10,150,2019-8,Not in NWICU catalog. Arterial code where available
+ph,lab,Blood pH,include_with_nwicu_null,0.6627,0.4167,0.7791,low_prevalence,100339,labevents,pH,6.5,8.0,11558-4,NWICU catalog-present but only 3 hadm; treated as null. canonical_unit `pH` satisfies events_long non-null invariant
+phos,lab,Phosphate,include,0.9693,0.4606,0.5481,mapped,,labevents,mg/dL,0,20,14879-1,
+plt,lab,Platelet count,include,0.9849,0.9289,0.9030,mapped,,labevents,10^3/uL,0,2000,777-3,
+po2,lab,Partial pressure of oxygen,include,0.6132,0.4208,0.7789,mapped,100029,labevents,mmHg,10,700,2703-7,Corrected from null per NWICU verification 2026-05-14
+ptt,lab,Activated partial thromboplastin time,include,0.9083,0.4578,0.2735,mapped,,labevents,s,10,200,14979-9,
+tnt,lab,Troponin (T or I),include,0.2634,0.0496,0.3118,mapped,100057;100059,labevents,ng/mL,0,100,6598-7,Corrected from null per NWICU verification 2026-05-14. Collapses TnT (100057) and TnI (100059); modern assay is TnI
+wbc,lab,White blood cell count,include,0.9849,0.9418,0.9105,mapped,,labevents,10^3/uL,0,200,6690-2,
+aki,outcome,Acute kidney injury per KDIGO,include_with_nwicu_null,0.5723,0.5060,0.2387,null,,,,,,,Derived outcome. NWICU uses creatinine-only KDIGO criterion; no urine criterion. Swappable with gcs_total/sofa_score in a later patch if v1 audit prefers
+sepsis,outcome,Sepsis-3 onset,include_with_nwicu_null,NA,NA,NA,null,,,,,,,Derived outcome with no audit row; prevalence computed in  at task-build time. NWICU has prescriptions but no microbiology. Swappable with gcs_total/sofa_score in a later patch if v1 audit prefers

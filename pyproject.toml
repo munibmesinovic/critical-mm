@@ -1,0 +1,123 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "critical-mm"
+version = "0.1.0"
+description = "CRITICAL-MM: a multi-dataset ICU benchmark."
+requires-python = ">=3.11"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Munib Mesinovic" },
+]
+dependencies = [
+    "polars>=1.0",
+    "pyarrow>=15",
+    "numpy>=2",
+    "pandas>=2",
+    "scikit-learn>=1.4",
+    "pydantic>=2.5",
+    "typer>=0.12",
+    "xxhash>=3.4",
+    "pyyaml>=6",
+    "torch>=2.2",
+    "pytorch-lightning>=2.2",
+    "pytorch-ignite>=0.5",
+    "torchmetrics>=1.3",
+    "einops>=0.7",
+    "lightgbm>=4.3",
+]
+
+[project.optional-dependencies]
+multimodal = ["transformers>=4.40"]
+dev = [
+    "pytest>=8",
+    "pytest-cov",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "hypothesis>=6",
+]
+
+[tool.setuptools.packages.find]
+include = ["critical_mm*"]
+exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+critical_mm = ["py.typed"]
+"critical_mm.modalities" = ["_refs/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [
+    # Time-series model code retains its upstream formatting for easy diffing.
+    "critical_mm/models",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# units.py uses medical unit literals (mg/dL, micromol/L) and verbatim function
+# names that PEP 8's snake_case rule fights; docstrings use the multiply glyph.
+"critical_mm/units.py" = ["N802", "RUF002", "RUF003"]
+# Task definitions cite clinical thresholds with comparison / arithmetic glyphs.
+"critical_mm/tasks/aki.py" = ["RUF002", "RUF003"]
+"critical_mm/tasks/sepsis.py" = ["RUF002", "RUF003"]
+# Processor signatures use X (the scikit-learn convention).
+"critical_mm/processors/base.py" = ["N803"]
+"critical_mm/processors/scale.py" = ["N803", "RUF002"]
+"critical_mm/processors/impute_fill.py" = ["N803", "RUF002"]
+"critical_mm/processors/mask.py" = ["N803"]
+"critical_mm/processors/historical.py" = ["N803", "RUF002", "RUF003"]
+# splits.py uses the scikit-learn X parameter and the multiply glyph in a docstring.
+"critical_mm/splits.py" = ["N803", "RUF002"]
+# scoring/sofa.py uses range dashes in clinical docstrings.
+"critical_mm/scoring/sofa.py" = ["RUF002", "RUF003"]
+# train.py / fusion_grid.py use scikit-learn X / Xtr feature-matrix naming.
+"critical_mm/training/train.py" = ["N806", "N803"]
+"scripts/fusion_grid.py" = ["N806", "N803"]
+# Registry-isolation fixture zips equal-length registry tuples.
+"tests/test_registry.py" = ["B905"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --tb=short"
+
+[tool.mypy]
+strict = true
+files = ["critical_mm"]
+
+[[tool.mypy.overrides]]
+module = [
+    "polars.*",
+    "pyarrow.*",
+    "xxhash.*",
+    "numpy.*",
+    "torch",
+    "torch.*",
+    "pytorch_lightning",
+    "pytorch_lightning.*",
+    "lightgbm",
+    "lightgbm.*",
+    "ignite",
+    "ignite.*",
+    "sklearn",
+    "sklearn.*",
+    "pandas",
+    "pandas.*",
+    "scipy",
+    "scipy.*",
+    "einops",
+    "einops.*",
+    "transformers",
+    "transformers.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Time-series model code mirrors the ruff extend-exclude above.
+module = ["critical_mm.models.*"]
+ignore_errors = true
