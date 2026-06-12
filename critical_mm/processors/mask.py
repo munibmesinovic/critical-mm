@@ -14,7 +14,6 @@ import polars as pl
 
 from critical_mm.processors.base import Processor
 
-
 class MissingIndicator(Processor):
     """Add `<col>_is_null` Boolean columns for each tracked feature."""
 

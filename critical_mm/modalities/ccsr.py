@@ -15,7 +15,6 @@ import polars as pl
 
 _CCSR_PATH = Path(__file__).parent / "_refs" / "dxccsr_v2026-1_default_ccsr.csv.gz"
 
-
 @lru_cache(maxsize=1)
 def _load_ccsr() -> pl.DataFrame:
     """Load the slim `icd10cm_code -> ccsr_category` map (dotless codes)."""
@@ -27,7 +26,6 @@ def _load_ccsr() -> pl.DataFrame:
         pl.col(code_col).str.replace_all("'", "").str.strip_chars().alias("__code"),
         pl.col(cat_col).str.replace_all("'", "").str.strip_chars().alias("__ccsr"),
     ).unique(subset=["__code"])
-
 
 def add_ccsr_grouping(df: pl.LazyFrame) -> pl.LazyFrame:
     """Add `group`/`group_source`; CM codes -> CCSR, else 3-char root fallback.

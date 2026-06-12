@@ -45,7 +45,6 @@ if TYPE_CHECKING:
     from critical_mm.fusion.config import FusionConfig
     from critical_mm.models._data.loader import PredictionDataset
 
-
 def _git_sha() -> str:
     try:
         out = subprocess.run(
@@ -58,7 +57,6 @@ def _git_sha() -> str:
         return out.stdout.strip()
     except (subprocess.CalledProcessError, FileNotFoundError):
         return "unknown"
-
 
 def _splits_fingerprint(cfg: TrainConfig) -> dict[str, Any]:
     manifest_path = cfg.splits_dir / "manifest.json"
@@ -79,7 +77,6 @@ def _splits_fingerprint(cfg: TrainConfig) -> dict[str, Any]:
         "n_folds": len(manifest["folds"]),
     }
 
-
 def _load_split_parquet(cfg: TrainConfig) -> pd.DataFrame:
     """Load locked split as pandas (CM-native trainer uses pandas-shaped frames)."""
     import pandas as pd
@@ -88,7 +85,6 @@ def _load_split_parquet(cfg: TrainConfig) -> pd.DataFrame:
     if not p.exists():
         raise FileNotFoundError(f"locked split missing: {p}. Run scripts/lock_splits.py first.")
     return pd.read_parquet(p)
-
 
 def _load_data_parquets(cfg: TrainConfig) -> dict[str, pd.DataFrame]:
     """Load CM sta / dyn / outc parquets as pandas DataFrames."""
@@ -106,7 +102,6 @@ def _load_data_parquets(cfg: TrainConfig) -> dict[str, pd.DataFrame]:
         out[seg] = pd.read_parquet(path)
     return out
 
-
 def hash_stay_id(s: object) -> int:
     """Deterministic int32 hash of a stay_id (suffix-int where possible, else hash).
 
@@ -120,7 +115,6 @@ def hash_stay_id(s: object) -> int:
         return int(text) % (2**31)
     except ValueError:
         return abs(hash(text)) % (2**31)
-
 
 def _apply_split(
     data: dict[str, pd.DataFrame],
@@ -140,7 +134,6 @@ def _apply_split(
         }
     return result
 
-
 @dataclass
 class _TrainContext:
     """State produced by the shared preamble; consumed by the DL/ML branches."""
@@ -153,7 +146,6 @@ class _TrainContext:
     vars: dict[str, Any]
     metadata: dict[str, Any]
 
-
 @dataclass
 class _BasePreamble:
     """Structured `cm_preprocess` prefix of the preamble, reusable across fusion
@@ -165,7 +157,6 @@ class _BasePreamble:
     runmode: Any
     splits_fp: dict[str, Any]
 
-
 def _build_base_preamble(cfg: TrainConfig, generate_features: bool = False) -> _BasePreamble:
     """Structured prefix of the preamble (no RNG after cm_preprocess) — reusable
     across fusion variants. Identical statements to the inline prefix it replaces,
@@ -175,7 +166,7 @@ def _build_base_preamble(cfg: TrainConfig, generate_features: bool = False) -> _
 
     from critical_mm.models._data.constants import DataSegment as Segment
     from critical_mm.models._data.constants import DataSplit as Split
-    from critical_mm.models._data.loader import PredictionDataset  # noqa: F401
+    from critical_mm.models._data.loader import PredictionDataset # noqa: F401
     from critical_mm.models._runmode import RunMode
     from critical_mm.training.preprocess import preprocess as cm_preprocess
 
@@ -245,7 +236,6 @@ def _build_base_preamble(cfg: TrainConfig, generate_features: bool = False) -> _
         runmode=runmode,
         splits_fp=splits_fp,
     )
-
 
 def _train_one_preamble(
     cfg: TrainConfig,
@@ -360,7 +350,6 @@ def _train_one_preamble(
         metadata=metadata,
     )
 
-
 def _train_one_dl(
     cfg: TrainConfig,
     ctx: _TrainContext,
@@ -412,7 +401,7 @@ def _train_one_dl(
     extra_hp, epochs, precision = resolve_trainer_overrides(cfg.extra_hyperparams, use_cuda)
     batch_size_override = extra_hp.pop("batch_size", None)
     if batch_size_override is not None:
-        bs = int(batch_size_override)  # type: ignore[call-overload]
+        bs = int(batch_size_override) # type: ignore[call-overload]
         batch_size = min(bs, len(train_dataset), len(val_dataset))
         print(f" [batch_size override] using batch_size={batch_size}")
     patience = 10
@@ -458,7 +447,7 @@ def _train_one_dl(
         **hparams,
     )
     model.set_weight("balanced" if cfg.is_classification else None, train_dataset)
-    model.set_trained_columns(train_dataset.get_feature_names())  # type: ignore[no-untyped-call]
+    model.set_trained_columns(train_dataset.get_feature_names()) # type: ignore[no-untyped-call]
 
     tb_logger = TensorBoardLogger(str(ckpt))
     callbacks = [
@@ -503,17 +492,14 @@ def _train_one_dl(
 
     return {"status": "ok", "metadata": metadata}
 
-
 _CUML_GPU_MODELS = frozenset(
     {"LogisticRegression", "RFClassifier", "ElasticNet", "LinearRegression"}
 )
-
 
 def _ml_cache_root(cfg: TrainConfig) -> Path:
     """Root of the ML array cache, under cfg.data_root so an isolated re-lock
     does not write into the locked tree's _ml_array_cache."""
     return cfg.data_root / "data" / "checkpoints" / "_ml_array_cache"
-
 
 def _evict_other_ml_caches(keep_dir: Path, cache_root: Path) -> None:
     """Keep only the current cohort's cache (arrays are multi-GB; the box is
@@ -527,7 +513,6 @@ def _evict_other_ml_caches(keep_dir: Path, cache_root: Path) -> None:
         for ds_dir in task_dir.iterdir():
             if ds_dir.is_dir() and ds_dir.resolve() != keep_dir.resolve():
                 shutil.rmtree(ds_dir, ignore_errors=True)
-
 
 def _ml_array_cache(cfg: TrainConfig) -> tuple[Any, dict[str, Any]]:
     """Return (cache_dir, meta) for cfg's (task, dataset), materializing the
@@ -560,11 +545,10 @@ def _ml_array_cache(cfg: TrainConfig) -> tuple[Any, dict[str, Any]]:
         "splits": ctx.metadata["splits"],
         "duration_load_s": ctx.metadata["duration_load_s"],
         "runmode": ctx.metadata["runmode"],
-        "feature_names": list(ctx.train_dataset.get_feature_names()),  # type: ignore[no-untyped-call]
+        "feature_names": list(ctx.train_dataset.get_feature_names()), # type: ignore[no-untyped-call]
     }
     meta_path.write_text(json.dumps(meta, default=str))
     return cache_dir, meta
-
 
 def _fit_ml_inprocess(
     cfg: TrainConfig,
@@ -645,7 +629,6 @@ def _fit_ml_inprocess(
     model.save_model(ckpt, "model", ".joblib")
     (ckpt / "metadata.json").write_text(json.dumps(metadata, indent=2, default=str))
     return {"status": "ok", "metadata": metadata}
-
 
 def _train_one_ml(cfg: TrainConfig, model_class: type) -> dict[str, Any]:
     """ML training path (cached). Materializes the cohort's (X, y) arrays once
@@ -739,7 +722,6 @@ def _train_one_ml(cfg: TrainConfig, model_class: type) -> dict[str, Any]:
         checkpoint_dir=None,
     )
 
-
 def train_one(cfg: TrainConfig) -> dict[str, Any]:
     """Train one (task, dataset, model, seed) cell with locked splits.
 
@@ -787,6 +769,5 @@ def train_one(cfg: TrainConfig) -> dict[str, Any]:
         f"pure-ML (needs_fit=True, needs_training=False) nor pure-DL (needs_training=True, "
         f"needs_fit=False). Hybrid wrappers are not supported."
     )
-
 
 __all__ = ["train_one"]

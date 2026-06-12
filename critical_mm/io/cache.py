@@ -41,7 +41,6 @@ _TREE_HASH_SKIP_DIRS: frozenset[str] = frozenset(
     {"__pycache__", ".git", ".pytest_cache", ".venv", ".mypy_cache", ".ruff_cache"}
 )
 
-
 @dataclass(frozen=True)
 class CacheKey:
     """All inputs that affect whether a cached parquet is still valid."""
@@ -75,7 +74,6 @@ class CacheKey:
         body["source_sizes"] = list(self.source_sizes)
         return body
 
-
 def compute_tree_xxhash(root: Path) -> str:
     """Return a 16-hex xxhash64 of all `.py`/`.csv`/`.md` files under `root`.
 
@@ -101,7 +99,6 @@ def compute_tree_xxhash(root: Path) -> str:
         h.update(path.read_bytes())
         h.update(b"\x00")
     return h.hexdigest()
-
 
 def get_git_sha(repo_root: Path) -> str | None:
     """Return the short (8-hex) SHA of HEAD; soft-fail to None if unavailable.
@@ -132,7 +129,6 @@ def get_git_sha(repo_root: Path) -> str | None:
         return None
     return result.stdout.strip() or None
 
-
 def build_cache_key(
     *,
     source_paths: list[Path],
@@ -161,10 +157,8 @@ def build_cache_key(
         extra=extra,
     )
 
-
 def _sidecar_path(cache_path: Path) -> Path:
     return cache_path.parent / (cache_path.name + ".cache_key.json")
-
 
 def cache_lookup(cache_path: Path, key: CacheKey) -> Path | None:
     """Return `cache_path` if the sidecar's digest matches; else None.
@@ -191,7 +185,6 @@ def cache_lookup(cache_path: Path, key: CacheKey) -> Path | None:
     if not isinstance(payload, dict) or payload.get("digest") != key.digest():
         return None
     return cache_path
-
 
 def cache_write(
     cache_path: Path,

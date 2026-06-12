@@ -15,7 +15,6 @@ import polars as pl
 
 from critical_mm.processors.base import Processor
 
-
 class StandardScaler(Processor):
     """Per-column (x − mean) / std standardisation, fitted lazily."""
 

@@ -20,7 +20,6 @@ from critical_mm.processors.base import Processor
 _GROUP_COLS: tuple[str, ...] = ("patient_id", "stay_id")
 _ORDER_COL: str = "hour"
 
-
 class ImputeFill(Processor):
     """Forward-fill missing values within each stay; fallback to median."""
 

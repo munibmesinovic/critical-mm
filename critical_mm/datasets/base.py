@@ -30,7 +30,6 @@ _TABLE_NAMES: tuple[str, ...] = (
     "abx_duration",
 )
 
-
 class DatasetReader(ABC):
     """Contract: produce six canonical interim tables for one dataset.
 

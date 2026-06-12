@@ -18,6 +18,7 @@ from critical_mm.datasets.hirid import HiRIDReader
 from critical_mm.datasets.mimic_iv import MIMICIVReader
 from critical_mm.datasets.nwicu import NWICUReader
 from critical_mm.datasets.omix import OMIXReader
+from critical_mm.datasets.sicdb import SICdbReader
 from critical_mm.datasets.synthetic import SyntheticReader
 
 __all__ = [
@@ -27,5 +28,6 @@ __all__ = [
     "MIMICIVReader",
     "NWICUReader",
     "OMIXReader",
+    "SICdbReader",
     "SyntheticReader",
 ]

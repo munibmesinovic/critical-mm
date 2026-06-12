@@ -18,7 +18,6 @@ import polars as pl
 from critical_mm.api import DatasetReader
 from critical_mm.schema import TABLES
 
-
 class _ExampleSyntheticReader(DatasetReader):
     """Empty reader returning schema-correct empty frames.
 
@@ -62,3 +61,4 @@ class _ExampleSyntheticReader(DatasetReader):
 
     def read_microbio(self) -> pl.LazyFrame:
         return pl.LazyFrame(schema=TABLES["microbio"][0])
+

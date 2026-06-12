@@ -22,7 +22,6 @@ REPO = Path(__file__).resolve().parent.parent
 TASKS = ["mortality24", "aki", "sepsis", "los", "kidney_function"]
 READERS = {"miiv": MiivNoteReader, "omix": OmixNoteReader, "eicu": EicuNoteReader}
 
-
 def _cohort_with_hadm(ds: str, stays: pl.LazyFrame) -> pl.LazyFrame:
     """Attach each stay's own hadm_id (miiv via icustays); null for stay-bound datasets."""
     if ds != "miiv":
@@ -40,7 +39,6 @@ def _cohort_with_hadm(ds: str, stays: pl.LazyFrame) -> pl.LazyFrame:
         .join(ic, on="__sid", how="left")
         .drop("__sid")
     )
-
 
 def main() -> None:
     out_root = REPO / "data" / "processed" / "_modalities"
@@ -66,7 +64,6 @@ def main() -> None:
     out_root.mkdir(parents=True, exist_ok=True)
     (out_root / "_notes_coverage.json").write_text(json.dumps(coverage, indent=2))
     print(f"wrote {len(coverage)} aligned notes views -> {out_root / '_notes_coverage.json'}")
-
 
 if __name__ == "__main__":
     main()

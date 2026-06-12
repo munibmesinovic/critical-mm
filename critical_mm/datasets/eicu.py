@@ -51,7 +51,6 @@ from critical_mm.tasks._abx_duration import (
 
 _OFFSET_SECONDS = 60
 
-
 @register_dataset
 class EICUReader(DatasetReader):
     """Concrete reader for eICU-CRD v2.0 (Philips multi-site database)."""
@@ -894,7 +893,6 @@ class EICUReader(DatasetReader):
             pl.col("culturesite").alias("specimen_type"),
             pl.col("organism"),
         ).select(list(TABLES["microbio"][0].keys()))
-
 
 __all__ = ["EICUReader"]
 del VASOPRESSOR_INFUSION_KEYWORDS

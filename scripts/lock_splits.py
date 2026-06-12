@@ -32,10 +32,11 @@ defaults; the default seed=42 matches YAIB's gin config.
 
 from __future__ import annotations
 
+import os
+
 import argparse
 import hashlib
 import json
-import os
 import subprocess
 import sys
 import time
@@ -52,7 +53,6 @@ _DEFAULT_DATASETS: tuple[str, ...] = ("eicu", "miiv", "hirid", "nwicu")
 _CLASSIFICATION_TASKS: frozenset[str] = frozenset({"sepsis", "aki", "mortality24"})
 _REGRESSION_TASKS: frozenset[str] = frozenset({"los", "kidney_function"})
 
-
 def _git_sha(repo: Path) -> str:
     try:
         result = subprocess.run(
@@ -66,20 +66,16 @@ def _git_sha(repo: Path) -> str:
     except subprocess.CalledProcessError:
         return "unknown"
 
-
 def _outc_path(task: str, dataset: str) -> Path:
     return REPO / "data" / "processed" / task / dataset / "outc.parquet"
 
-
 def _splits_dir(task: str, dataset: str) -> Path:
     return REPO / "data" / "processed" / "splits" / task / dataset
-
 
 def _content_sha256(parquet_path: Path) -> str:
     h = hashlib.sha256()
     h.update(parquet_path.read_bytes())
     return h.hexdigest()
-
 
 def _lock_one(
     task: str,
@@ -178,7 +174,6 @@ def _lock_one(
     (splits_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
     return {"status": "ok", "manifest": manifest}
 
-
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--tasks", nargs="+", default=list(_DEFAULT_TASKS))
@@ -225,7 +220,6 @@ def main() -> None:
         f"=== Done in {time.perf_counter() - total_start:.1f}s ({n_ok} ok, {n_skipped} skipped) ==="
     )
     sys.exit(0 if n_skipped == 0 else 1)
-
 
 if __name__ == "__main__":
     main()

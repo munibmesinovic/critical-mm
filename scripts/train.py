@@ -29,7 +29,6 @@ from critical_mm.registry import discover_datasets, discover_models, discover_ta
 from critical_mm.training.config import REPO
 from critical_mm.training.grid import run_grid
 
-
 def _parse_hyperparam_value(raw: str) -> int | float | bool | str:
     """Parse a raw string into the most specific type that fits.
 
@@ -48,7 +47,6 @@ def _parse_hyperparam_value(raw: str) -> int | float | bool | str:
     if raw.lower() == "false":
         return False
     return raw
-
 
 def build_extra_hyperparams(args: argparse.Namespace) -> dict[str, object]:
     """Build the extra_hyperparams dict from the three CLI knobs.
@@ -74,7 +72,6 @@ def build_extra_hyperparams(args: argparse.Namespace) -> dict[str, object]:
         result["max_epochs"] = args.max_epochs
 
     return result
-
 
 def main() -> None:
     task_choices = sorted(discover_tasks().keys())
@@ -184,7 +181,6 @@ def main() -> None:
         extra_hyperparams=extra_hyperparams,
     )
     sys.exit(0 if result["n_fail"] == 0 else 1)
-
 
 if __name__ == "__main__":
     main()

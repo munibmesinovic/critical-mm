@@ -1,6 +1,6 @@
 """NWICU v0.1.0 itemid maps.
 
-LOCKED_ITEMIDS are the five session-verified items committed at
+LOCKED_ITEMIDS are the five session-verified items committed at 
 (2026-05-14). `_verify_locked_itemids` re-checks them against
 `hosp/d_labitems.csv.gz` at the start of every ingest run; any drift
 triggers a STOP.

@@ -13,11 +13,9 @@ import polars as pl
 
 from critical_mm.schema import TABLES, validate_frame
 
-
 def scan(path: Path | str) -> pl.LazyFrame:
     """Lazily scan a parquet file with default statistics enabled."""
     return pl.scan_parquet(path)
-
 
 def sink(
     df: pl.LazyFrame,
@@ -28,7 +26,6 @@ def sink(
 ) -> None:
     """Materialise a LazyFrame to parquet with zstd compression and column statistics."""
     df.sink_parquet(path, compression=compression, statistics=statistics)
-
 
 def write_with_schema(
     df: pl.LazyFrame,

@@ -40,7 +40,7 @@ Per-hour outc shape (YAIB-cohorts parity, audit round 2026-05-15):
 References:
 - Singer M et al. JAMA. 2016;315(8):801-810.
 - ricu callback-sep3.R commit caee690.
-- spec
+- spec 
 """
 
 from __future__ import annotations
@@ -60,7 +60,6 @@ _SEPSIS_ABX_CLASS: str = "antibiotic"
 _NWICU_ABX_DAYS: int = 3
 _ONSET_GRACE_HOURS: int = 6
 
-
 @register_task
 class Sepsis(Task):
     """Simplified Sepsis-3 within a 6h prediction horizon."""
@@ -72,7 +71,7 @@ class Sepsis(Task):
     prediction_horizon_hours: ClassVar[int] = 6
 
     def supports_microbio_arm(self, dataset: str) -> bool:
-        return dataset != "nwicu"
+        return dataset not in {"nwicu", "sicdb"}
 
     def supports_sep3_arm(self, dataset: str) -> bool:
         """True iff full SEP-3 cascade (abx_cont + susp_inf + SOFA + sep3) runs.
@@ -104,8 +103,18 @@ class Sepsis(Task):
         87.9% coverage) so it joins the ``si_mode="abx_or_microbio"`` group
         with miiv. GCS is absent → CNS arm falls through to score=0
         (scoring/sofa.py:455-478); expected -5 to -8 pp recall hit.
+
+        SICdb integration (2026-06-10, Phase 0): SICdb added to the SEP-3 set.
+        SICdb has NO microbiology table, so it joins the ``si_mode="abx"``
+        group with eicu/hirid/nwicu (susp_inf_time == abx_cont
+        episode_start_time, then ΔSOFA≥2 over [si-48h, si+24h]). GCS is
+        confirmed absent from every data_float_h family (RASS 3123 is a
+        sedation scale, not SOFA-CNS) → the CNS arm falls through to score=0
+        via the grid-based _hourly_carry (null→0 in _sofa_cns); no guard
+        needed, same as OMIX. Antibiotics are a name-matched surrogate over
+        the d_references drug names (no ATC codes).
         """
-        return dataset in {"miiv", "eicu", "hirid", "nwicu", "omix"}
+        return dataset in {"miiv", "eicu", "hirid", "nwicu", "omix", "sicdb"}
 
     def supports_microbio_in_sep3(self, dataset: str) -> bool:
         """True iff microbio joins as part of the SEP-3 susp_inf gate.
@@ -185,7 +194,7 @@ class Sepsis(Task):
         return _per_hour_outc_from_onsets(base_cohort, onsets)
 
     def build(self, **kwargs: object) -> TaskBuildResult:
-        result = super().build(**kwargs)  # type: ignore[arg-type]
+        result = super().build(**kwargs) # type: ignore[arg-type]
         dataset = str(kwargs["dataset"])
         deviations_path = result["sta_path"].parent / "deviations.csv"
         deviations: list[tuple[str, str]] = []
@@ -247,15 +256,37 @@ class Sepsis(Task):
                     "publishing OMIX sepsis numbers (Plan Task 23).",
                 )
             )
+        elif dataset == "sicdb":
+            deviations.append(
+                (
+                    "sicdb_sofa_cns_arm_no_gcs",
+                    "GCS not recorded in any SICdb data_float_h family (verified "
+                    "via the harmonised-concept smoke run, reports/"
+                    "sicdb_dataset_audit.md §3; RASS id 3123 exists but is a "
+                    "sedation scale, not a SOFA-CNS substitute, and HiRID lacks "
+                    "GCS too). _sofa_cns falls through to score=0 via the "
+                    "grid-based _hourly_carry (null value → 0, scoring/sofa.py:"
+                    "455-478); no guard needed. Expected -5 to -8 pp sepsis "
+                    "recall (same mechanism as OMIX).",
+                )
+            )
+            deviations.append(
+                (
+                    "sicdb_sepsis_no_microbio",
+                    "SICdb has no microbiology table → full SEP-3 cascade runs "
+                    "with si_mode='abx' (susp_inf_time == abx_cont "
+                    "episode_start_time), SOFA ΔSOFA≥2 check still applied. Same "
+                    "routing as eICU/HiRID/NWICU. Antibiotics are a name-matched "
+                    "surrogate over d_references drug names (no ATC codes).",
+                )
+            )
         _write_deviations(deviations_path, deviations)
         return result
-
 
 _ONSET_SCHEMA: dict[str, pl.DataType] = {
     "stay_id": pl.Utf8(),
     "onset_time": pl.Datetime("us", "UTC"),
 }
-
 
 def _sepsis_standard_onsets(meds: pl.DataFrame) -> pl.DataFrame:
     """Onset = first abx admin per stay with any antibiotic record.
@@ -269,7 +300,6 @@ def _sepsis_standard_onsets(meds: pl.DataFrame) -> pl.DataFrame:
     if abx.height == 0:
         return pl.DataFrame(schema=_ONSET_SCHEMA)
     return abx.group_by("stay_id").agg(pl.col("starttime").min().alias("onset_time"))
-
 
 def _sepsis_nwicu_abx_only_onsets(meds: pl.DataFrame) -> pl.DataFrame:
     """Onset = first abx admin per stay whose abx span ≥ 3 days.
@@ -290,7 +320,6 @@ def _sepsis_nwicu_abx_only_onsets(meds: pl.DataFrame) -> pl.DataFrame:
         .alias("abx_span_s"),
     )
     return per_stay.filter(pl.col("abx_span_s") >= threshold_s).select("stay_id", "onset_time")
-
 
 def _sepsis_sep3_onsets(
     base_cohort: pl.DataFrame,
@@ -340,7 +369,6 @@ def _sepsis_sep3_onsets(
     sep3 = sep3_alt(sofa, si, base_cohort)
     return sep3.select("stay_id", "onset_time")
 
-
 def _exclude_early_onset_stays(
     base_cohort: pl.DataFrame, onsets: pl.DataFrame, grace_hours: int
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
@@ -366,7 +394,6 @@ def _exclude_early_onset_stays(
     )
     return new_cohort, new_onsets
 
-
 def _filter_eicu_hospitals_without_cases(
     base_cohort: pl.DataFrame, onsets: pl.DataFrame, dataset: str
 ) -> pl.DataFrame:
@@ -391,9 +418,7 @@ def _filter_eicu_hospitals_without_cases(
         return base_cohort.head(0)
     return base_cohort.join(positive_hospitals, on="hospital_id", how="inner")
 
-
 _PREDICTION_HORIZON_HOURS: int = 6
-
 
 def _per_hour_outc_from_onsets(base_cohort: pl.DataFrame, onsets: pl.DataFrame) -> pl.DataFrame:
     """One row per (stay, hour); windowed binary label centred on onset.
@@ -433,7 +458,6 @@ def _per_hour_outc_from_onsets(base_cohort: pl.DataFrame, onsets: pl.DataFrame) 
         .alias("label_value")
     ).select("patient_id", "stay_id", "hour", "label_time", "label_value")
 
-
 def _empty_sepsis_labels() -> pl.DataFrame:
     return pl.DataFrame(
         schema={
@@ -444,7 +468,6 @@ def _empty_sepsis_labels() -> pl.DataFrame:
             "label_value": pl.Int8(),
         }
     )
-
 
 def _write_deviations(path: Path, deviations: list[tuple[str, str]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)

@@ -15,7 +15,6 @@ import polars as pl
 
 _GEM_PATH = Path(__file__).parent / "_refs" / "icd9to10cm_gem_2018_slim.csv.gz"
 
-
 @lru_cache(maxsize=1)
 def _load_gem() -> pl.DataFrame:
     """Load the slim ICD-9 -> ICD-10-CM map (dotless codes)."""
@@ -27,7 +26,6 @@ def _load_gem() -> pl.DataFrame:
         )
         .unique(subset=["__icd9"])
     )
-
 
 def add_icd10_equivalent(df: pl.LazyFrame, *, dotless_col: str = "__dotless") -> pl.LazyFrame:
     """Add a `__cm10` column: the ICD-10-CM-equivalent dotless code.

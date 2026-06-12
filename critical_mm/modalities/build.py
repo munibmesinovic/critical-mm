@@ -6,7 +6,6 @@ import polars as pl
 
 from critical_mm.modalities.align import align_to_cohort, attach_split
 
-
 def build_aligned_view(
     timed: pl.LazyFrame, stays: pl.LazyFrame, split: pl.LazyFrame, dataset: str
 ) -> pl.LazyFrame:
@@ -19,7 +18,6 @@ def build_aligned_view(
     cohort = stays.select("patient_id", "stay_id", pl.col("admit_time").alias("intime"))
     aligned = align_to_cohort(timed, cohort)
     return attach_split(aligned, split, dataset)
-
 
 def coverage_row(
     task: str, dataset: str, view: pl.DataFrame, n_cohort_stays: int

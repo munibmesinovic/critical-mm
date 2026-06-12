@@ -19,7 +19,6 @@ import numpy as np
 from critical_mm.modalities.notes_base import NoteEncoder
 from critical_mm.registry import register_note_encoder
 
-
 def _token_budget_batches(fed_len: np.ndarray, budget: int) -> Iterator[np.ndarray]:
     """Yield arrays of ORIGINAL indices grouped so each batch's (size x max_len) <= budget.
 
@@ -41,7 +40,6 @@ def _token_budget_batches(fed_len: np.ndarray, budget: int) -> Iterator[np.ndarr
             j += 1
         yield order[i:j]
         i = j
-
 
 def _encode_token_budget(
     model: Any,
@@ -85,7 +83,6 @@ def _encode_token_budget(
         del hidden, padded, vec
     return embs, true_len
 
-
 @register_note_encoder("mock")
 class MockNoteEncoder(NoteEncoder):
     """Deterministic numpy-only encoder for tests (no model download)."""
@@ -108,7 +105,6 @@ class MockNoteEncoder(NoteEncoder):
             norm = float(np.linalg.norm(v)) or 1.0
             emb[i] = v / norm
         return emb, n_tok
-
 
 @register_note_encoder("modernbert_clinical_en")
 class ModernBertEncoder(NoteEncoder):
@@ -145,7 +141,6 @@ class ModernBertEncoder(NoteEncoder):
             budget=self.TOKEN_BUDGET,
             pool="mean",
         )
-
 
 @register_note_encoder("bge_large_zh")
 class BgeZhEncoder(NoteEncoder):

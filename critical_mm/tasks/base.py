@@ -36,13 +36,11 @@ DYNAMIC_CONCEPTS: list[str] = sorted(
     and name not in _DYNAMIC_CONCEPT_EXCLUSIONS
 )
 
-
 class TaskBuildResult(TypedDict):
     sta_path: Path
     dyn_path: Path
     outc_path: Path
     n_stays: int
-
 
 class Task(ABC):
     """Base class for a CRITICAL-MM v1 task."""
@@ -201,7 +199,6 @@ class Task(ABC):
             n_stays=cohort.height,
         )
 
-
 def _build_sta(cohort: pl.DataFrame) -> pl.DataFrame:
     """One row per stay; static feature columns per the YAIB contract."""
     sex_one_hot = (
@@ -220,7 +217,6 @@ def _build_sta(cohort: pl.DataFrame) -> pl.DataFrame:
         pl.col("weight").cast(pl.Float32),
         pl.col("height").cast(pl.Float32),
     )
-
 
 def _build_dyn(
     cohort: pl.DataFrame,
@@ -292,14 +288,12 @@ def _build_dyn(
         .select("stay_id", "hour", *DYNAMIC_CONCEPTS)
     )
 
-
 def _stream_collect(lf: pl.LazyFrame) -> pl.DataFrame:
     """Streaming-engine collect with eager fallback (mirrors cohorts.base)."""
     try:
         return lf.collect(engine="streaming")
     except (TypeError, ValueError):
         return lf.collect()
-
 
 def _expand_to_grid(stays_with_max: pl.DataFrame) -> pl.DataFrame:
     """[stay_id, max_hour] → [stay_id, hour, *DYNAMIC_CONCEPTS] for hour ∈ [0, max_hour]."""
@@ -312,7 +306,6 @@ def _expand_to_grid(stays_with_max: pl.DataFrame) -> pl.DataFrame:
     for concept in DYNAMIC_CONCEPTS:
         expanded = expanded.with_columns(pl.lit(None, dtype=pl.Float32).alias(concept))
     return expanded.select("stay_id", "hour", *DYNAMIC_CONCEPTS)
-
 
 def _empty_dyn() -> pl.DataFrame:
     cols: dict[str, list[object]] = {

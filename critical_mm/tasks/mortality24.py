@@ -9,7 +9,6 @@ import polars as pl
 from critical_mm.registry import register_task
 from critical_mm.tasks.base import Task
 
-
 @register_task
 class Mortality24(Task):
     """Predict in-ICU mortality at h=24 after admission.

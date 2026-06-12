@@ -27,7 +27,6 @@ from critical_mm.registry import register_note_reader
 _DT_UTC = pl.Datetime("us", "UTC")
 _TS_FMT = "%Y-%m-%d %H:%M:%S"
 
-
 def _map_miiv_notes(raw: pl.LazyFrame) -> pl.LazyFrame:
     """Map a raw discharge/radiology-shaped frame to NOTE_TIMED_SCHEMA (pure, testable).
 
@@ -65,7 +64,6 @@ def _map_miiv_notes(raw: pl.LazyFrame) -> pl.LazyFrame:
         .unique(subset=["patient_id", "note_type", "text"], keep="first", maintain_order=True)
     )
 
-
 @register_note_reader("notes")
 class MiivNoteReader(NoteReader):
     MODALITY_NAME: ClassVar[str] = "notes"
@@ -95,7 +93,6 @@ class MiivNoteReader(NoteReader):
         disch = scan("discharge.csv.gz")
         rad = scan("radiology.csv.gz")
         return _map_miiv_notes(pl.concat([disch, rad], how="diagonal"))
-
 
 @register_note_reader("notes_omix")
 class OmixNoteReader(NoteReader):
@@ -171,7 +168,6 @@ class OmixNoteReader(NoteReader):
             .select(list(NOTE_TIMED_SCHEMA.keys()))
         )
 
-
 _EICU_SOURCES: tuple[tuple[str, str, str, str, str, str], ...] = (
     (
         "carePlanGeneral.csv.gz",
@@ -206,7 +202,6 @@ _EICU_SOURCES: tuple[tuple[str, str, str, str, str, str], ...] = (
         "pexam",
     ),
 )
-
 
 @register_note_reader("notes_eicu")
 class EicuNoteReader(NoteReader):

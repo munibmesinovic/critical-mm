@@ -23,11 +23,9 @@ DEFAULT_ENCODERS: dict[str, str] = {
 
 STAY_LEVEL_CUTOFF_H: dict[str, float] = {"mortality24": 24.0, "kidney_function": 24.0}
 
-
 def _fmt_hl(h: float) -> str:
     """Compact half-life token: integer hours without a trailing '.0'."""
     return str(int(h)) if float(h).is_integer() else str(h)
-
 
 @dataclass(frozen=True)
 class FusionConfig:

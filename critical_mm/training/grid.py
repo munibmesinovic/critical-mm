@@ -25,7 +25,6 @@ _DEFAULT_DATASETS: tuple[str, ...] = ("eicu", "miiv", "hirid", "omix")
 _DEFAULT_MODELS: tuple[str, ...] = ("GRU", "LSTM", "TCN", "Transformer")
 _DEFAULT_SEEDS: tuple[int, ...] = (42, 1337, 2024)
 
-
 def run_grid(
     tasks: Sequence[str] = _DEFAULT_TASKS,
     datasets: Sequence[str] = _DEFAULT_DATASETS,
@@ -172,6 +171,5 @@ def run_grid(
         "elapsed_s": round(elapsed, 1),
         "summary_path": str(summary_path),
     }
-
 
 __all__ = ["run_grid"]

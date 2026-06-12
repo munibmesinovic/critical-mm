@@ -118,7 +118,6 @@ _LAB_BY_CONCEPT: dict[str, list[int]] = {}
 for _iid, _name in LABEVENTS_TO_CONCEPT.items():
     _LAB_BY_CONCEPT.setdefault(_name, []).append(_iid)
 
-
 def itemids_for_concept(concept: str) -> dict[str, list[int]]:
     """Return chartevents / labevents / outputevents itemids for a concept name."""
     return {
@@ -126,3 +125,4 @@ def itemids_for_concept(concept: str) -> dict[str, list[int]]:
         "labevents": _LAB_BY_CONCEPT.get(concept, []),
         "outputevents": [iid for iid, n in OUTPUTEVENTS_TO_CONCEPT.items() if n == concept],
     }
+

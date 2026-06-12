@@ -7,6 +7,7 @@ TrainConfig.extra_hyperparams as a dict update.
 from __future__ import annotations
 
 import os
+
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -16,7 +17,6 @@ _KNOWN_TASKS: frozenset[str] = frozenset({"sepsis", "aki", "mortality24", "los",
 
 CLASSIFICATION_TASKS: frozenset[str] = frozenset({"sepsis", "aki", "mortality24"})
 REGRESSION_TASKS: frozenset[str] = frozenset({"los", "kidney_function"})
-
 
 @dataclass(frozen=True)
 class TrainConfig:
@@ -68,7 +68,6 @@ class TrainConfig:
             / f"seed_{self.seed}"
         )
 
-
 def _model_defaults(num_classes: int) -> dict[str, dict[str, object]]:
     return {
         "GRU": {"hidden_dim": 256, "layer_dim": 1, "num_classes": num_classes},
@@ -90,16 +89,13 @@ def _model_defaults(num_classes: int) -> dict[str, dict[str, object]]:
         },
     }
 
-
 CLASSIFICATION_MODEL_DEFAULTS = _model_defaults(num_classes=2)
 REGRESSION_MODEL_DEFAULTS = _model_defaults(num_classes=1)
-
 
 def model_defaults_for(task: str) -> dict[str, dict[str, object]]:
     return (
         CLASSIFICATION_MODEL_DEFAULTS if task in CLASSIFICATION_TASKS else REGRESSION_MODEL_DEFAULTS
     )
-
 
 def resolve_trainer_overrides(
     extra_hyperparams: dict[str, object], use_cuda: bool
@@ -114,7 +110,7 @@ def resolve_trainer_overrides(
     model constructor (they are not model hyperparameters).
     """
     extra = dict(extra_hyperparams)
-    max_epochs = int(extra.pop("max_epochs", 100))  # type: ignore[call-overload]
+    max_epochs = int(extra.pop("max_epochs", 100)) # type: ignore[call-overload]
     precision = extra.pop("precision", None)
     if precision is None:
         precision = "16-mixed" if use_cuda else 32

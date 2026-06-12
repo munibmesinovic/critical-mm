@@ -18,6 +18,7 @@ host under prior session SSH-lockout incidents.
 from __future__ import annotations
 
 import os
+
 import sys
 import time
 from pathlib import Path
@@ -34,7 +35,6 @@ TASK_CLASSES = {
     "los": LengthOfStay,
     "mortality24": Mortality24,
 }
-
 
 def main() -> None:
     if len(sys.argv) != 2 or sys.argv[1] not in {"eicu", "miiv", "hirid"}:
@@ -81,7 +81,6 @@ def main() -> None:
         f"\n=== {dataset}: all 4 tasks rebuilt in {time.perf_counter() - total_start:.1f}s ===",
         flush=True,
     )
-
 
 if __name__ == "__main__":
     main()

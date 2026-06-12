@@ -20,11 +20,13 @@ Per-dataset MEM_MAX (empirically safe under cold cache):
     miiv → 80G
     hirid → 100G
     nwicu → 30G
+    sicdb → ~60G (data_float_h scan) [update after first build]
 """
 
 from __future__ import annotations
 
 import os
+
 import sys
 import time
 from pathlib import Path
@@ -34,14 +36,18 @@ from critical_mm.datasets.eicu import EICUReader
 from critical_mm.datasets.hirid import HiRIDReader
 from critical_mm.datasets.mimic_iv import MIMICIVReader
 from critical_mm.datasets.nwicu import NWICUReader
+from critical_mm.datasets.sicdb import SICdbReader
 
 READERS: dict[str, tuple[type[DatasetReader], str]] = {
     "eicu": (EICUReader, "data/raw/eicu-crd-2.0"),
     "miiv": (MIMICIVReader, "data/raw/mimic-iv-3.1"),
     "hirid": (HiRIDReader, "data/raw/hirid-1.1.1"),
     "nwicu": (NWICUReader, "data/raw/nwicu-0.1.0"),
+    "sicdb": (
+        SICdbReader,
+        "data/raw/sicdb/salzburg-intensive-care-database-sicdb-a-freely-accessible-intensive-care-database-1.0.8",
+    ),
 }
-
 
 def main() -> None:
     if len(sys.argv) != 2 or sys.argv[1] not in READERS:
@@ -68,7 +74,6 @@ def main() -> None:
     for table, path in results.items():
         size_mb = path.stat().st_size / (1024 * 1024)
         print(f" {table:14s} -> {path} ({size_mb:,.1f} MB)", flush=True)
-
 
 if __name__ == "__main__":
     main()

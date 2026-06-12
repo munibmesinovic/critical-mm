@@ -149,7 +149,6 @@ _NOTE_LOREM: str = (
     "respiratory support requirements decrease."
 )
 
-
 @register_dataset
 class SyntheticReader(DatasetReader):
     """1000-stay synthetic dataset matching the canonical six-table schema.

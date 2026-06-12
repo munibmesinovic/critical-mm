@@ -23,7 +23,6 @@ from critical_mm.registry import (
 )
 from critical_mm.tasks.base import Task
 
-
 @pytest.fixture(autouse=True)
 def _isolate_registry():
     """Snapshot + restore the global registries around every test in this file.
@@ -53,13 +52,12 @@ def _isolate_registry():
         live.clear()
         live.update(snap)
 
-
 def _make_fake_task(name: str) -> type[Task]:
     """Build a minimal Task subclass with a unique name."""
 
     class _FakeTask(Task):
         task_name: ClassVar[str] = name
-        task_type: ClassVar[str] = "classification"  # type: ignore[assignment]
+        task_type: ClassVar[str] = "classification" # type: ignore[assignment]
         prediction_horizon_hours: ClassVar[int] = 24
 
         def build_labels(
@@ -76,7 +74,6 @@ def _make_fake_task(name: str) -> type[Task]:
 
     _FakeTask.__name__ = f"FakeTask_{name}"
     return _FakeTask
-
 
 def _make_fake_dataset(name: str) -> type[DatasetReader]:
     """Build a minimal DatasetReader subclass with a unique name."""
@@ -112,18 +109,15 @@ def _make_fake_dataset(name: str) -> type[DatasetReader]:
     _FakeDataset.__name__ = f"FakeDataset_{name}"
     return _FakeDataset
 
-
 def test_register_task_returns_class_unchanged() -> None:
     cls = _make_fake_task("rt_passthrough_unique_a")
     assert register_task(cls) is cls
-
 
 def test_register_task_idempotent_same_class() -> None:
     cls = _make_fake_task("rt_idempotent_unique_a")
     register_task(cls)
     register_task(cls)
     assert discover_tasks()["rt_idempotent_unique_a"] is cls
-
 
 def test_register_task_rejects_name_collision() -> None:
     cls_a = _make_fake_task("rt_collision_unique_a")
@@ -132,18 +126,15 @@ def test_register_task_rejects_name_collision() -> None:
     with pytest.raises(ValueError, match="already registered"):
         register_task(cls_b)
 
-
 def test_register_dataset_returns_class_unchanged() -> None:
     cls = _make_fake_dataset("rd_passthrough_unique_a")
     assert register_dataset(cls) is cls
-
 
 def test_register_dataset_idempotent_same_class() -> None:
     cls = _make_fake_dataset("rd_idempotent_unique_a")
     register_dataset(cls)
     register_dataset(cls)
     assert discover_datasets()["rd_idempotent_unique_a"] is cls
-
 
 def test_register_dataset_rejects_name_collision() -> None:
     cls_a = _make_fake_dataset("rd_collision_unique_a")
@@ -152,11 +143,9 @@ def test_register_dataset_rejects_name_collision() -> None:
     with pytest.raises(ValueError, match="already registered"):
         register_dataset(cls_b)
 
-
 def test_peek_dataset_name_uses_class_var() -> None:
     cls = _make_fake_dataset("peek_via_classvar_unique")
     assert _peek_dataset_name(cls) == "peek_via_classvar_unique"
-
 
 def test_peek_dataset_name_falls_back_to_instance() -> None:
     """Subclass without DATASET_NAME ClassVar — peek must still work via instance."""
@@ -189,14 +178,12 @@ def test_peek_dataset_name_falls_back_to_instance() -> None:
 
     assert _peek_dataset_name(_NoClassVarDS) == "peek_via_instance_unique"
 
-
 def test_register_model_parametrised() -> None:
     @register_model("rm_param_unique_a")
     class _M:
         pass
 
     assert discover_models()["rm_param_unique_a"] is _M
-
 
 def test_register_model_idempotent_same_class() -> None:
     class _M:
@@ -205,7 +192,6 @@ def test_register_model_idempotent_same_class() -> None:
     register_model("rm_idempotent_unique_a")(_M)
     register_model("rm_idempotent_unique_a")(_M)
     assert discover_models()["rm_idempotent_unique_a"] is _M
-
 
 def test_register_model_rejects_name_collision() -> None:
     class _M1:
@@ -218,14 +204,12 @@ def test_register_model_rejects_name_collision() -> None:
     with pytest.raises(ValueError, match="already registered"):
         register_model("rm_collision_unique_a")(_M2)
 
-
 def test_discover_returns_copy_not_live_dict() -> None:
     cls = _make_fake_task("disc_copy_unique_a")
     register_task(cls)
     snapshot = discover_tasks()
     snapshot.pop("disc_copy_unique_a", None)
     assert "disc_copy_unique_a" in discover_tasks()
-
 
 def test_ensure_contrib_loaded_idempotent() -> None:
     """Calling twice must not double-import; tested by hooking module count."""
@@ -234,7 +218,6 @@ def test_ensure_contrib_loaded_idempotent() -> None:
     _ensure_contrib_loaded()
     n2 = sum(1 for m in sys.modules if m.startswith("critical_mm.contrib"))
     assert n1 == n2
-
 
 def test_ensure_contrib_loaded_surfaces_import_error(tmp_path: Path) -> None:
     """A syntactically broken contrib module must surface its ImportError."""
@@ -260,7 +243,6 @@ def test_ensure_contrib_loaded_surfaces_import_error(tmp_path: Path) -> None:
         for mod in list(sys.modules):
             if mod.startswith("critical_mm.contrib."):
                 del sys.modules[mod]
-
 
 def test_examples_dir_skipped(tmp_path: Path) -> None:
     """A registered class inside contrib/_examples/ must NOT appear in discover_*."""
@@ -296,19 +278,16 @@ def test_examples_dir_skipped(tmp_path: Path) -> None:
 
         reg._CONTRIB_LOADED = False
 
-
 def test_discover_tasks_includes_all_five_builtins() -> None:
     """discover_tasks() returns the 5 canonical built-in tasks without an explicit import."""
     tasks = discover_tasks()
     expected = {"mortality24", "aki", "sepsis", "los", "kidney_function"}
     assert expected <= set(tasks), f"missing builtin tasks: {expected - set(tasks)}"
 
-
 def test_discover_datasets_includes_all_five_builtins() -> None:
     datasets = discover_datasets()
     expected = {"eicu", "hirid", "miiv", "nwicu", "synthetic"}
     assert expected <= set(datasets), f"missing builtin datasets: {expected - set(datasets)}"
-
 
 def test_discover_tasks_returns_same_class_as_direct_import() -> None:
     """No twin classes: registry value IS the imported class."""

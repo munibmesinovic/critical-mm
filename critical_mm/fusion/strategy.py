@@ -20,7 +20,6 @@ from critical_mm.fusion.config import FusionConfig
 from critical_mm.models._data.constants import DataSegment as Segment
 from critical_mm.registry import register_fusion
 
-
 class FusionStrategy(ABC):
     """Contract: given preprocessed splits + modality blocks, return augmented splits."""
 
@@ -35,10 +34,8 @@ class FusionStrategy(ABC):
         notes_block: pl.DataFrame | None,
     ) -> dict[Any, dict[Any, pd.DataFrame]]: ...
 
-
 def _value_cols(block: pl.DataFrame, keys: list[str]) -> list[str]:
     return [c for c in block.columns if c not in keys]
-
 
 @register_fusion("feature_augmentation")
 class FeatureAugmentationFusion(FusionStrategy):
@@ -70,7 +67,6 @@ class FeatureAugmentationFusion(FusionStrategy):
             feat = feat.sort_values([group, seq], kind="stable").reset_index(drop=True)
             out[split] = {**segs, Segment.features: feat}
         return out
-
 
 @register_fusion("icd_only")
 class IcdOnlyFusion(FusionStrategy):
@@ -107,7 +103,6 @@ class IcdOnlyFusion(FusionStrategy):
             out[split] = {**segs, Segment.features: merged}
         return out
 
-
 def _merge_block(
     feat: pd.DataFrame, block: pl.DataFrame, *, on: list[str], present: str
 ) -> pd.DataFrame:
@@ -123,7 +118,6 @@ def _merge_block(
     if present in merged.columns:
         merged[present] = merged[present].fillna(0.0).astype("float32")
     return merged
-
 
 def augment_preprocessed(
     preprocessed: dict[Any, dict[Any, pd.DataFrame]],

@@ -20,7 +20,6 @@ import polars as pl
 
 _ICD_SYSTEMS = ("icd9", "icd10")
 
-
 def add_grouping(df: pl.LazyFrame, *, rep: str = "ccsr") -> pl.LazyFrame:
     """Add `group` + `group_source` columns. df needs `code`, `code_system`."""
     if rep == "icd10_root":

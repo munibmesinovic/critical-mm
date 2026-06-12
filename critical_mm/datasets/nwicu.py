@@ -8,7 +8,7 @@ the unit converters so events_long carries canonical SI only.
 Coverage decisions (after the audit at `verification_reports/datasets/nwicu.md`):
 - read_meds parses `emar.csv.gz` (the actual administration record, 19.2M
   rows) for drug start times. `prescriptions.csv.gz` is layered on for
-  route/dose where emar's free-text doesn't disambiguate. The original
+  route/dose where emar's free-text doesn't disambiguate. The original 
   draft used only prescriptions; emar was the major omission.
 - read_events_long includes BOTH the non-invasive (320179/320180) and the
   invasive arterial-line (320050/320051) SBP/DBP itemids, collapsed into
@@ -46,7 +46,6 @@ from critical_mm.datasets.base import DatasetReader
 from critical_mm.registry import register_dataset
 from critical_mm.schema import TABLES, empty_frame
 from critical_mm.tasks._abx_duration import NWICU_ABX_REGEX
-
 
 @register_dataset
 class NWICUReader(DatasetReader):
@@ -556,6 +555,5 @@ class NWICUReader(DatasetReader):
 
     def read_microbio(self) -> pl.LazyFrame:
         return empty_frame("microbio")
-
 
 __all__ = ["NWICUReader"]

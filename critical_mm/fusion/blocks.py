@@ -21,7 +21,6 @@ if TYPE_CHECKING:
     import numpy as np
     from sklearn.decomposition import PCA
 
-
 def _hash_int_expr(col: str) -> pl.Expr:
     """Vectorized form of ``train.hash_stay_id``'s fast path.
 
@@ -36,7 +35,6 @@ def _hash_int_expr(col: str) -> pl.Expr:
         pl.when(s.str.contains("_", literal=True)).then(s.str.split("_").list.last()).otherwise(s)
     )
     return (suffix.cast(pl.Int64, strict=False) % (2**31)).alias(col)
-
 
 def hash_stay_id_series(s: pl.Series) -> pl.Series:
     """Replicate train.hash_stay_id over a polars Series (suffix-int, else hash).
@@ -58,7 +56,6 @@ def hash_stay_id_series(s: pl.Series) -> pl.Series:
     ]
     return pl.Series(s.name, filled, dtype=pl.Int64)
 
-
 def _hash_stay_id_expr(col: str = "stay_id") -> pl.Expr:
     """Expression form of the stay_id hash for use inside ``with_columns``.
 
@@ -76,9 +73,7 @@ def _hash_stay_id_expr(col: str = "stay_id") -> pl.Expr:
         .alias(col)
     )
 
-
 ICD_GROUPS: tuple[str, ...] = ("ccsr", "icd10_root")
-
 
 def _icd_groups(aligned: pl.DataFrame, group: str) -> pl.DataFrame:
     """Add a ``group`` column (CCSR or icd10_root) to a string-stay_id frame.
@@ -92,7 +87,6 @@ def _icd_groups(aligned: pl.DataFrame, group: str) -> pl.DataFrame:
     if group not in ICD_GROUPS:
         raise ValueError(f"unknown icd_group {group!r}; valid: {ICD_GROUPS}")
     return add_grouping(aligned.lazy(), rep=group).collect()
-
 
 def _maybe_pca(
     block: pl.DataFrame, vocab: list[str], train_stay_ids: set[int], pca_dim: int | None
@@ -117,7 +111,6 @@ def _maybe_pca(
     return block.select("stay_id", "icd_present").with_columns(
         *[pl.Series(f"icd__pca_{i}", reduced[:, i]) for i in range(n_comp)]
     )
-
 
 def build_icd_block(
     aligned: pl.DataFrame,
@@ -198,7 +191,6 @@ def build_icd_block(
     block = block.select("stay_id", *[f"icd__{g}" for g in vocab], "icd_present")
     return _maybe_pca(block, vocab, train_stay_ids, pca_dim), vocab
 
-
 def _key_schema(*, per_hour: bool) -> dict[str, pl.DataType]:
     """The (hashed) key dtypes a pool/block carries: stay_id Int64 [, hour Float64].
 
@@ -209,7 +201,6 @@ def _key_schema(*, per_hour: bool) -> dict[str, pl.DataType]:
     if per_hour:
         schema["hour"] = pl.Float64()
     return schema
-
 
 def _emb_matrix_f32(emb_col: pl.Series) -> np.ndarray:
     """Materialize a List(Float)-typed embedding column as a (n, dim) float32 array.
@@ -225,9 +216,8 @@ def _emb_matrix_f32(emb_col: pl.Series) -> np.ndarray:
     import numpy as np
 
     raw_width = emb_col.list.len().max()
-    width = 0 if raw_width is None else int(float(raw_width))  # type: ignore[arg-type]
+    width = 0 if raw_width is None else int(float(raw_width)) # type: ignore[arg-type]
     return emb_col.list.to_array(width).to_numpy().astype(np.float32, copy=False)
-
 
 def _decay_weights(
     delta: np.ndarray, gid: np.ndarray, n_groups: int, half_life: float
@@ -246,7 +236,6 @@ def _decay_weights(
     np.maximum.at(ref, gid, delta)
     weights: np.ndarray = np.exp2((delta - ref[gid]) / half_life)
     return weights
-
 
 def _pool_stay_level(
     aligned: pl.DataFrame, emb: pl.DataFrame, *, cutoff_h: float, half_life: float = math.inf
@@ -312,7 +301,6 @@ def _pool_stay_level(
         pl.Series("pooled", [mean[i].tolist() for i in range(n_groups)], dtype=pl.List(pl.Float64))
     )
 
-
 def _asof_to_grid(per_delta: pl.DataFrame, dyn_grid: pl.DataFrame) -> pl.DataFrame:
     """Backward as-of join of the hour grid against the per-(stay,delta) frame.
 
@@ -343,7 +331,6 @@ def _asof_to_grid(per_delta: pl.DataFrame, dyn_grid: pl.DataFrame) -> pl.DataFra
     )
     return matched.filter(pl.col("pooled").is_not_null()).select("stay_id", "hour", "pooled")
 
-
 def _per_delta_meanlast(notes: pl.DataFrame, mat: np.ndarray, *, mode: str) -> pl.DataFrame:
     """Per (stay, delta): mean of the embeddings AT that delta (mode='last' = most-recent
     semantics; ties at the same delta collapse to their joint mean).
@@ -363,7 +350,6 @@ def _per_delta_meanlast(notes: pl.DataFrame, mat: np.ndarray, *, mode: str) -> p
     return grp.select("stay_id", "delta_h_signed").with_columns(
         pl.Series("pooled", pooled, dtype=pl.List(pl.Float64))
     )
-
 
 def _cum_weighted_mean_scan(
     delta: np.ndarray, mat: np.ndarray, gid: np.ndarray, n_groups: int, half_life: float
@@ -426,7 +412,6 @@ def _cum_weighted_mean_scan(
         prev_g = g
         prev_d = d
     return cum_mean
-
 
 def _pool_per_hour_perdelta(
     aligned: pl.DataFrame,
@@ -509,7 +494,6 @@ def _pool_per_hour_perdelta(
         )
     )
 
-
 def _pool_per_hour(
     aligned: pl.DataFrame,
     emb: pl.DataFrame,
@@ -538,7 +522,6 @@ def _pool_per_hour(
         )
     return _asof_to_grid(per_delta, dyn_grid)
 
-
 def _pool_compact(
     aligned: pl.DataFrame,
     emb: pl.DataFrame,
@@ -566,7 +549,6 @@ def _pool_compact(
         return _pool_per_hour_perdelta(aligned, emb, half_life=half_life)
     assert cutoff_h is not None
     return _pool_stay_level(aligned, emb, cutoff_h=cutoff_h, half_life=half_life)
-
 
 def build_notes_block(
     aligned: pl.DataFrame,
@@ -644,7 +626,6 @@ def build_notes_block(
     else:
         block = reduced_compact.with_columns(pl.lit(1.0, dtype=pl.Float32).alias("notes_present"))
     return block, pca
-
 
 def _asof_reduced_to_grid(
     reduced_perdelta: pl.DataFrame, dyn_grid: pl.DataFrame, *, n_comp: int

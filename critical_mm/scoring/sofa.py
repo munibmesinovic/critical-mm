@@ -70,7 +70,6 @@ _SOFA_OUTPUT_SCHEMA: Schema = {
     "sofa_renal": pl.Int32(),
 }
 
-
 def _per_hour_grid(base_cohort: pl.DataFrame, max_hour: int) -> pl.DataFrame:
     """Per-(stay, hour) grid covering [0, floor(min(los, max_hour))] inclusive.
 
@@ -93,7 +92,6 @@ def _per_hour_grid(base_cohort: pl.DataFrame, max_hour: int) -> pl.DataFrame:
         .with_columns(pl.col("hour").cast(pl.Int32))
     )
 
-
 def _to_events_lf(events_long: pl.DataFrame | pl.LazyFrame) -> pl.LazyFrame:
     """Adapter: accept DataFrame OR LazyFrame for events_long.
 
@@ -103,7 +101,6 @@ def _to_events_lf(events_long: pl.DataFrame | pl.LazyFrame) -> pl.LazyFrame:
     small DataFrame fixtures; `.lazy()` is free on those.
     """
     return events_long.lazy() if isinstance(events_long, pl.DataFrame) else events_long
-
 
 def _hourly_carry(
     events_long: pl.DataFrame | pl.LazyFrame,
@@ -156,14 +153,12 @@ def _hourly_carry(
         )
     return joined.select("patient_id", "stay_id", "hour", "value")
 
-
 def _stream_collect(lf: pl.LazyFrame) -> pl.DataFrame:
     """Streaming-engine collect with eager fallback. Mirrors cohorts.base."""
     try:
         return lf.collect(engine="streaming")
     except (TypeError, ValueError):
         return lf.collect()
-
 
 def _interval_overlaps_hour() -> pl.Expr:
     """Boolean: a (`starttime`, `endtime`) interval overlaps a one-hour bin
@@ -178,7 +173,6 @@ def _interval_overlaps_hour() -> pl.Expr:
     return (pl.col("starttime") < pl.col("hour_end")) & (
         pl.col("endtime").is_null() | (pl.col("endtime") > pl.col("hour_start"))
     )
-
 
 def _consolidate_null_endtimes(intervals: pl.DataFrame, group_cols: list[str]) -> pl.DataFrame:
     """Collapse rows whose endtime is NULL to one row per group at min(starttime).
@@ -233,7 +227,6 @@ def _consolidate_null_endtimes(intervals: pl.DataFrame, group_cols: list[str]) -
         return null_consolidated
     return pl.concat([null_consolidated, real_rows], how="vertical")
 
-
 def _hourly_pafi(events_long: pl.DataFrame | pl.LazyFrame, grid: pl.DataFrame) -> pl.DataFrame:
     """Per-hour PaO2/FiO2 ratio. Both po2 and fio2 carried forward.
 
@@ -257,7 +250,6 @@ def _hourly_pafi(events_long: pl.DataFrame | pl.LazyFrame, grid: pl.DataFrame) -
         .alias("pafi")
     ).select("patient_id", "stay_id", "hour", "pafi")
 
-
 def _hourly_vent_flag(interventions: pl.DataFrame, grid: pl.DataFrame) -> pl.DataFrame:
     """True iff a mech_vent interval overlaps [admit + h*1h, admit + (h+1)*1h)."""
     vents = interventions.filter(pl.col("intervention") == "mech_vent").select(
@@ -275,7 +267,6 @@ def _hourly_vent_flag(interventions: pl.DataFrame, grid: pl.DataFrame) -> pl.Dat
         .agg(pl.col("_overlap").any().alias("vent"))
     )
     return flag.select("patient_id", "stay_id", "hour", "vent")
-
 
 def _hourly_vasopressor_flag(meds: pl.DataFrame, grid: pl.DataFrame) -> pl.DataFrame:
     """Per-hour flags for SOFA cardio: vaso_strong + vaso_dobu.
@@ -322,7 +313,6 @@ def _hourly_vasopressor_flag(meds: pl.DataFrame, grid: pl.DataFrame) -> pl.DataF
         )
     )
     return flag.select("patient_id", "stay_id", "hour", "vaso_strong", "vaso_dobu")
-
 
 def _hourly_urine24(events_long: pl.DataFrame | pl.LazyFrame, grid: pl.DataFrame) -> pl.DataFrame:
     """24h rolling sum of urine output ending at hour t.
@@ -374,7 +364,6 @@ def _hourly_urine24(events_long: pl.DataFrame | pl.LazyFrame, grid: pl.DataFrame
     )
     return out.select("patient_id", "stay_id", "hour", "urine24")
 
-
 def _rolling_max_24h(df: pl.DataFrame, score_col: str) -> pl.DataFrame:
     """24h rolling-max of `score_col` within each stay.
 
@@ -389,7 +378,6 @@ def _rolling_max_24h(df: pl.DataFrame, score_col: str) -> pl.DataFrame:
         .over("stay_id")
         .alias(score_col)
     )
-
 
 def _sofa_coag(plt_df: pl.DataFrame) -> pl.DataFrame:
     """Coagulation: 4 - findInterval(plt, [20, 50, 100, 150]).
@@ -413,7 +401,6 @@ def _sofa_coag(plt_df: pl.DataFrame) -> pl.DataFrame:
     )
     return plt_df.select("stay_id", "hour", score.alias("sofa_coag"))
 
-
 def _sofa_liver(bili_df: pl.DataFrame) -> pl.DataFrame:
     """Liver: findInterval(bili, [1.2, 2.0, 6.0, 12.0]). Ricu sofa.R:188-190.
 
@@ -435,7 +422,6 @@ def _sofa_liver(bili_df: pl.DataFrame) -> pl.DataFrame:
         .cast(pl.Int32)
     )
     return bili_df.select("stay_id", "hour", score.alias("sofa_liver"))
-
 
 def _sofa_cns(gcs_df: pl.DataFrame) -> pl.DataFrame:
     """CNS: 4 - findInterval(gcs, [6, 10, 13, 15]). Ricu sofa.R:223-225.
@@ -461,7 +447,6 @@ def _sofa_cns(gcs_df: pl.DataFrame) -> pl.DataFrame:
         .cast(pl.Int32)
     )
     return gcs_df.select("stay_id", "hour", score.alias("sofa_cns"))
-
 
 def _sofa_resp(pafi_df: pl.DataFrame, vent_df: pl.DataFrame) -> pl.DataFrame:
     """Respiratory: PaO2/FiO2 ratio with mech-vent gate.
@@ -495,7 +480,6 @@ def _sofa_resp(pafi_df: pl.DataFrame, vent_df: pl.DataFrame) -> pl.DataFrame:
         .cast(pl.Int32)
     )
     return capped.select("stay_id", "hour", score.alias("sofa_resp"))
-
 
 def _hourly_vasopressor_rates(meds: pl.DataFrame, grid: pl.DataFrame) -> pl.DataFrame:
     """Per-hour max infusion rate (mcg/kg/min) per vasopressor drug.
@@ -566,7 +550,6 @@ def _hourly_vasopressor_rates(meds: pl.DataFrame, grid: pl.DataFrame) -> pl.Data
         )
     )
 
-
 def _sofa_cardio(
     map_df: pl.DataFrame,
     vaso_df: pl.DataFrame,
@@ -632,7 +615,6 @@ def _sofa_cardio(
     )
     return merged.select("stay_id", "hour", score.alias("sofa_cardio"))
 
-
 def _sofa_renal(crea_df: pl.DataFrame, urine24_df: pl.DataFrame) -> pl.DataFrame:
     """Renal: max of (crea-derived, urine-derived) score per ricu sofa.R:229-249.
 
@@ -667,7 +649,6 @@ def _sofa_renal(crea_df: pl.DataFrame, urine24_df: pl.DataFrame) -> pl.DataFrame
         .cast(pl.Int32)
     )
     return merged.select("stay_id", "hour", score.alias("sofa_renal"))
-
 
 def compute_sofa_per_hour(
     base_cohort: pl.DataFrame,

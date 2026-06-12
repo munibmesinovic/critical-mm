@@ -24,14 +24,12 @@ DATASETS = ("eicu", "miiv", "hirid", "nwicu", "omix")
 CLASSIFICATION_TASKS = frozenset({"sepsis", "aki", "mortality24"})
 KEEP_RUNGS = frozenset({None, "icd", "notes", "icd_notes"})
 
-
 def _is_fm(model: str) -> bool:
     return (
         model.startswith(("MOMENT", "Mantis", "Chronos", "Toto"))
         or "-probe" in model
         or "-ft" in model
     )
-
 
 def _split_cell(key: str) -> tuple[str, str, str | None] | None:
     """Parse ``"<dataset>_<model>[__rung]"`` into (dataset, model, rung)."""
@@ -45,10 +43,8 @@ def _split_cell(key: str) -> tuple[str, str, str | None] | None:
         model, rung = rest, None
     return dataset, model, rung
 
-
 def _metric_name(task: str) -> str:
     return "AUROC" if task in CLASSIFICATION_TASKS else "MAE"
-
 
 def _ingest(reference: dict, out: dict) -> None:
     for task, cells in reference.items():
@@ -75,7 +71,6 @@ def _ingest(reference: dict, out: dict) -> None:
                 "n_seeds": stats["n"],
             }
 
-
 def build_baseline_metrics(src_root: Path) -> dict:
     """Build the flat baseline-metrics dict from the reference grid JSON(s)."""
     src_root = Path(src_root)
@@ -92,7 +87,6 @@ def build_baseline_metrics(src_root: Path) -> dict:
         task: {ds: dict(sorted(models.items())) for ds, models in sorted(dsmap.items())}
         for task, dsmap in sorted(out.items())
     }
-
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -113,7 +107,6 @@ def main() -> None:
     args.out.write_text(json.dumps(metrics, indent=2, sort_keys=True) + "\n")
     n_cells = sum(len(m) for t in metrics.values() for m in t.values())
     print(f"wrote {args.out} ({len(metrics)} tasks, {n_cells} cells)")
-
 
 if __name__ == "__main__":
     main()

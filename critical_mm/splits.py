@@ -21,7 +21,6 @@ from pathlib import Path
 
 import polars as pl
 
-
 def _contiguous_chunks(items: list[str], n_splits: int) -> list[list[str]]:
     """Split `items` into `n_splits` near-equal contiguous chunks.
 
@@ -37,7 +36,6 @@ def _contiguous_chunks(items: list[str], n_splits: int) -> list[list[str]]:
         chunks.append(items[start : start + size])
         start += size
     return chunks
-
 
 class PatientGroupedKFold:
     """K-fold over unique patient_ids.
@@ -90,7 +88,6 @@ class PatientGroupedKFold:
             },
             sort_keys=True,
         )
-
 
 class RepeatedStratifiedGroupKFold:
     """Repeated stratified group K-fold.
@@ -171,7 +168,6 @@ class RepeatedStratifiedGroupKFold:
             sort_keys=True,
         )
 
-
 def write_fold_assignments(
     *,
     folds: Iterator[tuple[list[str], list[str]]],
@@ -203,7 +199,6 @@ def write_fold_assignments(
         path.write_text(json.dumps(payload))
         paths.append(path)
     return paths
-
 
 __all__ = [
     "PatientGroupedKFold",

@@ -40,11 +40,9 @@ ALIGNED_SCHEMA: Schema = {
     "prior_visit_idx": pl.Int32(),
 }
 
-
 def empty_timed() -> pl.LazyFrame:
     """Zero-row LazyFrame with the canonical timed schema."""
     return pl.LazyFrame(schema=TIMED_SCHEMA)
-
 
 class ModalityReader(ABC):
     """Contract: produce a task-independent timed frame for one modality."""

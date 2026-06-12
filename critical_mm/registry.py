@@ -43,7 +43,6 @@ _FUSION_REGISTRY: dict[str, type] = {}
 
 T = TypeVar("T", bound=type)
 
-
 def register_task(cls: type[Task]) -> type[Task]:
     """Class decorator: register a ``Task`` subclass by its ``task_name`` ClassVar.
 
@@ -60,7 +59,6 @@ def register_task(cls: type[Task]) -> type[Task]:
         )
     _TASK_REGISTRY[name] = cls
     return cls
-
 
 def register_dataset(cls: type[DatasetReader]) -> type[DatasetReader]:
     """Class decorator: register a ``DatasetReader`` subclass.
@@ -79,7 +77,6 @@ def register_dataset(cls: type[DatasetReader]) -> type[DatasetReader]:
         )
     _DATASET_REGISTRY[name] = cls
     return cls
-
 
 def register_model(name: str) -> Callable[[T], T]:
     """Parametrised class decorator: ``@register_model("GRU")``.
@@ -102,7 +99,6 @@ def register_model(name: str) -> Callable[[T], T]:
 
     return _decorate
 
-
 def register_modality(name: str) -> Callable[[T], T]:
     """Parametrised class decorator: ``@register_modality("diagnoses")``.
 
@@ -124,13 +120,11 @@ def register_modality(name: str) -> Callable[[T], T]:
 
     return _decorate
 
-
 def get_modality(name: str) -> type:
     """Return the registered modality class for ``name`` (KeyError if absent)."""
     _ensure_builtin_modalities_loaded()
     _ensure_contrib_loaded()
     return _MODALITY_REGISTRY[name]
-
 
 def _ensure_builtin_modalities_loaded() -> None:
     """Import builtin modality modules so their decorators register."""
@@ -140,9 +134,8 @@ def _ensure_builtin_modalities_loaded() -> None:
     if _BUILTIN_MODALITIES_LOADED:
         return
     with contextlib.suppress(ImportError):
-        import critical_mm.modalities  # noqa: F401
+        import critical_mm.modalities # noqa: F401
     _BUILTIN_MODALITIES_LOADED = True
-
 
 def register_note_reader(name: str) -> Callable[[T], T]:
     """Parametrised class decorator: ``@register_note_reader("notes_miiv")``.
@@ -164,7 +157,6 @@ def register_note_reader(name: str) -> Callable[[T], T]:
 
     return _decorate
 
-
 def register_note_encoder(name: str) -> Callable[[T], T]:
     """Parametrised class decorator: ``@register_note_encoder("bge_large_zh")`` (Plan 2)."""
 
@@ -181,20 +173,17 @@ def register_note_encoder(name: str) -> Callable[[T], T]:
 
     return _decorate
 
-
 def get_note_reader(name: str) -> type:
     """Return the registered note-reader class for ``name`` (KeyError if absent)."""
     _ensure_builtin_modalities_loaded()
     _ensure_contrib_loaded()
     return _NOTE_READER_REGISTRY[name]
 
-
 def get_note_encoder(name: str) -> type:
     """Return the registered note-encoder class for ``name`` (KeyError if absent)."""
     _ensure_builtin_modalities_loaded()
     _ensure_contrib_loaded()
     return _NOTE_ENCODER_REGISTRY[name]
-
 
 def register_fusion(name: str) -> Callable[[T], T]:
     """Parametrised class decorator: ``@register_fusion("feature_augmentation")``.
@@ -216,7 +205,6 @@ def register_fusion(name: str) -> Callable[[T], T]:
 
     return _decorate
 
-
 def get_fusion(name: str) -> type:
     """Return the registered fusion-strategy class for ``name`` (KeyError if absent).
 
@@ -226,9 +214,7 @@ def get_fusion(name: str) -> type:
     _ensure_builtin_fusion_loaded()
     return _FUSION_REGISTRY[name]
 
-
 _BUILTIN_FUSION_LOADED = False
-
 
 def _ensure_builtin_fusion_loaded() -> None:
     """Import the builtin fusion package so its decorators register."""
@@ -238,9 +224,8 @@ def _ensure_builtin_fusion_loaded() -> None:
     if _BUILTIN_FUSION_LOADED:
         return
     with contextlib.suppress(ImportError):
-        import critical_mm.fusion  # noqa: F401
+        import critical_mm.fusion # noqa: F401
     _BUILTIN_FUSION_LOADED = True
-
 
 def discover_tasks() -> dict[str, type[Task]]:
     """Return the task registry. Triggers built-in + contrib auto-discovery on first call."""
@@ -248,13 +233,11 @@ def discover_tasks() -> dict[str, type[Task]]:
     _ensure_contrib_loaded()
     return dict(_TASK_REGISTRY)
 
-
 def discover_datasets() -> dict[str, type[DatasetReader]]:
     """Return the dataset registry. Triggers built-in + contrib auto-discovery on first call."""
     _ensure_builtins_loaded()
     _ensure_contrib_loaded()
     return dict(_DATASET_REGISTRY)
-
 
 def discover_models() -> dict[str, type]:
     """Return the model registry. Triggers built-in + contrib auto-discovery on first call.
@@ -265,7 +248,6 @@ def discover_models() -> dict[str, type]:
     _ensure_builtins_loaded()
     _ensure_contrib_loaded()
     return dict(_MODEL_REGISTRY)
-
 
 def _peek_dataset_name(cls: type[DatasetReader]) -> str:
     """Read a dataset class's name without doing real I/O.
@@ -282,11 +264,9 @@ def _peek_dataset_name(cls: type[DatasetReader]) -> str:
     instance = cls(raw_root=sentinel, interim_root=sentinel, repo_root=sentinel)
     return instance.dataset_name
 
-
 _BUILTINS_LOADED = False
 _CONTRIB_LOADED = False
 _BUILTIN_MODALITIES_LOADED = False
-
 
 def _ensure_builtins_loaded() -> None:
     """Import every built-in task / dataset / model module on first call.
@@ -312,7 +292,6 @@ def _ensure_builtins_loaded() -> None:
             importlib.import_module(mod_name)
     _BUILTINS_LOADED = True
 
-
 def _ensure_contrib_loaded() -> None:
     """Import every module under ``critical_mm.contrib.*`` on first call.
 
@@ -334,7 +313,6 @@ def _ensure_contrib_loaded() -> None:
             continue
         importlib.import_module(mod_name)
     _CONTRIB_LOADED = True
-
 
 def _reset_contrib_for_tests() -> None:
     """Test-only: clear the contrib-loaded flag so a re-scan happens on next discover.

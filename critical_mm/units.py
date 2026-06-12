@@ -25,66 +25,53 @@ _IN_TO_CM = 2.54
 _GLU_DIVISOR = 18.0182
 _CREA_FACTOR = 88.4
 
-
 def fahrenheit_to_celsius(value: Numeric) -> Numeric:
     """°F → °C using `(F − 32) × 5/9`."""
     return (value - 32.0) * (5.0 / 9.0)
-
 
 def celsius_to_fahrenheit(value: Numeric) -> Numeric:
     """°C → °F using `C × 9/5 + 32`."""
     return value * (9.0 / 5.0) + 32.0
 
-
 def inches_to_cm(value: Numeric) -> Numeric:
     """in → cm using `× 2.54`."""
     return value * _IN_TO_CM
-
 
 def cm_to_inches(value: Numeric) -> Numeric:
     """cm → in using `÷ 2.54`."""
     return value / _IN_TO_CM
 
-
 def ounces_to_grams(value: Numeric) -> Numeric:
     """oz → g using `× 28.3495`."""
     return value * _OZ_TO_G
-
 
 def grams_to_ounces(value: Numeric) -> Numeric:
     """g → oz using `÷ 28.3495`."""
     return value / _OZ_TO_G
 
-
 def pounds_to_kg(value: Numeric) -> Numeric:
     """lb → kg using `× 0.4535924`."""
     return value * _LB_TO_KG
-
 
 def kg_to_pounds(value: Numeric) -> Numeric:
     """kg → lb using `÷ 0.4535924`."""
     return value / _LB_TO_KG
 
-
 def mg_per_dL_to_mmol_per_L_glucose(value: Numeric) -> Numeric:
     """Glucose: mg/dL → mmol/L using `÷ 18.0182`."""
     return value / _GLU_DIVISOR
-
 
 def mmol_per_L_to_mg_per_dL_glucose(value: Numeric) -> Numeric:
     """Glucose: mmol/L → mg/dL using `× 18.0182`."""
     return value * _GLU_DIVISOR
 
-
 def mg_per_dL_to_micromol_per_L_creatinine(value: Numeric) -> Numeric:
     """Creatinine: mg/dL → μmol/L using `× 88.4`."""
     return value * _CREA_FACTOR
 
-
 def micromol_per_L_to_mg_per_dL_creatinine(value: Numeric) -> Numeric:
     """Creatinine: μmol/L → mg/dL using `÷ 88.4`."""
     return value / _CREA_FACTOR
-
 
 UNIT_CONVERSIONS: dict[tuple[str, str], Callable[[Numeric], Numeric]] = {
     ("F", "C"): fahrenheit_to_celsius,
@@ -100,7 +87,6 @@ UNIT_CONVERSIONS: dict[tuple[str, str], Callable[[Numeric], Numeric]] = {
     ("mg/dL_crea", "μmol/L_crea"): mg_per_dL_to_micromol_per_L_creatinine,
     ("μmol/L_crea", "mg/dL_crea"): micromol_per_L_to_mg_per_dL_creatinine,
 }
-
 
 def convert(value: Numeric, source_unit: str, target_unit: str) -> Numeric:
     """Convert `value` from `source_unit` to `target_unit`.

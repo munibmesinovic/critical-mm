@@ -42,7 +42,6 @@ _VALID_RANGE_LOOKUP: pl.LazyFrame = pl.LazyFrame(
     schema={"concept": pl.Utf8(), "_cmm_range_lo": pl.Float64(), "_cmm_range_hi": pl.Float64()},
 )
 
-
 def drop_null_required(events: pl.LazyFrame) -> pl.LazyFrame:
     """Drop rows with null in any non-nullable events_long column.
 
@@ -57,7 +56,6 @@ def drop_null_required(events: pl.LazyFrame) -> pl.LazyFrame:
         & pl.col("value").is_not_null()
         & pl.col("unit").is_not_null()
     )
-
 
 def apply_canonical_units(
     events: pl.LazyFrame,

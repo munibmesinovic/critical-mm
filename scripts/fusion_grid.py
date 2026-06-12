@@ -33,12 +33,12 @@ from critical_mm.fusion.config import FusionConfig
 from critical_mm.training.config import REPO
 
 TASKS = ("mortality24", "aki", "sepsis", "los", "kidney_function")
-DATASETS = ("miiv", "eicu", "omix")
+DATASETS = ("miiv", "eicu", "omix", "sicdb")
 RUNGS = ("icd", "icd_notes")
+_NOTES_DATASETS = frozenset({"miiv", "eicu", "omix"})
 SEEDS = (42, 1337, 2024)
 FUSION_ROOT = REPO / "data" / "checkpoints" / "_fusion"
 CLASSIFICATION = frozenset({"mortality24", "aki", "sepsis"})
-
 
 @dataclasses.dataclass(frozen=True)
 class Cell:
@@ -56,21 +56,20 @@ class Cell:
     def cell_model_key(self) -> str:
         return f"{self.ml_model()}{FusionConfig(rung=self.rung).model_suffix()}"
 
-
 def enumerate_cells() -> list[Cell]:
     cells = []
     for task in TASKS:
         for ds in DATASETS:
             for bb in ("LSTM", "LGBM"):
                 for rung in RUNGS:
+                    if rung == "icd_notes" and ds not in _NOTES_DATASETS:
+                        continue
                     for seed in SEEDS:
                         cells.append(Cell(task, ds, bb, rung, seed))
     return cells
 
-
 def _checkpoint_dir(cell: Cell) -> Path:
     return FUSION_ROOT / cell.task / cell.dataset / cell.cell_model_key() / f"seed_{cell.seed}"
-
 
 def _patch_fusion_provenance(ckpt: Path, fusion: FusionConfig, rung: str) -> dict:
     """Read the metadata.json the locked training func just wrote, add fusion
@@ -83,7 +82,6 @@ def _patch_fusion_provenance(ckpt: Path, fusion: FusionConfig, rung: str) -> dic
     meta["config"]["fusion_rung"] = rung
     (ckpt / "metadata.json").write_text(json.dumps(meta, indent=2, default=str))
     return meta
-
 
 def _train_lgbm(cell: Cell, fusion: FusionConfig, ckpt: Path) -> dict:
     """In-process LGBM fit on the AUGMENTED arrays for one fusion cell.
@@ -131,7 +129,7 @@ def _train_lgbm(cell: Cell, fusion: FusionConfig, ckpt: Path) -> dict:
         "splits": ctx.metadata["splits"],
         "model_kind": "ml",
     }
-    metadata["config"].pop("data_root", None)  # type: ignore[attr-defined]
+    metadata["config"].pop("data_root", None) # type: ignore[attr-defined]
 
     model_class = discover_models()[cfg.model]
     res = _fit_ml_inprocess(
@@ -151,7 +149,6 @@ def _train_lgbm(cell: Cell, fusion: FusionConfig, ckpt: Path) -> dict:
     )
     res["metadata"] = _patch_fusion_provenance(ckpt, fusion, cell.rung)
     return res
-
 
 def _train_cell(cell: Cell, ctx: object | None = None) -> dict:
     """Train one fusion cell. Resumable: skips if ckpt/metadata.json exists.
@@ -180,10 +177,9 @@ def _train_cell(cell: Cell, ctx: object | None = None) -> dict:
             cfg, generate_features=False, write_metadata=False, fusion=fusion, dynamic_pad=True
         )
     model_class = discover_models()["LSTM"]
-    res = _train_one_dl(cfg, ctx, model_class, checkpoint_dir=ckpt, dynamic_pad=True)  # type: ignore[arg-type]
+    res = _train_one_dl(cfg, ctx, model_class, checkpoint_dir=ckpt, dynamic_pad=True) # type: ignore[arg-type]
     res["metadata"] = _patch_fusion_provenance(ckpt, fusion, cell.rung)
     return res
-
 
 def main() -> None:
     """Run the 180-cell fusion grid, resumable + mem-friendly.
@@ -286,7 +282,6 @@ def main() -> None:
                     print(f"[fusion] progress {done}", flush=True)
 
     print(f"[fusion] grid complete ({done} cells)", flush=True)
-
 
 if __name__ == "__main__":
     main()

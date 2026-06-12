@@ -24,10 +24,9 @@ torch = pytest.importorskip("torch", reason="torch not installed; skipping model
 pytest.importorskip("gin", reason="gin not installed; skipping model kwarg tests")
 pytest.importorskip("pytorch_lightning", reason="pytorch_lightning not installed; skipping")
 
-from torch.optim import Adam  # noqa: E402 (after importorskip guard)
+from torch.optim import Adam # noqa: E402 (after importorskip guard)
 
-from critical_mm.models._runmode import RunMode  # noqa: E402
-
+from critical_mm.models._runmode import RunMode # noqa: E402
 
 def test_grunet_constructs_with_explicit_kwargs() -> None:
     """GRUNet should instantiate purely from explicit kwargs, no gin globals needed."""
@@ -47,7 +46,6 @@ def test_grunet_constructs_with_explicit_kwargs() -> None:
     assert model.rnn.input_size == 48
     assert model.rnn.num_layers == 1
 
-
 def test_lstmnet_constructs_with_explicit_kwargs() -> None:
     """LSTMNet should instantiate purely from explicit kwargs, no gin globals needed."""
     from critical_mm.models.dl_models import LSTMNet
@@ -65,7 +63,6 @@ def test_lstmnet_constructs_with_explicit_kwargs() -> None:
     assert model.logit.out_features == 2
     assert model.rnn.input_size == 48
     assert model.rnn.num_layers == 2
-
 
 def test_transformer_constructs_with_explicit_kwargs() -> None:
     """Transformer should instantiate purely from explicit kwargs, no gin globals needed."""
@@ -88,7 +85,6 @@ def test_transformer_constructs_with_explicit_kwargs() -> None:
     assert model.logit.out_features == 2
     assert len(model.tblocks) == 2
 
-
 def test_temporalconvnet_constructs_with_explicit_kwargs() -> None:
     """TemporalConvNet should instantiate purely from explicit kwargs, no gin globals needed."""
     from critical_mm.models.dl_models import TemporalConvNet
@@ -105,7 +101,6 @@ def test_temporalconvnet_constructs_with_explicit_kwargs() -> None:
     )
     assert model.logit.out_features == 2
     assert model.logit.in_features == num_channels[-1]
-
 
 _GIN_CLASSES = [
     "critical_mm.models.wrappers:BaseModule",
@@ -134,7 +129,6 @@ _GIN_CLASSES = [
     "critical_mm.models._data.loader:ImputationPredictionDataset",
 ]
 
-
 @pytest.mark.parametrize("cls_path", _GIN_CLASSES)
 def test_models_have_no_gin_decorator(cls_path: str) -> None:
     """Each vendored class must NOT carry the @gin.configurable marker.
@@ -156,7 +150,6 @@ def test_models_have_no_gin_decorator(cls_path: str) -> None:
         " -- strip it in Phase A3-A6"
     )
 
-
 def test_prediction_dataset_vars_is_not_gin_required() -> None:
     """After A5 strips @gin.configurable from PredictionDataset, the `vars`
     parameter must be a real required kwarg, not a gin.REQUIRED sentinel.
@@ -177,7 +170,6 @@ def test_prediction_dataset_vars_is_not_gin_required() -> None:
             f"(type module: {default_module}). Strip @gin.configurable + replace "
             f"gin.REQUIRED with a real default in A5."
         )
-
 
 def test_module_imports_without_gin(monkeypatch: pytest.MonkeyPatch) -> None:
     """All five model modules must be importable even when gin is not available.

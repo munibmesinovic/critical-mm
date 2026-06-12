@@ -35,7 +35,6 @@ DEFAULT_OUT = REPO / "data" / "cm_reference" / "v1" / "cm_grid_metrics.json"
 CLASSIFICATION_TASKS = {"mortality24", "aki", "sepsis"}
 REGRESSION_TASKS = {"los", "kidney_function"}
 
-
 def _git_sha() -> str:
     try:
         out = subprocess.run(
@@ -49,14 +48,12 @@ def _git_sha() -> str:
     except (subprocess.CalledProcessError, FileNotFoundError):
         return "unknown"
 
-
 def _metric_key_for(task: str) -> str:
     if task in CLASSIFICATION_TASKS:
         return "test/AUC"
     if task in REGRESSION_TASKS:
         return "test/MAE"
     raise ValueError(f"unknown task: {task}")
-
 
 def _collect_cells(ckpt_root: Path, datasets: set[str] | None = None) -> CellTable:
     """Return {(task, ds, model): [(seed, metric_value, splits_fp), ...]}.
@@ -92,9 +89,7 @@ def _collect_cells(ckpt_root: Path, datasets: set[str] | None = None) -> CellTab
         out[(task, dataset, model)].append((seed, value, splits_fp))
     return out
 
-
 _REGRESSION_OUTCOME_SCALE = {"los": 168.0, "kidney_function": 15.0}
-
 
 def _summarize(cells: CellTable) -> dict[str, dict[str, dict[str, float]]]:
     """Mean / std per (task, ds, model). Output shape:
@@ -124,7 +119,6 @@ def _summarize(cells: CellTable) -> dict[str, dict[str, dict[str, float]]]:
         summary[task][key] = entry
     return summary
 
-
 def _pick_canonical_fingerprint(cells: CellTable) -> dict[str, Any]:
     """Pick any cell's splits_fingerprint as the canonical reference.
 
@@ -147,7 +141,6 @@ def _pick_canonical_fingerprint(cells: CellTable) -> dict[str, Any]:
         "n_distinct_fold_shas": len(seen),
         "fingerprints_consistent": len(seen) <= 1,
     }
-
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
@@ -209,7 +202,6 @@ def main() -> None:
             "Verify lock_splits.py was run once before this grid.",
             file=sys.stderr,
         )
-
 
 if __name__ == "__main__":
     main()

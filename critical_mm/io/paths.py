@@ -18,8 +18,11 @@ _DATASET_DIRS: dict[str, str] = {
     "hirid": "hirid-1.1.1",
     "nwicu": "nwicu-0.1.0",
     "omix": "OMIX005817",
+    "sicdb": (
+        "sicdb/salzburg-intensive-care-database-sicdb-a-freely-accessible"
+        "-intensive-care-database-1.0.8"
+    ),
 }
-
 
 def data_root() -> Path:
     """Return the absolute data root, honouring `CRITICAL_MM_DATA_ROOT` if set."""
@@ -27,7 +30,6 @@ def data_root() -> Path:
     if env:
         return Path(env).resolve()
     return _DEFAULT_DATA.resolve()
-
 
 def raw_path(dataset: str) -> Path:
     """Return the raw-data directory for `dataset`.
@@ -46,14 +48,12 @@ def raw_path(dataset: str) -> Path:
         )
     return path
 
-
 def interim_path(dataset: str, table: str) -> Path:
     """Return `data_root()/interim/<dataset>/<table>.parquet`.
 
     Does NOT verify existence; that's the caller's responsibility.
     """
     return data_root() / "interim" / dataset / f"{table}.parquet"
-
 
 def processed_path(task: str, dataset: str, filename: str) -> Path:
     """Return `data_root()/processed/<task>/<dataset>/<filename>`."""

@@ -62,7 +62,6 @@ _DYNAMIC_CONCEPTS_FOR_GATING: frozenset[str] = frozenset(
     and name != "gcs"
 )
 
-
 class CohortResult(TypedDict):
     cohort_path: Path
     attrition_path: Path
@@ -70,12 +69,10 @@ class CohortResult(TypedDict):
     n_out: int
     per_step: list[dict[str, int | str | float]]
 
-
 def _criteria_hash() -> str:
     """16-hex sha256 of the INCLUSION_CRITERIA list — feeds the cache extra."""
     canonical = json.dumps(INCLUSION_CRITERIA, sort_keys=True)
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
-
 
 def _measured_hour_buckets_lf(stays: pl.DataFrame, events_long: pl.LazyFrame) -> pl.LazyFrame:
     """LazyFrame [stay_id, hour] — unique (stay, hour-bucket) tuples with ≥1 dyn measurement.
@@ -107,7 +104,6 @@ def _measured_hour_buckets_lf(stays: pl.DataFrame, events_long: pl.LazyFrame) ->
         (pl.col("hour") >= 0) & (pl.col("hour").cast(pl.Float64) < pl.col("_cap"))
     )
     return in_window.select("stay_id", "hour").unique()
-
 
 def _longest_gap_hours_per_stay_lf(stays: pl.DataFrame, measured_lf: pl.LazyFrame) -> pl.LazyFrame:
     """LazyFrame [stay_id, max_gap] — longest measurement-free run per stay.
@@ -142,7 +138,6 @@ def _longest_gap_hours_per_stay_lf(stays: pl.DataFrame, measured_lf: pl.LazyFram
         (pl.col("_diff").max() - 1).clip(0, None).alias("max_gap")
     )
 
-
 def _stream_collect(lf: pl.LazyFrame) -> pl.DataFrame:
     """Collect a LazyFrame via the polars streaming engine.
 
@@ -155,7 +150,6 @@ def _stream_collect(lf: pl.LazyFrame) -> pl.DataFrame:
         return lf.collect(engine="streaming")
     except (TypeError, ValueError):
         return lf.collect()
-
 
 def _apply_criteria(
     stays: pl.DataFrame, events_long: pl.LazyFrame
@@ -217,7 +211,6 @@ def _apply_criteria(
 
     return surviving, per_step
 
-
 def _attrition_row(
     step: int, criterion: str, n_before: int, n_after: int
 ) -> dict[str, int | str | float]:
@@ -231,7 +224,6 @@ def _attrition_row(
         "n_dropped": n_dropped,
         "pct_dropped": round(pct, 4),
     }
-
 
 def _write_attrition_csv(
     path: Path,
@@ -251,7 +243,6 @@ def _write_attrition_csv(
     pct = (n_dropped / n_in * 100.0) if n_in else 0.0
     final_line = f"final,total,{n_in},{n_out},{n_dropped},{round(pct, 4)}\n"
     path.write_text(header + "".join(body_lines) + final_line)
-
 
 def build_base_cohort(
     *,
@@ -318,7 +309,6 @@ def build_base_cohort(
         per_step=per_step,
     )
 
-
 def _replay_attrition(
     attrition_path: Path,
 ) -> tuple[list[dict[str, int | str | float]], int, int]:
@@ -344,7 +334,6 @@ def _replay_attrition(
             }
         )
     return per_step, n_in, n_out
-
 
 _STAYS_SCHEMA = TABLES["stays"][0]
 __all__ = ["INCLUSION_CRITERIA", "CohortResult", "build_base_cohort"]

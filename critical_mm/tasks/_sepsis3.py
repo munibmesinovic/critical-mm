@@ -51,7 +51,6 @@ _SEP3_SCHEMA: dict[str, pl.DataType] = {
     "onset_time": pl.Datetime("us", "UTC"),
 }
 
-
 def abx_cont_ricu(
     abx_duration_df: pl.DataFrame,
     base_cohort: pl.DataFrame,
@@ -187,7 +186,6 @@ def abx_cont_ricu(
         pl.col("anchor_start").alias("episode_start_time"),
     )
 
-
 def abx_cont(meds: pl.DataFrame, base_cohort: pl.DataFrame) -> pl.DataFrame:
     """Per-stay continuous antibiotic episode start time.
 
@@ -312,7 +310,6 @@ def abx_cont(meds: pl.DataFrame, base_cohort: pl.DataFrame) -> pl.DataFrame:
         pl.col("anchor_start").alias("episode_start_time"),
     )
 
-
 def susp_inf_alt(abx_cont_df: pl.DataFrame, microbio: pl.DataFrame) -> pl.DataFrame:
     """Per-stay first susp_inf time.
 
@@ -355,7 +352,6 @@ def susp_inf_alt(abx_cont_df: pl.DataFrame, microbio: pl.DataFrame) -> pl.DataFr
         pl.min_horizontal(pl.col("episode_start_time"), pl.col("charttime")).alias("_si_time")
     )
     return qualifying.group_by("stay_id").agg(pl.col("_si_time").min().alias("susp_inf_time"))
-
 
 def sep3_alt(
     sofa_per_hour: pl.DataFrame,

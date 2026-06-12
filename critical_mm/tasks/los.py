@@ -9,7 +9,6 @@ import polars as pl
 from critical_mm.registry import register_task
 from critical_mm.tasks.base import LOS_CAP_HOURS, Task
 
-
 @register_task
 class LengthOfStay(Task):
     """Predict remaining length of stay at every hour from h=0 onwards.
@@ -84,7 +83,6 @@ class LengthOfStay(Task):
             .cast(pl.Float32)
             .alias("label_value"),
         ).select("patient_id", "stay_id", "hour", "label_time", "label_value")
-
 
 def _empty_labels() -> pl.DataFrame:
     return pl.DataFrame(

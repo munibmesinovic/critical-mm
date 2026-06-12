@@ -1,7 +1,7 @@
 """OMIXReader — harmonise OMIX005817 (Zhejiang Provincial ICU, Jin et al. 2023).
 
 The released dataset has three structural quirks that drive this reader's design
-(documented in
+(documented in 
 
 1. Hospital_ID is corrupted by R `write.csv` scientific-notation serialization
    on 5,682 of 8,180 admissions, collapsing them onto 4 indistinguishable
@@ -50,7 +50,7 @@ Notable gaps in the released Lab table (vs ricu-faithful concept registries):
 - TnI present (44k rows) merged into canonical `tnt` per NWICU precedent.
 
 References:
-- Spec:
+- Spec: 
 - Audit: reports/omix_dataset_audit.md
 - Paper: data/raw/OMIX005817/s41597-023-01952-3.pdf (Jin et al. 2023)
 """
@@ -105,7 +105,6 @@ _OMIX_VENT_TRIGGER_ITEMS: list[str] = [
     "分钟通气量",
     "呼吸频率(设)",
 ]
-
 
 @register_dataset
 class OMIXReader(DatasetReader):
@@ -641,7 +640,6 @@ class OMIXReader(DatasetReader):
             .select(list(TABLES["abx_duration"][0].keys()))
         )
 
-
 _OMIX_UNIT_MULTIPLIERS: dict[tuple[str, str], float] = {
     ("crea", "umol/l"): 0.011312,
     ("bun", "mmol/l"): 2.8014,
@@ -653,7 +651,6 @@ _OMIX_UNIT_MULTIPLIERS: dict[tuple[str, str], float] = {
     ("ca", "mmol/l"): 4.008,
     ("phos", "mmol/l"): 3.0974,
 }
-
 
 def _apply_unit_conversion_omix(events: pl.LazyFrame) -> pl.LazyFrame:
     """Apply concept-specific unit scaling + canonical unit labelling + valid_range clamp.

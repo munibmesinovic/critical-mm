@@ -14,7 +14,6 @@ _DEID_CLOSE = re.compile(r"\*\*\]")
 _DEID_BLANK = re.compile(r"_{2,}")
 _WS = re.compile(r"\s+")
 
-
 def clean_clinical_text(text: str | None) -> str:
     """Normalise MIMIC de-id placeholders + whitespace. Empty string for null."""
     if text is None:
@@ -25,7 +24,6 @@ def clean_clinical_text(text: str | None) -> str:
     t = _DEID_BLANK.sub(" ", t)
     t = _WS.sub(" ", t)
     return t.strip()
-
 
 def clean_text_expr(col: str = "text") -> pl.Expr:
     """Vectorised polars equivalent of clean_clinical_text (de-id placeholders + whitespace)."""
@@ -40,7 +38,6 @@ def clean_text_expr(col: str = "text") -> pl.Expr:
         .str.replace_all(r"\s+", " ")
         .str.strip_chars()
     )
-
 
 def decode_gb18030(
     path: str | Path,
@@ -75,7 +72,6 @@ def decode_gb18030(
         schema_overrides=schema_overrides,
     )
 
-
 def compose_omix_text(lf: pl.LazyFrame) -> pl.LazyFrame:
     """text = '<Category> | <item_Eng>: <DESC> <Finding>' (English header + Chinese body)."""
     return lf.with_columns(
@@ -93,17 +89,14 @@ def compose_omix_text(lf: pl.LazyFrame) -> pl.LazyFrame:
         .alias("text")
     )
 
-
 _EICU_DROP_LEAVES: frozenset[str] = frozenset(
     {"Obtain Options", "View Options", "Copies", "Print", "Save Options", "Performed - Structured"}
 )
 _MAX_PREADMIT_LOOKBACK_MIN = 30 * 24 * 60
 
-
 def drop_implausible_offset_min(lf: pl.LazyFrame, *, col: str) -> pl.LazyFrame:
     """Drop rows whose minute-offset is below a 30-day pre-admission lookback (data artifacts)."""
     return lf.filter(pl.col(col) >= -_MAX_PREADMIT_LOOKBACK_MIN)
-
 
 def serialize_eicu_rows(lf: pl.LazyFrame, *, note_type: str) -> pl.LazyFrame:
     """Render label->value rows into one '<label>: <value>; ...' pseudo-doc per (stay_id, hour).

@@ -17,7 +17,6 @@ _DS_PREFIXES = {
     "omix": "omix",
 }
 
-
 def normalize_stay_id(expr: pl.Series | pl.Expr, dataset: str) -> pl.Expr:
     """Return a String stay_id of the form ``<prefix>_<id>``.
 
@@ -30,7 +29,6 @@ def normalize_stay_id(expr: pl.Series | pl.Expr, dataset: str) -> pl.Expr:
     e = e.cast(pl.Utf8)
     already = e.str.starts_with(f"{prefix}_")
     return pl.when(already).then(e).otherwise(pl.lit(f"{prefix}_") + e)
-
 
 def align_to_cohort(timed: pl.LazyFrame, cohort: pl.LazyFrame) -> pl.LazyFrame:
     """Apply ``knowable_time <= intime``; emit ALIGNED_SCHEMA.
@@ -62,7 +60,6 @@ def align_to_cohort(timed: pl.LazyFrame, cohort: pl.LazyFrame) -> pl.LazyFrame:
         .alias("prior_visit_idx")
     )
     return with_idx.select("stay_id", "code", "code_system", "origin", "delta_h", "prior_visit_idx")
-
 
 def attach_split(aligned: pl.LazyFrame, split: pl.LazyFrame, dataset: str) -> pl.LazyFrame:
     """Inner-join the locked split onto an aligned stream.

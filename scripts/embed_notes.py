@@ -29,7 +29,6 @@ DATASET_ENCODER = {
     "omix": "bge_large_zh",
 }
 
-
 def embed_frame(timed: pl.DataFrame, encoder: NoteEncoder, existing_ids: set[str]) -> pl.DataFrame:
     """Encode the not-yet-embedded rows of a notes_timed frame. Pure + testable.
 
@@ -50,13 +49,11 @@ def embed_frame(timed: pl.DataFrame, encoder: NoteEncoder, existing_ids: set[str
         }
     )
 
-
 def _existing_ids_from_dir(out_dir: Path) -> set[str]:
     parts = sorted(out_dir.glob("part_*.parquet"))
     if not parts:
         return set()
     return set(pl.read_parquet(parts, columns=["note_id"])["note_id"].to_list())
-
 
 def embed_dataset(
     timed: pl.DataFrame, encoder: NoteEncoder, out_dir: Path, *, shard_size: int = 20000
@@ -79,7 +76,6 @@ def embed_dataset(
         new.write_parquet(out_dir / f"part_{part_idx:05d}.parquet")
         total += new.height
     return total
-
 
 def main() -> None:
     ap = argparse.ArgumentParser()
@@ -119,7 +115,6 @@ def main() -> None:
             print(f"[done] {ds}: all embedded (dir total parts={n_parts}) -> {enc_id}@{rev}/")
         else:
             print(f"[ok] {ds}: +{n} new (dir total parts={n_parts}) -> {enc_id}@{rev}/")
-
 
 if __name__ == "__main__":
     main()

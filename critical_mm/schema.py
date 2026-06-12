@@ -130,14 +130,12 @@ TABLES: dict[str, tuple[Schema, frozenset[str]]] = {
     "abx_duration": (SCHEMA_ABX_DURATION, NULLABLE_ABX_DURATION),
 }
 
-
 def empty_frame(table_name: str) -> pl.LazyFrame:
     """Return a zero-row LazyFrame with the canonical schema."""
     if table_name not in TABLES:
         raise ValueError(f"unknown table {table_name!r}; valid: {sorted(TABLES)}")
     schema, _ = TABLES[table_name]
     return pl.LazyFrame(schema=schema)
-
 
 def validate_frame(df: pl.LazyFrame, table_name: str) -> None:
     """Raise ValueError on schema violations; warn on extra columns.

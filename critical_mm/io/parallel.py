@@ -11,7 +11,6 @@ import os
 import sys
 import warnings
 
-
 def calibrate_thread_pool(workers: int = 1) -> int:
     """Divide the host CPU budget across `workers` concurrent processes.
 

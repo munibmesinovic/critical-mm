@@ -35,7 +35,6 @@ from critical_mm.tasks._abx_duration import HIRID_PHARMA_ABX_PHARMAIDS
 
 _DT_UTC = pl.Datetime("us", "UTC")
 
-
 @register_dataset
 class HiRIDReader(DatasetReader):
     """Concrete reader for HiRID v1.1.1 (Swiss University Hospital Bern)."""
@@ -336,6 +335,5 @@ class HiRIDReader(DatasetReader):
             )
             .select("stay_id", "starttime", "endtime")
         )
-
 
 __all__ = ["HiRIDReader"]

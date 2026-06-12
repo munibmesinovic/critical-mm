@@ -12,13 +12,11 @@ import json
 import statistics
 from pathlib import Path
 
-from critical_mm.validation.oracle import CM_REFERENCE_V3
-
 from critical_mm.training.config import REPO
+from critical_mm.validation.oracle import CM_REFERENCE_V3
 
 FUSION_ROOT = REPO / "data" / "checkpoints" / "_fusion"
 OUTCOME_MAX = {"los": 168.0, "kidney_function": 15.0}
-
 
 def aggregate(fusion_root: Path = FUSION_ROOT) -> dict[str, dict[str, dict[str, float]]]:
     ref: dict[str, dict[str, dict[str, float]]] = {
@@ -60,7 +58,6 @@ def aggregate(fusion_root: Path = FUSION_ROOT) -> dict[str, dict[str, dict[str, 
                 ref.setdefault(task, {})[f"{ds}_{model_dir.name}"] = cell
     return ref
 
-
 def observed_fusion_seed_counts(fusion_root: Path = FUSION_ROOT) -> list[int]:
     """Sorted unique per-cell seed counts found under ``_fusion``.
 
@@ -91,7 +88,6 @@ def observed_fusion_seed_counts(fusion_root: Path = FUSION_ROOT) -> list[int]:
                     counts.add(n)
     return sorted(counts)
 
-
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument(
@@ -115,7 +111,6 @@ def main() -> None:
     args.out.write_text(json.dumps(payload, indent=2))
     n = sum(len(v) for v in ref.values())
     print(f"fusion_aggregate: wrote {args.out} ({n} cells)")
-
 
 if __name__ == "__main__":
     main()

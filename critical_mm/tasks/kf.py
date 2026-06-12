@@ -14,7 +14,6 @@ import polars as pl
 from critical_mm.registry import register_task
 from critical_mm.tasks.base import Task
 
-
 @register_task
 class KidneyFunction(Task):
     """Predict MEDIAN creatinine in hours (24, 48] post-admit (YAIB parity)."""
@@ -67,7 +66,6 @@ class KidneyFunction(Task):
             .alias("label_time"),
             label,
         )
-
 
 def _empty_labels() -> pl.DataFrame:
     return pl.DataFrame(

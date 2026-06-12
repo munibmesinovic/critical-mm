@@ -39,7 +39,6 @@ _CATEGORY_PREFIX: dict[Category, str] = {
     "outcome": "OUTCOME",
 }
 
-
 class NWICUMapping(BaseModel):
     """Per-row NWICU table/itemid mapping; both fields may be None."""
 
@@ -47,7 +46,6 @@ class NWICUMapping(BaseModel):
 
     table: str | None
     itemid: str | None
-
 
 class Concept(BaseModel):
     """One row of the v1 concept registry, as parsed from concepts_loinc.csv."""
@@ -73,16 +71,13 @@ class Concept(BaseModel):
         """MEDS-style stream code: `{CATEGORY_PREFIX}//{name}`."""
         return f"{_CATEGORY_PREFIX[self.category]}//{self.name}"
 
-
 def _opt_str(value: str) -> str | None:
     return value if value else None
-
 
 def _opt_float(value: str) -> float | None:
     if not value or value == "NA":
         return None
     return float(value)
-
 
 def _row_to_concept(row: dict[str, str]) -> Concept:
     valid_range: tuple[float, float] | None = None
@@ -99,20 +94,19 @@ def _row_to_concept(row: dict[str, str]) -> Concept:
 
     return Concept(
         name=row["name"],
-        category=row["category"],  # type: ignore[arg-type]
+        category=row["category"], # type: ignore[arg-type]
         description=row["description"],
-        v1_status=row["v1_status"],  # type: ignore[arg-type]
+        v1_status=row["v1_status"], # type: ignore[arg-type]
         miiv_prevalence=_opt_float(row["miiv_prevalence"]),
         eicu_prevalence=_opt_float(row["eicu_prevalence"]),
         hirid_prevalence=_opt_float(row["hirid_prevalence"]),
-        nwicu_status=row["nwicu_status"],  # type: ignore[arg-type]
+        nwicu_status=row["nwicu_status"], # type: ignore[arg-type]
         nwicu_mapping=nwicu_mapping,
         canonical_unit=_opt_str(row["canonical_unit"]),
         valid_range=valid_range,
         loinc_code=_opt_str(row["loinc_code"]),
         notes=row["notes"],
     )
-
 
 def _load_concepts() -> list[Concept]:
     """Parse configs/concepts_loinc.csv into Concept objects, skipping comments."""
@@ -123,7 +117,6 @@ def _load_concepts() -> list[Concept]:
     if len(concepts) != 56:
         raise ValueError(f"expected 56 concepts in {_CONCEPTS_CSV.name}, got {len(concepts)}")
     return concepts
-
 
 CONCEPTS: list[Concept] = _load_concepts()
 

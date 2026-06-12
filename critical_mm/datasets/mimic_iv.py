@@ -60,7 +60,6 @@ _VASOPRESSOR_INPUT_ITEMIDS: tuple[int, ...] = (
     221653,
 )
 
-
 @register_dataset
 class MIMICIVReader(DatasetReader):
     """Concrete reader for MIMIC-IV v3.1 + MIMIC-IV-Note 2.2."""
@@ -563,7 +562,9 @@ class MIMICIVReader(DatasetReader):
                 .dt.replace_time_zone("UTC"),
             )
             .select(list(TABLES["interventions"][0].keys()))
-            .filter(pl.col("starttime").is_not_null())
+            .filter(
+                pl.col("starttime").is_not_null()
+            )
         )
 
     def read_notes(self) -> pl.LazyFrame:
@@ -683,7 +684,6 @@ class MIMICIVReader(DatasetReader):
             pl.col("spec_type_desc").alias("specimen_type"),
             pl.col("org_name").alias("organism"),
         ).select(list(TABLES["microbio"][0].keys()))
-
 
 __all__ = ["MIMICIVReader"]
 del UNIT_CONVERSIONS

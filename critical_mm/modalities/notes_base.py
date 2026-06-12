@@ -42,11 +42,9 @@ NOTE_ALIGNED_SCHEMA: Schema = {
     "prior_visit_idx": pl.Int32(),
 }
 
-
 def empty_note_timed() -> pl.LazyFrame:
     """Zero-row LazyFrame with the canonical note timed schema."""
     return pl.LazyFrame(schema=NOTE_TIMED_SCHEMA)
-
 
 class NoteReader(ABC):
     """Contract: produce a task-independent note timed frame for one modality."""
@@ -56,7 +54,6 @@ class NoteReader(ABC):
     @abstractmethod
     def read_timed(self, dataset: str) -> pl.LazyFrame:
         """Return the NOTE_TIMED_SCHEMA frame for ``dataset`` (or ``empty_note_timed()``)."""
-
 
 def align_notes_to_cohort(timed: pl.LazyFrame, cohort: pl.LazyFrame) -> pl.LazyFrame:
     """Apply the signed-delta leakage contract; emit NOTE_ALIGNED_SCHEMA.
@@ -110,12 +107,10 @@ def align_notes_to_cohort(timed: pl.LazyFrame, cohort: pl.LazyFrame) -> pl.LazyF
     )
     return with_idx.select(list(NOTE_ALIGNED_SCHEMA.keys()))
 
-
 def visible_notes_stay_level(aligned: pl.LazyFrame, cutoff_h: float) -> pl.LazyFrame:
     """Stay-level visibility (mortality24, kidney_function): notes with
     delta_h_signed <= cutoff_h (context + within-window up to the observation cutoff)."""
     return aligned.filter(pl.col("delta_h_signed") <= cutoff_h)
-
 
 def visible_notes_per_hour(aligned: pl.LazyFrame, dyn_grid: pl.LazyFrame) -> pl.LazyFrame:
     """Per-(stay,hour) visibility (aki, sepsis, los): at prediction hour ``h`` a note
@@ -127,7 +122,6 @@ def visible_notes_per_hour(aligned: pl.LazyFrame, dyn_grid: pl.LazyFrame) -> pl.
     return dyn_grid.join(aligned, on="stay_id", how="inner").filter(
         pl.col("delta_h_signed") <= pl.col("hour")
     )
-
 
 class NoteEncoder(ABC):
     """Contract: encode a list of texts to fixed-dim vectors.

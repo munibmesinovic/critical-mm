@@ -67,7 +67,6 @@ _OMIX_EXTENDED_HINTS: dict[str, str] = {
     **{k: v for k, v in DRUG_CLASS_HINTS.items() if k not in _OMIX_HINTS},
 }
 
-
 def classify_drug(name: str) -> str:
     """Scalar fallback for non-LazyFrame callers + tests.
 
@@ -78,7 +77,6 @@ def classify_drug(name: str) -> str:
         if hint in s:
             return klass
     return "other"
-
 
 def _build_classify_expr(hints: dict[str, str], drug_col: str) -> pl.Expr:
     """Build a when/then chain from a hints dict over `drug_col`."""
@@ -93,7 +91,6 @@ def _build_classify_expr(hints: dict[str, str], drug_col: str) -> pl.Expr:
     result: pl.Expr = chain.otherwise(pl.lit("other"))
     return result
 
-
 def classify_drug_expr(drug_col: str) -> pl.Expr:
     """Polars-native equivalent of `classify_drug` over `drug_col`.
 
@@ -102,7 +99,6 @@ def classify_drug_expr(drug_col: str) -> pl.Expr:
     scalar version.
     """
     return _build_classify_expr(DRUG_CLASS_HINTS, drug_col)
-
 
 def classify_drug_expr_omix(drug_col: str) -> pl.Expr:
     """OMIX-specific variant of classify_drug_expr.

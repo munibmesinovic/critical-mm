@@ -7,7 +7,6 @@ import polars as pl
 from critical_mm.modalities.align import normalize_stay_id
 from critical_mm.modalities.notes_base import align_notes_to_cohort
 
-
 def build_notes_aligned_view(
     timed: pl.LazyFrame, stays: pl.LazyFrame, split: pl.LazyFrame, dataset: str
 ) -> pl.LazyFrame:
@@ -28,7 +27,6 @@ def build_notes_aligned_view(
     split_n = split.with_columns(normalize_stay_id(pl.col("stay_id"), dataset).alias("stay_id"))
     aligned_n = aligned.with_columns(normalize_stay_id(pl.col("stay_id"), dataset).alias("stay_id"))
     return aligned_n.join(split_n.select("stay_id", "split"), on="stay_id", how="inner")
-
 
 def notes_coverage_row(
     task: str, dataset: str, view: pl.DataFrame, n_cohort_stays: int

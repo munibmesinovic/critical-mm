@@ -49,7 +49,6 @@ PER_CONCEPT_OVERRIDES: dict[str, Aggregator] = {
     "abx": "any",
 }
 
-
 def _agg_expr(value_col: str, agg: Aggregator) -> pl.Expr:
     """Map an aggregator name to a polars aggregation expression.
 
@@ -73,11 +72,9 @@ def _agg_expr(value_col: str, agg: Aggregator) -> pl.Expr:
         raise ValueError(f"unknown aggregator {agg!r}; valid: {sorted(table)}")
     return table[agg]
 
-
 def expected_aggregator_for(concept: str, default: Aggregator = "median") -> Aggregator:
     """Per-concept aggregator lookup; returns `default` for unknown concepts."""
     return PER_CONCEPT_OVERRIDES.get(concept, default)
-
 
 class HistoricalAggregator(Processor):
     """Hourly per-(stay, concept) aggregation with ricu-compatible defaults."""
@@ -141,7 +138,6 @@ class HistoricalAggregator(Processor):
             "concepts": sorted(self._concepts),
         }
         return json.dumps(payload, sort_keys=True, separators=(",", ":"))
-
 
 def _empty_output(concepts: list[str]) -> pl.LazyFrame:
     schema: dict[str, pl.DataType] = {

@@ -19,7 +19,6 @@ from critical_mm.training.config import REPO
 MODALITIES_ROOT = REPO / "data" / "processed" / "_modalities"
 PER_HOUR_TASKS = frozenset({"aki", "sepsis", "los"})
 
-
 def _load_emb(dataset: str, encoder: str, note_ids: set[str] | None = None) -> pl.DataFrame:
     root = MODALITIES_ROOT / dataset / "notes_emb" / encoder
     parts = sorted(root.glob("part_*.parquet"))
@@ -35,7 +34,6 @@ def _load_emb(dataset: str, encoder: str, note_ids: set[str] | None = None) -> p
     if note_ids is not None:
         lf = lf.filter(pl.col("note_id").is_in(list(note_ids)))
     return lf.collect()
-
 
 def build_blocks_for_cell(
     *,
@@ -86,7 +84,6 @@ def build_blocks_for_cell(
             half_life=fusion.notes_half_life,
         )
     return icd_block, notes_block
-
 
 def build_blocks_for_preamble(
     *,

@@ -18,7 +18,6 @@ from typing import Self
 
 import polars as pl
 
-
 class Processor(ABC):
     """Stateful fit/apply pattern over Polars LazyFrames."""
 

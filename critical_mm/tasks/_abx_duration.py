@@ -214,7 +214,6 @@ ABX_DURATION_SCHEMA: dict[str, pl.DataType] = {
     "endtime": pl.Datetime("us", "UTC"),
 }
 
-
 def empty_abx_duration() -> pl.LazyFrame:
     """Empty frame with the canonical abx_duration schema."""
     return pl.LazyFrame(schema=ABX_DURATION_SCHEMA)

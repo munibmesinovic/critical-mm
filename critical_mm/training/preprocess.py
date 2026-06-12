@@ -43,7 +43,6 @@ from sklearn.preprocessing import MinMaxScaler
 from critical_mm.models._data.constants import DataSegment as Segment
 from critical_mm.models._data.constants import DataSplit as Split
 
-
 def preprocess(
     data: dict[Any, dict[Any, pd.DataFrame]],
     vars: dict[str, Any],
@@ -152,6 +151,5 @@ def preprocess(
             Segment.outcome: outc,
         }
     return out
-
 
 __all__ = ["preprocess"]

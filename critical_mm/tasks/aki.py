@@ -73,7 +73,6 @@ _WEIGHT_FALLBACK_KG: float = 75.0
 _ONSET_GRACE_HOURS: int = 6
 _BASELINE_CREA_EXCLUSION_MGDL: float = 4.0
 
-
 @register_task
 class AKI(Task):
     """KDIGO AKI within a 6h prediction horizon."""
@@ -132,7 +131,7 @@ class AKI(Task):
         return _per_hour_outc_from_onsets(base_cohort, onsets)
 
     def build(self, **kwargs: object) -> TaskBuildResult:
-        result = super().build(**kwargs)  # type: ignore[arg-type]
+        result = super().build(**kwargs) # type: ignore[arg-type]
         dataset = str(kwargs["dataset"])
         deviations_path = result["sta_path"].parent / "deviations.csv"
         deviations: list[tuple[str, str]] = []
@@ -149,6 +148,19 @@ class AKI(Task):
                 ),
             }.get(dataset, f"{dataset}: KDIGO urine arm dropped (crea arm only)")
             deviations.append((f"{dataset}_aki_crea_only", crea_only_reason))
+        if dataset == "sicdb":
+            deviations.append(
+                (
+                    "sicdb_aki_crea_and_urine",
+                    "SICdb has a native hourly urine stream (`Urine (c)` id 725, "
+                    "1.69M rows; per-hour SUMS not means — see "
+                    "reports/sicdb_dataset_audit.md §3) → the FULL KDIGO "
+                    "crea+urine arm runs (NOT crea-only). SICdb is deliberately "
+                    "absent from the {nwicu, omix} crea-only exclude set in "
+                    "supports_urine_arm. It is the only ICU dataset besides "
+                    "eICU/HiRID/MIMIC-IV with a usable urine arm.",
+                )
+            )
         if dataset == "hirid":
             deviations.append(
                 (
@@ -183,12 +195,10 @@ class AKI(Task):
         _write_deviations(deviations_path, deviations)
         return result
 
-
 _ONSET_SCHEMA: dict[str, pl.DataType] = {
     "stay_id": pl.Utf8(),
     "onset_time": pl.Datetime("us", "UTC"),
 }
-
 
 def _exclude_high_baseline_crea(
     base_cohort: pl.DataFrame, events_long: pl.DataFrame
@@ -215,7 +225,6 @@ def _exclude_high_baseline_crea(
     )
     return base_cohort.join(excluded, on="stay_id", how="anti")
 
-
 def _exclude_early_onset_stays(
     base_cohort: pl.DataFrame, onsets: pl.DataFrame, grace_hours: int
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
@@ -240,7 +249,6 @@ def _exclude_early_onset_stays(
         "stay_id", "onset_time"
     )
     return new_cohort, new_onsets
-
 
 def _filter_eicu_hospitals_without_cases(
     base_cohort: pl.DataFrame, onsets: pl.DataFrame, dataset: str
@@ -268,7 +276,6 @@ def _filter_eicu_hospitals_without_cases(
     if positive_hospitals.height == 0:
         return base_cohort.head(0)
     return base_cohort.join(positive_hospitals, on="hospital_id", how="inner")
-
 
 def _aki_creatinine_arm(base_cohort: pl.DataFrame, events_long: pl.DataFrame) -> pl.DataFrame:
     """Return positive stays + onset time (charttime of first qualifying reading).
@@ -321,7 +328,6 @@ def _aki_creatinine_arm(base_cohort: pl.DataFrame, events_long: pl.DataFrame) ->
         .agg(pl.col("charttime").min().alias("onset_time"))
         .select("stay_id", "onset_time")
     )
-
 
 def _aki_urine_arm(
     base_cohort: pl.DataFrame,
@@ -465,7 +471,6 @@ def _aki_urine_arm(
         .select("stay_id", "onset_time")
     )
 
-
 def _earliest_per_stay(a: pl.DataFrame, b: pl.DataFrame) -> pl.DataFrame:
     """Union two onset frames; keep the earliest onset_time per stay_id."""
     if a.height == 0:
@@ -478,9 +483,7 @@ def _earliest_per_stay(a: pl.DataFrame, b: pl.DataFrame) -> pl.DataFrame:
         .agg(pl.col("onset_time").min())
     )
 
-
 _PREDICTION_HORIZON_HOURS: int = 6
-
 
 def _per_hour_outc_from_onsets(base_cohort: pl.DataFrame, onsets: pl.DataFrame) -> pl.DataFrame:
     """Expand per-stay onsets into per-hour windowed binary labels.
@@ -524,7 +527,6 @@ def _per_hour_outc_from_onsets(base_cohort: pl.DataFrame, onsets: pl.DataFrame) 
         .alias("label_value")
     ).select("patient_id", "stay_id", "hour", "label_time", "label_value")
 
-
 def _empty_aki_labels() -> pl.DataFrame:
     return pl.DataFrame(
         schema={
@@ -535,7 +537,6 @@ def _empty_aki_labels() -> pl.DataFrame:
             "label_value": pl.Int8(),
         }
     )
-
 
 def _write_deviations(path: Path, deviations: list[tuple[str, str]]) -> None:
     """CSV with header + one row per applied deviation."""

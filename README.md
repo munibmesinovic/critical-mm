@@ -1,12 +1,12 @@
 # CRITICAL-MM
 
 A multi-dataset benchmark for clinical prediction in the ICU. CRITICAL-MM
-harmonizes five intensive-care databases into a single schema and a fixed grid
+harmonizes six intensive-care databases into a single schema and a fixed grid
 of tasks, datasets, and models, so deep-learning and machine-learning baselines
 are trained and evaluated under identical conditions — and new models (including
 multimodal ones) drop in next to them.
 
-- **Datasets:** eICU, MIMIC-IV, HiRID, NWICU, OMIX.
+- **Datasets:** eICU, MIMIC-IV, HiRID, NWICU, OMIX, and SICdb.
 - **Tasks:** mortality (24h), acute kidney injury, sepsis, length of stay,
   kidney function.
 - **Models:** GRU, LSTM, TCN, Transformer (deep learning) and LightGBM plus
@@ -22,21 +22,8 @@ pip install -e .[dev]
 pip install -e .[multimodal]
 ```
 
-Requires Python 3.11. The training stack (PyTorch, Lightning, LightGBM) is part
+Requires Python 3.11+. The training stack (PyTorch, Lightning, LightGBM) is part
 of the core dependencies because the baselines cannot run without it.
-
-**Exact reproduction.** To recreate the environment that produced the released
-results, use the pinned versions rather than the open ranges above:
-
-```bash
-conda env create -f environment.yml    # `critical-mm` env, Python 3.11.15
-conda activate critical-mm
-pip install -e .                        # install this package into it
-# without conda:  pip install -r requirements-lock.txt && pip install -e .
-```
-
-The reference environment used PyTorch 2.12.0 built for CUDA 13.0; see the note
-in `requirements-lock.txt` for matching your own CUDA / CPU-only setup.
 
 ## Data
 

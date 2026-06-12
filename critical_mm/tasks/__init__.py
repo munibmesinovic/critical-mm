@@ -3,7 +3,7 @@
 Each Task subclass declares `task_name`, `task_type`, optional outcome
 bounds, and `prediction_horizon_hours`. `build()` reads the per-dataset
 base cohort, runs `build_labels()` to emit outc, then layers static and
-dynamic feature parquets to match the YAIB exporter contract that
+dynamic feature parquets to match the YAIB exporter contract that 
 and the validation oracle consume.
 """
 

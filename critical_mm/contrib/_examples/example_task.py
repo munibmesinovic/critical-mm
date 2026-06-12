@@ -25,7 +25,6 @@ import polars as pl
 
 from critical_mm.api import Task
 
-
 class _ExampleMortality48(Task):
     """Predict in-ICU mortality at h=48 after admission (worked example).
 
