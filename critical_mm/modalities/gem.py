@@ -45,3 +45,4 @@ def add_icd10_equivalent(df: pl.LazyFrame, *, dotless_col: str = "__dotless") ->
         )
         .drop("__gem10")
     )
+

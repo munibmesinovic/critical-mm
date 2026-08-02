@@ -1,0 +1,244 @@
+{
+  "cohort": "mortality24_leaky",
+  "dataset": "hirid",
+  "grouping": "patient",
+  "n_patients": 15817,
+  "n_stays_total": 15817,
+  "n_stays": 15817,
+  "n_positive": 1298,
+  "classification": true,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "43045e402ede43d0bc36524d25d52cc311718630477cdbf9093b035470fff2d9",
+  "dyn_content_sha256": "e94b2c6d44dc08c135c7914e446b99e851c7f63e267ad4554f7ea05c931d33a8",
+  "outc_content_sha256": "26c83e96132729ed8725d8c5323bbebdb718f2eec230f432bd3dc9580844e02e",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_0_fold_0.parquet",
+      "n_train": 10122,
+      "n_val": 2531,
+      "n_test": 3164,
+      "content_sha256": "038deab56171b11a3a3a730f749bd81570679709a25e50efc9e9eeb43b156b06"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_0_fold_1.parquet",
+      "n_train": 10122,
+      "n_val": 2531,
+      "n_test": 3164,
+      "content_sha256": "93c78bedbfd0c9071b94e087c933ba8e9d33230f4492636de33caaa391fedf39"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_0_fold_2.parquet",
+      "n_train": 10122,
+      "n_val": 2531,
+      "n_test": 3164,
+      "content_sha256": "09a8da85fb35d93fc6f84a0e41ead16e35f6e99d1c2b406fabf120a9fb296ca4"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_0_fold_3.parquet",
+      "n_train": 10123,
+      "n_val": 2530,
+      "n_test": 3164,
+      "content_sha256": "c71870bba4d29ba98ef3f12287f7ff860d51323b2dc969cb6e26d944cff033d1"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_0_fold_4.parquet",
+      "n_train": 10123,
+      "n_val": 2530,
+      "n_test": 3164,
+      "content_sha256": "3422406b3b7f66f2e07ec1f08dff37e2f8b3227c86dcd3db901aa2c1f07f36c8"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_1_fold_0.parquet",
+      "n_train": 10122,
+      "n_val": 2531,
+      "n_test": 3164,
+      "content_sha256": "271d907cf271d5b462f063775464a8222e671ec8d04595fcf39ab208979e8151"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_1_fold_1.parquet",
+      "n_train": 10122,
+      "n_val": 2531,
+      "n_test": 3164,
+      "content_sha256": "0a9261b3857c6339aa5a55f3f0ad55920717e793d10c1f9325abe94dcc73e908"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_1_fold_2.parquet",
+      "n_train": 10122,
+      "n_val": 2531,
+      "n_test": 3164,
+      "content_sha256": "78fe0d8e4cb0fdf4ee382a338a70714ec37d09b62ece87a25be190eadf84b2ee"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_1_fold_3.parquet",
+      "n_train": 10123,
+      "n_val": 2530,
+      "n_test": 3164,
+      "content_sha256": "fd8e05e60ff605337f4d110d0e3c9cfac93186817a04f48e7facf8d9749061af"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_1_fold_4.parquet",
+      "n_train": 10123,
+      "n_val": 2530,
+      "n_test": 3164,
+      "content_sha256": "91a4ecc67a7785f2e4f35086c0e8fb8966653ede86f68e8ae1160f1b5fb3ea10"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_2_fold_0.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "fddb6417646548fc694d226af72eb18d1b4cd04dbd596948fd7c3a0bf4762982"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_2_fold_1.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "b77f0aa4f6372d20ff55edd34f4abacd91f6c824bd1f71791527aced18bf05bd"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_2_fold_2.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "8d73cb1d346033a89d5f79774d82d13c2da93ae3d89bccb3fd4ccccb752f74c0"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_2_fold_3.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "0f11d3e2a040e570aec907c3cc0d8087530715ed9e7e8d7360c9bfbb3a096c33"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_2_fold_4.parquet",
+      "n_train": 10124,
+      "n_val": 2530,
+      "n_test": 3163,
+      "content_sha256": "ce8fb2cf93e9136cf0668a54ceb628c55d441505c8161d3dbda6f4e497afe7d8"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_3_fold_0.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "e0a7afbc8d4b8c813d3a219acdaa8e991f4c4cd288a842c003e0b1e95b2d2513"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_3_fold_1.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "7f654e0ad828d11f525e380096e42d9d84a7b2b86dc0a4cfb79853f4d15e736a"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_3_fold_2.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "8cbf9a3f8b5f0c1397568887e3a20a270cfeee00755674d1adb68285c1a98360"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_3_fold_3.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "c9e5c08c58a3e30a1f4cf65d4fac4e0a14936838ad97295e98249e0199aba205"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_3_fold_4.parquet",
+      "n_train": 10124,
+      "n_val": 2530,
+      "n_test": 3163,
+      "content_sha256": "26e8740cb217065843773b342be92962decce40be1c503b59c5ccc60f5437216"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_4_fold_0.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "81f6f188b3f93e62918906d10388526fd63e0b5decacdb75c784084613c51fe1"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_4_fold_1.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "839864f3e7b3c3d46dd7a92d41ff11b70e3a2adb24d7fbb67656427be6b438a3"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_4_fold_2.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "52569354eab26938ce95b48dbf2b9d92c3f1aa3b36f91fe89218296f2bc3a7f6"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_4_fold_3.parquet",
+      "n_train": 10123,
+      "n_val": 2531,
+      "n_test": 3163,
+      "content_sha256": "c02861528abdb6b4def9659976e5b69a04d1891257b86b37492178a014bba012"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24_leaky/hirid/cv_rep_4_fold_4.parquet",
+      "n_train": 10124,
+      "n_val": 2530,
+      "n_test": 3163,
+      "content_sha256": "c4cbee94588c199741088774be7d578a4bbf8adf9ae35a1c7dd1e84054e516b6"
+    }
+  ]
+}

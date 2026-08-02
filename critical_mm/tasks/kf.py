@@ -24,6 +24,46 @@ class KidneyFunction(Task):
     outcome_max: ClassVar[float | None] = 15.0
     prediction_horizon_hours: ClassVar[int] = 24
 
+    def _dyn_max_hour_per_stay(self, cohort: pl.DataFrame) -> pl.DataFrame:
+        """Stop the dyn grid at hour 23 so features never reach the label window.
+
+        The base default is ``prediction_horizon_hours`` INCLUSIVE, which for KF
+        builds hours 0..24 and — because ``_build_dyn`` filters on
+        ``charttime < admit + (max_hour + 1)h`` — collects events in
+        ``[admit+24h, admit+25h)``. The label is the median ``crea`` over
+        ``(admit+24h, admit+48h]`` (see ``build_labels``), so the two windows
+        intersect, and ``crea`` is one of the 48 DYNAMIC concepts. For any stay with
+        a creatinine drawn in that hour the label constituent was handed to the model
+        as the final timestep, which is exactly what the DL last hidden state and the
+        ML ``groupby.last()`` read.
+
+        Measured before this fix, with hour 23 as a persistence control. Among the
+        stays that HAVE a creatinine in the bucket (a conditional rate — the two
+        hours have different denominators), the fraction whose value equals the label
+        to 1e-4 jumps from hour 23 to hour 24:
+
+            MIMIC-IV 21.6% -> 43.0%    eICU   7.0% -> 41.3%
+            HiRID     2.0% -> 78.0%    SICdb  8.8% -> 60.0%
+            Zigong    0.0% -> 76.9%    OMIX   0.0% -> 55.4%
+            NWICU     3.2% -> 25.7%
+
+        Unconditionally, 2.0%-6.9% of labelled stays have a creatinine in bucket 24
+        at all, so that is the share of stays actually exposed. A label-permutation
+        null gives 0.6%-4.4% and hour 22 behaves like hour 23 on every dataset, which
+        is what rules out benign creatinine persistence as the explanation.
+        Reproduce with ``scripts/measure_kf_window_leak.py``; see
+        ``the project notes`` section B2.
+
+        Mortality24 shares ``prediction_horizon_hours=24`` but is NOT affected and
+        keeps the base default: its label is eventual in-ICU death gated by
+        ``los>=30h``, so hour 24 predates any label event. That is why this override
+        lives here rather than in ``Task``.
+        """
+        return cohort.select(
+            "stay_id",
+            pl.lit(self.prediction_horizon_hours - 1, dtype=pl.Int32).alias("max_hour"),
+        )
+
     def build_labels(
         self,
         base_cohort: pl.DataFrame,
@@ -34,7 +74,7 @@ class KidneyFunction(Task):
         interventions: pl.DataFrame | None = None,
         abx_duration: pl.DataFrame | None = None,
     ) -> pl.DataFrame:
-        del meds, dataset, microbio, interventions
+        del meds, dataset, microbio, interventions, abx_duration
         eligible = base_cohort.filter(pl.col("los_hours") >= 48.0)
         if eligible.height == 0:
             return _empty_labels()
@@ -76,3 +116,4 @@ def _empty_labels() -> pl.DataFrame:
             "label_value": pl.Float32(),
         }
     )
+

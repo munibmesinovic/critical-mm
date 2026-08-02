@@ -7,17 +7,15 @@ mortality24 ``Task.build()`` sequentially. Writes
 Wrap in scripts/mem_run.sh for memory safety:
 
     MEM_MAX=110G bash scripts/mem_run.sh nonsepsis-eicu \\
-      ~/miniforge3/envs/critical-mm/bin/python \\
+      python3 \\
       scripts/rebuild_nonsepsis_tasks.py eicu
 
 Sequential by design (no parallel datasets, no parallel tasks) per the
- memory discipline — phase-2 parallel rebuilds OOM-killed the
+session-7 memory discipline — phase-2 parallel rebuilds OOM-killed the
 host under prior session SSH-lockout incidents.
 """
 
 from __future__ import annotations
-
-import os
 
 import sys
 import time
@@ -36,13 +34,24 @@ TASK_CLASSES = {
     "mortality24": Mortality24,
 }
 
+DATASETS = ("eicu", "miiv", "hirid", "sicdb", "nwicu", "omix", "zigong")
+
 def main() -> None:
-    if len(sys.argv) != 2 or sys.argv[1] not in {"eicu", "miiv", "hirid"}:
-        print("usage: rebuild_nonsepsis_tasks.py {eicu|miiv|hirid}", file=sys.stderr)
+    if len(sys.argv) < 2 or sys.argv[1] not in DATASETS:
+        print(
+            f"usage: rebuild_nonsepsis_tasks.py {{{'|'.join(DATASETS)}}} [task ...]\n"
+            f"  tasks default to all of: {' '.join(TASK_CLASSES)}",
+            file=sys.stderr,
+        )
         sys.exit(2)
 
     dataset = sys.argv[1]
-    repo = Path(os.environ.get("CRITICAL_MM_DATA_ROOT", str(Path(__file__).resolve().parents[1])))
+    requested = sys.argv[2:] or list(TASK_CLASSES)
+    unknown = [t for t in requested if t not in TASK_CLASSES]
+    if unknown:
+        print(f"unknown task(s): {', '.join(unknown)}", file=sys.stderr)
+        sys.exit(2)
+    repo = Path("$CRITICAL_MM_REPO")
     processed = repo / "data" / "processed"
     interim = repo / "data" / "interim"
 
@@ -63,7 +72,7 @@ def main() -> None:
         flush=True,
     )
 
-    for task_name, cls in TASK_CLASSES.items():
+    for task_name, cls in ((t, TASK_CLASSES[t]) for t in requested):
         t0 = time.perf_counter()
         print(f"\n--- {task_name}/{dataset} ---", flush=True)
         result = cls().build(
@@ -84,3 +93,6 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+    main()
+

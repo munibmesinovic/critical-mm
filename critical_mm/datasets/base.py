@@ -38,7 +38,7 @@ class DatasetReader(ABC):
     files; the default returns every file under `raw_root` (coarse but safe —
     any change anywhere in the dataset invalidates every table).
 
-    Subclasses MAY override `CAPABILITIES` () to declare which structural
+    Subclasses MAY override `CAPABILITIES` to declare which structural
     features they support. Tasks consult this via
     `Task.required_dataset_capabilities()`; `train_one()` raises ValueError
     when a (task, dataset) pair is structurally incompatible. Default empty
@@ -84,7 +84,7 @@ class DatasetReader(ABC):
 
     @abstractmethod
     def read_microbio(self) -> pl.LazyFrame:
-        """Per-ICU-stay microbiology culture samples (, B8 Phase 1).
+        """Per-ICU-stay microbiology culture samples (P22, B8 Phase 1).
 
         Returns rows of [patient_id, stay_id, charttime, specimen_type, organism].
         `organism` is null for culture-negative samples (the sampling itself
@@ -94,7 +94,7 @@ class DatasetReader(ABC):
         """
 
     def read_abx_duration(self) -> pl.LazyFrame:
-        """ricu-faithful antibiotic duration episodes (audit round 10m).
+        """ricu-faithful antibiotic duration episodes (review).
 
         Default implementation returns an empty frame — subclasses
         whose ricu-extensions `concept-dict.json#abx_duration.sources`
@@ -200,3 +200,4 @@ class DatasetReader(ABC):
         if table == "abx_duration":
             return self.read_abx_duration()
         raise ValueError(f"unknown table {table!r}; valid: {_TABLE_NAMES}")
+

@@ -20,5 +20,6 @@ CM-owned. Only the model architectures themselves are vendored from YAIB
 Public:
 * config.TrainConfig -- dataclass replacing YAIB's gin config
 * train.train_one -- single (task, dataset, model, seed) cell entry
-* grid.run_grid -- top-level orchestrator across cells
+* grid.run_grid   -- top-level orchestrator across cells
 """
+

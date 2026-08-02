@@ -95,7 +95,7 @@ def _per_hour_grid(base_cohort: pl.DataFrame, max_hour: int) -> pl.DataFrame:
 def _to_events_lf(events_long: pl.DataFrame | pl.LazyFrame) -> pl.LazyFrame:
     """Adapter: accept DataFrame OR LazyFrame for events_long.
 
-    Audit round 10c (2026-05-19, B1 phase B): production passes a LazyFrame
+    production passes a LazyFrame
     from Task.build so the streaming engine pipelines through each
     per-concept filter without materializing all 50M eICU rows. Tests pass
     small DataFrame fixtures; `.lazy()` is free on those.
@@ -121,7 +121,7 @@ def _hourly_carry(
     tiebreaker is the input row order — readers should pre-dedupe if
     determinism across reader-version bumps is required.
 
-    Audit round 10c: `events_long` accepts a LazyFrame; the per-concept
+    Review: `events_long` accepts a LazyFrame; the per-concept
     filter + select streams via `_stream_collect` so only the small
     (concept-filtered) frame materializes for the join_asof.
     """
@@ -177,7 +177,7 @@ def _interval_overlaps_hour() -> pl.Expr:
 def _consolidate_null_endtimes(intervals: pl.DataFrame, group_cols: list[str]) -> pl.DataFrame:
     """Collapse rows whose endtime is NULL to one row per group at min(starttime).
 
-    Audit round 10aj (2026-05-20): NULL endtime is semantically "active from
+    NULL endtime is semantically "active from
     starttime onward forever" in `_interval_overlaps_hour`. Two NULL-endtime
     rows for the same group are therefore redundant — the earlier subsumes
     the later. Keeping only the earliest per group is exact w.r.t. the
@@ -230,7 +230,7 @@ def _consolidate_null_endtimes(intervals: pl.DataFrame, group_cols: list[str]) -
 def _hourly_pafi(events_long: pl.DataFrame | pl.LazyFrame, grid: pl.DataFrame) -> pl.DataFrame:
     """Per-hour PaO2/FiO2 ratio. Both po2 and fio2 carried forward.
 
-    Audit round 10aa (2026-05-20): FiO2 is stored as PERCENTAGE
+    FiO2 is stored as PERCENTAGE
     (canonical unit `%`, range 21-100 per `configs/concepts_loinc.csv`),
     but the SOFA respiratory thresholds (<100 / <200 / <300 / <400) are
     defined for PaO2 [mmHg] / FiO2 [fraction 0.0-1.0]. Pre-fix we divided
@@ -271,7 +271,7 @@ def _hourly_vent_flag(interventions: pl.DataFrame, grid: pl.DataFrame) -> pl.Dat
 def _hourly_vasopressor_flag(meds: pl.DataFrame, grid: pl.DataFrame) -> pl.DataFrame:
     """Per-hour flags for SOFA cardio: vaso_strong + vaso_dobu.
 
-    Audit round 10h (2026-05-19): split into two boolean cols so _sofa_cardio
+    split into two boolean cols so _sofa_cardio
     can distinguish score-3 (any non-dobutamine pressor) from score-2 (dobu
     alone) per Vincent 1996 / ricu sofa.R:218. Pre-split everything was
     "vaso=true→score 3", which collapsed ricu's score-2 tier.
@@ -484,7 +484,7 @@ def _sofa_resp(pafi_df: pl.DataFrame, vent_df: pl.DataFrame) -> pl.DataFrame:
 def _hourly_vasopressor_rates(meds: pl.DataFrame, grid: pl.DataFrame) -> pl.DataFrame:
     """Per-hour max infusion rate (mcg/kg/min) per vasopressor drug.
 
-    Audit round 10ab (2026-05-20). Returns one row per (patient, stay,
+    . Returns one row per (patient, stay,
     hour) with 4 columns of max rates over any infusion interval that
     overlaps the hour:
         dopa_rate, norepi_rate, epi_rate, dobu_rate
@@ -557,7 +557,7 @@ def _sofa_cardio(
 ) -> pl.DataFrame:
     """Cardiovascular — ricu-faithful dose tiers when rates available.
 
-    Audit round 10ab (2026-05-20): per-drug µg/kg/min thresholds when
+    per-drug µg/kg/min thresholds when
     `vaso_rates_df` carries non-null rates for the hour (ricu sofa.R:218
     + Vincent 1996):
 
@@ -567,7 +567,7 @@ def _sofa_cardio(
         score = 1 if map < 70 (no vasopressor active)
         score = 0 else
 
-    Fallback to the v1.5 boolean tier (audit round 10h) when rates are
+    Fallback to the v1.5 boolean tier (review) when rates are
     not available for the hour (e.g. eICU's infusionDrug doesn't carry
     `mcg/kg/min`, NWICU has no dose data, miiv bolus boluses). The
     fallback preserves recall on datasets without rate parity.

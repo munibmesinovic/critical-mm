@@ -53,3 +53,4 @@ class Mortality24(Task):
             .alias("label_time"),
             pl.col("mortality_in_icu").cast(pl.Int8).alias("label_value"),
         )
+

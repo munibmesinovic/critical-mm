@@ -10,3 +10,4 @@ are copy-paste templates, not live registrations.
 
 See ``docs/extending/overview.md`` for the contributor workflow.
 """
+

@@ -1,6 +1,6 @@
 """Abstract `Task` base — shared `build()` produces YAIB-shaped sta/dyn/outc.
 
-The YAIB exporter contract () and the validation oracle () consume:
+The YAIB exporter contract (P15) and the validation oracle (P16) consume:
 - `sta.parquet`: one row per stay, four static feature columns
   (patient_id, stay_id, age, sex, weight, height).
 - `dyn.parquet`: one row per (stay_id, hour) for the prediction window,
@@ -55,7 +55,7 @@ class Task(ABC):
         """Structural dataset features this task requires for the given dataset.
 
         Default returns the empty set -- the task makes no structural demands.
-        Override on subclasses (especially external contrib tasks under )
+        Override on subclasses (especially external contrib tasks under the initial split work)
         to declare requirements; ``critical_mm.training.train.train_one`` will
         raise ValueError at dispatch time when a (task, dataset) pair lists a
         capability the dataset's ``CAPABILITIES`` ClassVar does not include.
@@ -89,10 +89,10 @@ class Task(ABC):
         NWICU creatinine-only arm) can branch.
 
         `microbio` and `interventions` are loaded from interim by
-        ``Task.build`` ( Task 6) and threaded through for tasks (Sepsis-3)
+        ``Task.build`` (P24 Task 6) and threaded through for tasks (Sepsis-3)
         that need them; other tasks accept and ignore the kwargs.
 
-        Audit round 10c (2026-05-19): `events_long` now accepts a LazyFrame
+        `events_long` now accepts a LazyFrame
         so the streaming-engine pipeline avoids materializing eICU's ~50M
         rows in memory. Tests passing small DataFrame fixtures still work
         — `_to_events_lf()` adapts both. Phase B of B1 unblock.
@@ -101,12 +101,16 @@ class Task(ABC):
     def _dyn_max_hour_per_stay(self, cohort: pl.DataFrame) -> pl.DataFrame:
         """Return [stay_id, max_hour] for the dyn grid (INCLUSIVE upper bound).
 
-        Default (used by Mortality24, KidneyFunction): constant
-        `prediction_horizon_hours` so the dyn grid is 0..horizon inclusive
-        (i.e. horizon+1 rows per stay; 25 for horizon=24). Per-hour tasks
-        (LengthOfStay, AKI, Sepsis) override to per-stay variable max_hour =
-        floor(min(los_hours, LOS_CAP_HOURS)) so dyn spans the full stay
-        and aligns 1:1 with outc.
+        Default (used by Mortality24): constant `prediction_horizon_hours` so the
+        dyn grid is 0..horizon inclusive (i.e. horizon+1 rows per stay; 25 for
+        horizon=24). Per-hour tasks (LengthOfStay, AKI, Sepsis) override to per-stay
+        variable max_hour = floor(min(los_hours, LOS_CAP_HOURS)) so dyn spans the
+        full stay and aligns 1:1 with outc.
+
+        KidneyFunction also overrides, to horizon-1: it shares Mortality24's 24h
+        horizon but its label window is (admit+24h, admit+48h], which the default
+        grid's final bucket would reach into. Do NOT "simplify" that override away
+        — see kf.py and the project notes section B2.
         """
         return cohort.select(
             "stay_id",
@@ -126,7 +130,7 @@ class Task(ABC):
         Output goes to `processed_root/<task_name>/<dataset>/`. The writes
         are best-effort idempotent: re-running with identical inputs leaves
         the parquets bit-identical (polars sink_parquet is deterministic
-        over deterministic content). A future will re-wrap this in
+        over deterministic content). A future P15 will re-wrap this in
         the content-hash cache for proper invalidation.
         """
         del repo_root
@@ -231,9 +235,9 @@ def _build_dyn(
     `floor((charttime - admit_time) / 3600)` into hours 0..max_hour. Per
     (stay_id, hour, concept) the value is the MEDIAN — matches ricu's
     `aggregate.id_tbl` default, so YAIB-models pretrained checkpoints
-    ( oracle) see the same per-hour values they were trained on.
+    (P16 oracle) see the same per-hour values they were trained on.
 
-    Audit round 10c (2026-05-19, B1 phase B): events_long is a LazyFrame
+    events_long is a LazyFrame
     when called from Task.build; the join + bucket + group_by + pivot
     pipelines through polars' streaming engine without materializing the
     full filtered events frame. Tests passing DataFrames still work via
@@ -319,3 +323,6 @@ def _empty_dyn() -> pl.DataFrame:
         **{c: pl.Float32() for c in DYNAMIC_CONCEPTS},
     }
     return pl.DataFrame(cols, schema=schema)
+
+    return pl.DataFrame(cols, schema=schema)
+

@@ -60,8 +60,8 @@ def align_notes_to_cohort(timed: pl.LazyFrame, cohort: pl.LazyFrame) -> pl.LazyF
 
     cohort columns required: patient_id, stay_id, intime, discharge_time, hadm_id.
     Keep rule per note:
-      pre-admission : knowable_time <= intime
-      within-window : intime < knowable_time <= discharge_time AND note_type != 'discharge'
+      pre-admission  : knowable_time <= intime
+      within-window  : intime < knowable_time <= discharge_time AND note_type != 'discharge'
     AND a structural exclusion: a 'discharge' note is dropped from a stay whose
     hadm_id equals the note's hadm_id (its own admission).
     """
@@ -137,3 +137,4 @@ class NoteEncoder(ABC):
 
         Returns np.ndarray; typed loosely here to avoid a numpy import.
         """
+

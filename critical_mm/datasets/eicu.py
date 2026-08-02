@@ -214,7 +214,7 @@ class EICUReader(DatasetReader):
     def _sink_scratch(self, lf: pl.LazyFrame, name: str) -> Path:
         """Stream a single-source LazyFrame to a per-source scratch parquet.
 
-        Audit round 10af-prereq: the eICU events_long composite peaks near
+        Review-prereq: the eICU events_long composite peaks near
         host memory limits (~117 GiB pristine) post (urine
         ingestion). Adding more source rows blew past 119 GiB even with
         chunk-size tuning. The fix is structural: every major source is
@@ -560,11 +560,10 @@ class EICUReader(DatasetReader):
     def read_meds(self) -> pl.LazyFrame:
         """Combine infusionDrug (4.8M continuous infusions) + medication (orders).
 
-        Audit round 10k (2026-05-19):
         - infusionDrug synthesises endtime as the next same-drug admin's
           starttime per stay (168h-capped); the LAST admin per (stay, drug) is
           bounded to +1h (one charting interval), NOT carried to +168h
-          (audit 2026-06-01, A4: the old +168h fallback flagged trailing
+          (2026-06-01: the old +168h fallback flagged trailing
           vasopressors active for up to a week, inflating SOFA-cardio and
           over-calling Sepsis-3 vs ricu, which windows each eICU infusion record
           to ~1 min). This recovers the actual infusion duration for SEP-3's
@@ -695,7 +694,7 @@ class EICUReader(DatasetReader):
         return pl.concat(frames, how="vertical_relaxed")
 
     def read_abx_duration(self) -> pl.LazyFrame:
-        """ricu-faithful abx_duration extraction (audit round 10m).
+        """ricu-faithful abx_duration extraction (review).
 
         Verbatim port of
         ``configs/medications/concept-dict.json#abx_duration.sources.eicu``:

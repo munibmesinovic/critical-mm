@@ -1,50 +1,66 @@
 {
+  "_meta": {
+    "datasets": [
+      "eicu",
+      "miiv",
+      "hirid",
+      "nwicu",
+      "omix",
+      "sicdb",
+      "zigong"
+    ],
+    "excluded": "foundation-model, transfer and ablation cells",
+    "fusion_cells": 0,
+    "fusion_note": "No fusion (+icd / +notes / +icd_notes) cells are included: the patient-grouped reference grid does not yet carry them. Earlier stay-level releases did. Fusion numbers are deliberately NOT carried over from the stay-level tree, because mixing split bases in one comparison table would be wrong.",
+    "seeds": [
+      42,
+      1337,
+      2024
+    ],
+    "seeds_per_cell": 3,
+    "source_artifact": "data/cm_reference/patient/cm_grid_metrics.json",
+    "source_generated_at": "2026-07-29T06:23:28+00:00",
+    "source_git_sha": "25b1be47",
+    "source_n_cells_total": 1617,
+    "split_basis": "patient-grouped",
+    "splits_root": "data/processed/splits_patient"
+  },
   "aki": {
     "eicu": {
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.9047452410062155
+        "seed_mean": 0.9020110964775085
       },
       "LGBMClassifier": {
         "metric": "AUROC",
-        "n_seeds": 2,
-        "seed_mean": 0.795451770867672
-      },
-      "LGBMClassifier+icd": {
-        "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.795069758613384
+        "seed_mean": 0.7943010767805657
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.9075614809989929
-      },
-      "LSTM+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.8832213481267294
+        "seed_mean": 0.9072022835413615
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6507327585725154
+        "seed_mean": 0.6680960211533575
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7650216991890849
+        "seed_mean": 0.74809670391604
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8984142740567526
+        "seed_mean": 0.9065885742505392
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8567173083623251
+        "seed_mean": 0.857559065024058
       }
     },
     "hirid": {
@@ -55,8 +71,8 @@
       },
       "LGBMClassifier": {
         "metric": "AUROC",
-        "n_seeds": 2,
-        "seed_mean": 0.7864166942227133
+        "n_seeds": 3,
+        "seed_mean": 0.7856212612139726
       },
       "LSTM": {
         "metric": "AUROC",
@@ -66,12 +82,12 @@
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7275266861987889
+        "seed_mean": 0.7248815096296032
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7687316874734327
+        "seed_mean": 0.7450948503444293
       },
       "TCN": {
         "metric": "AUROC",
@@ -88,141 +104,185 @@
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.9039917985598246
+        "seed_mean": 0.9026848077774048
       },
       "LGBMClassifier": {
         "metric": "AUROC",
-        "n_seeds": 2,
-        "seed_mean": 0.7920586605407574
-      },
-      "LGBMClassifier+icd": {
-        "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7919415508703535
+        "seed_mean": 0.7925088075855169
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.9078365365664164
-      },
-      "LSTM+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.8696891268094381
+        "seed_mean": 0.9093773563702902
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.652445876161881
+        "seed_mean": 0.6771467501640925
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7572373414074227
+        "seed_mean": 0.7332905195591292
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.9073300162951151
+        "seed_mean": 0.9086960156758627
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8676633437474569
+        "seed_mean": 0.8720196088155111
       }
     },
     "nwicu": {
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8570574323336283
+        "seed_mean": 0.8617429137229919
       },
       "LGBMClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.857491124564176
+        "seed_mean": 0.8672490315179838
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8580231865247091
+        "seed_mean": 0.8531726996103922
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7378203699670941
+        "seed_mean": 0.7429476171786052
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7834414110384341
+        "seed_mean": 0.8083864027033373
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8717026710510254
+        "seed_mean": 0.8772374987602234
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.820159117380778
+        "seed_mean": 0.8344930609067281
       }
     },
     "omix": {
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8545912702878317
+        "seed_mean": 0.8713749647140503
       },
       "LGBMClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8382103865778591
-      },
-      "LGBMClassifier+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.836284273014606
-      },
-      "LGBMClassifier+icd_notes": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.8398186576167183
+        "seed_mean": 0.8472555090169878
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8435258269309998
-      },
-      "LSTM+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.8267102042833964
-      },
-      "LSTM+icd_notes": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.6998897194862366
+        "seed_mean": 0.8644692699114481
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7508486140813219
+        "seed_mean": 0.7502185733526009
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7781963458463736
+        "seed_mean": 0.8117664329038928
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8515617450078329
+        "seed_mean": 0.8644714752833048
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7866666714350382
+        "seed_mean": 0.8001144925753275
+      }
+    },
+    "sicdb": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8891729116439819
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.872795729126667
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8829262653986613
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7435675063502808
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8128852548138147
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8948243856430054
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8574281930923462
+      }
+    },
+    "zigong": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8834004600842794
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8471374788085373
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8495387037595113
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8065427699404791
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7878352395941387
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8794611493746439
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8395193417867025
       }
     }
   },
@@ -231,220 +291,224 @@
       "ElasticNet": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.9456242671446641
+        "seed_mean": 0.9563528646898783
       },
       "GRU": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.3061668276786804
+        "seed_mean": 0.3113456567128499
       },
       "LGBMRegressor": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.267954173261781
-      },
-      "LGBMRegressor+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.25953888982912016
-      },
-      "LGBMRegressor+icd_notes": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.25989437696140233
+        "seed_mean": 0.28467250619271367
       },
       "LSTM": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.2978422939777374
-      },
-      "LSTM+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.33199934164683026
-      },
-      "LSTM+icd_notes": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.3571924865245819
+        "seed_mean": 0.32840540011723834
       },
       "TCN": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.313472847143809
+        "seed_mean": 0.3321446478366852
       },
       "Transformer": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.3260698616504669
+        "seed_mean": 0.32414506872495014
       }
     },
     "hirid": {
       "ElasticNet": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.7867665556203797
+        "seed_mean": 0.7867665851761502
       },
       "GRU": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.3797078529993693
+        "seed_mean": 0.4056305984656016
       },
       "LGBMRegressor": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.33360002009723866
+        "seed_mean": 0.34414322531455194
       },
       "LSTM": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.4561224579811096
+        "seed_mean": 0.4314814805984497
       },
       "TCN": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.44275640447934467
+        "seed_mean": 0.44140783945719403
       },
       "Transformer": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.44854145248730976
+        "seed_mean": 0.38260631759961444
       }
     },
     "miiv": {
       "ElasticNet": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.9200384707776408
+        "seed_mean": 0.9103080216095885
       },
       "GRU": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.2438428004582723
+        "seed_mean": 0.280623455842336
       },
       "LGBMRegressor": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.2113155726386263
-      },
-      "LGBMRegressor+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.21377571324041625
-      },
-      "LGBMRegressor+icd_notes": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.2098529891574122
+        "seed_mean": 0.21720050420089768
       },
       "LSTM": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.2610237201054891
-      },
-      "LSTM+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.2798132697741191
-      },
-      "LSTM+icd_notes": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.30650906761487323
+        "seed_mean": 0.27281368772188824
       },
       "TCN": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.2530738612016042
+        "seed_mean": 0.2637321501970291
       },
       "Transformer": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.2476379026969274
+        "seed_mean": 0.2490814427534739
       }
     },
     "nwicu": {
       "ElasticNet": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 1.112171087203991
+        "seed_mean": 1.1059060844423376
       },
       "GRU": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.5406220952669779
+        "seed_mean": 0.5972137252489725
       },
       "LGBMRegressor": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.4756553005675061
+        "seed_mean": 0.4868961589871133
       },
       "LSTM": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.6405776143074036
+        "seed_mean": 0.5626253883043925
       },
       "TCN": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.6548097531000773
+        "seed_mean": 0.6072606643040975
       },
       "Transformer": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.5458047986030579
+        "seed_mean": 0.5751802325248718
       }
     },
     "omix": {
       "ElasticNet": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.6728774481079571
+        "seed_mean": 0.7261082363660959
       },
       "GRU": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.4753699103991191
+        "seed_mean": 0.4944196244080861
       },
       "LGBMRegressor": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.3084291662893518
-      },
-      "LGBMRegressor+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.309250039639645
-      },
-      "LGBMRegressor+icd_notes": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.31535077951355556
+        "seed_mean": 0.312217237370263
       },
       "LSTM": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.4961388905843099
-      },
-      "LSTM+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.4797646601994832
-      },
-      "LSTM+icd_notes": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 0.4889268179734548
+        "seed_mean": 0.5451308091481527
       },
       "TCN": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.48585095008214313
+        "seed_mean": 0.49197662870089215
       },
       "Transformer": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 0.4479322135448456
+        "seed_mean": 0.43553637464841205
+      }
+    },
+    "sicdb": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.6039069224020658
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2562539130449295
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.21667612915630782
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2790484031041463
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.2667539020379384
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.29953168829282123
+      }
+    },
+    "zigong": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.7919524004864612
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.46002233028411865
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.3242777362705682
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.5331435104211172
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.4300403694311778
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 0.45035597681999207
       }
     }
   },
@@ -453,49 +517,39 @@
       "ElasticNet": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 43.98922014196
+        "seed_mean": 43.83993024466563
       },
       "GRU": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 37.16900761922201
+        "seed_mean": 37.391405741373696
       },
       "LGBMRegressor": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 38.499232248908925
-      },
-      "LGBMRegressor+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 38.17774246672302
+        "seed_mean": 38.35971966072635
       },
       "LSTM": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 37.366129557291664
-      },
-      "LSTM+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 37.225799560546875
+        "seed_mean": 37.172672271728516
       },
       "TCN": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 37.6105105082194
+        "seed_mean": 36.885986328125
       },
       "Transformer": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 37.10342280069987
+        "seed_mean": 37.03130849202474
       }
     },
     "hirid": {
       "ElasticNet": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 44.428773818138865
+        "seed_mean": 44.42858672110636
       },
       "GRU": {
         "metric": "MAE",
@@ -505,7 +559,7 @@
       "LGBMRegressor": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 36.62015870977467
+        "seed_mean": 36.61924699681414
       },
       "LSTM": {
         "metric": "MAE",
@@ -527,126 +581,160 @@
       "ElasticNet": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 49.04547175206684
+        "seed_mean": 49.322561218376876
       },
       "GRU": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 38.49439493815104
+        "seed_mean": 39.094645182291664
       },
       "LGBMRegressor": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 40.35335413131043
-      },
-      "LGBMRegressor+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 40.30780581685455
+        "seed_mean": 40.695438929590004
       },
       "LSTM": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 40.26947021484375
-      },
-      "LSTM+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 39.79158274332682
+        "seed_mean": 39.50557200113932
       },
       "TCN": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 39.744607289632164
+        "seed_mean": 39.476880391438804
       },
       "Transformer": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 38.08399454752604
+        "seed_mean": 38.56130727132162
       }
     },
     "nwicu": {
       "ElasticNet": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 49.43507891839911
+        "seed_mean": 49.26048896544712
       },
       "GRU": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 48.60146713256836
+        "seed_mean": 51.174153645833336
       },
       "LGBMRegressor": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 41.02700643503909
+        "seed_mean": 40.61360035086763
       },
       "LSTM": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 44.99467468261719
+        "seed_mean": 46.23195012410482
       },
       "TCN": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 42.55619812011719
+        "seed_mean": 41.773179372151695
       },
       "Transformer": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 42.02675247192383
+        "seed_mean": 41.38011169433594
       }
     },
     "omix": {
       "ElasticNet": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 48.02198155698175
+        "seed_mean": 48.0929345874772
       },
       "GRU": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 74.21520233154297
+        "seed_mean": 64.80100758870442
       },
       "LGBMRegressor": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 39.26016897280324
-      },
-      "LGBMRegressor+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 38.16351942194694
-      },
-      "LGBMRegressor+icd_notes": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 38.45723523072733
+        "seed_mean": 41.03648794035409
       },
       "LSTM": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 74.0115254720052
-      },
-      "LSTM+icd": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 73.85545349121094
-      },
-      "LSTM+icd_notes": {
-        "metric": "MAE",
-        "n_seeds": 3,
-        "seed_mean": 73.72744496663411
+        "seed_mean": 64.51605987548828
       },
       "TCN": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 44.609169006347656
+        "seed_mean": 42.999881744384766
       },
       "Transformer": {
         "metric": "MAE",
         "n_seeds": 3,
-        "seed_mean": 93.44898732503255
+        "seed_mean": 79.09842427571614
+      }
+    },
+    "sicdb": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 46.322045707806886
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 36.05777231852213
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 35.56736816926244
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 35.596144358317055
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 35.89473342895508
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 35.17328008015951
+      }
+    },
+    "zigong": {
+      "ElasticNet": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 56.82999700152504
+      },
+      "GRU": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 61.71714782714844
+      },
+      "LGBMRegressor": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 55.0303804568708
+      },
+      "LSTM": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 61.63742701212565
+      },
+      "TCN": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 56.60519027709961
+      },
+      "Transformer": {
+        "metric": "MAE",
+        "n_seeds": 3,
+        "seed_mean": 71.5709457397461
       }
     }
   },
@@ -655,57 +743,37 @@
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8434279561042786
+        "seed_mean": 0.8469691872596741
       },
       "LGBMClassifier": {
         "metric": "AUROC",
-        "n_seeds": 2,
-        "seed_mean": 0.8609802778402569
-      },
-      "LGBMClassifier+icd": {
-        "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8744275508198202
-      },
-      "LGBMClassifier+icd_notes": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.8776224563979241
+        "seed_mean": 0.8668924934968413
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8509378433227539
-      },
-      "LSTM+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.8437049388885498
-      },
-      "LSTM+icd_notes": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.8283633987108866
+        "seed_mean": 0.8587679068247477
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8326722041250184
+        "seed_mean": 0.841993608324043
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8481831240560517
+        "seed_mean": 0.8397725009290227
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8416614731152853
+        "seed_mean": 0.8499170343081156
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.848052183787028
+        "seed_mean": 0.8588191866874695
       }
     },
     "hirid": {
@@ -716,8 +784,8 @@
       },
       "LGBMClassifier": {
         "metric": "AUROC",
-        "n_seeds": 2,
-        "seed_mean": 0.8317878151495597
+        "n_seeds": 3,
+        "seed_mean": 0.8396807752707143
       },
       "LSTM": {
         "metric": "AUROC",
@@ -727,12 +795,12 @@
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8213509047436095
+        "seed_mean": 0.8102481657074009
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8361968316255544
+        "seed_mean": 0.8300237733770505
       },
       "TCN": {
         "metric": "AUROC",
@@ -749,151 +817,185 @@
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8427478869756063
+        "seed_mean": 0.8312549988428751
       },
       "LGBMClassifier": {
         "metric": "AUROC",
-        "n_seeds": 2,
-        "seed_mean": 0.8613937955971998
-      },
-      "LGBMClassifier+icd": {
-        "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8611102509710089
-      },
-      "LGBMClassifier+icd_notes": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.86546419080365
+        "seed_mean": 0.8561995035892669
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8522129058837891
-      },
-      "LSTM+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.825514038403829
-      },
-      "LSTM+icd_notes": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.8138570388158163
+        "seed_mean": 0.8369085192680359
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8167042112235996
+        "seed_mean": 0.7986386875405334
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8405415196329771
+        "seed_mean": 0.8272323875944566
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8392878572146097
+        "seed_mean": 0.8275201320648193
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.850836455821991
+        "seed_mean": 0.8436418573061625
       }
     },
     "nwicu": {
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8014917174975077
+        "seed_mean": 0.8289803663889567
       },
       "LGBMClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8563956719296527
+        "seed_mean": 0.8527278942451714
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8120172619819641
+        "seed_mean": 0.8330623706181844
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.775698734922036
+        "seed_mean": 0.7931573014357062
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.841179213930023
+        "seed_mean": 0.8249122797861662
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8045416474342346
+        "seed_mean": 0.8293961485226949
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8153084317843119
+        "seed_mean": 0.8325409293174744
       }
     },
     "omix": {
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6755793293317159
+        "seed_mean": 0.8332374294598898
       },
       "LGBMClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.4757130124777184
-      },
-      "LGBMClassifier+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.3499331550802139
-      },
-      "LGBMClassifier+icd_notes": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.4896390374331551
+        "seed_mean": 0.7175330903510454
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6514408588409424
-      },
-      "LSTM+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.7090017795562744
-      },
-      "LSTM+icd_notes": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.7182115316390991
+        "seed_mean": 0.7600869536399841
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6983065953654188
+        "seed_mean": 0.8687895645501631
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6717914438502673
+        "seed_mean": 0.6876398746722936
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6741681496302286
+        "seed_mean": 0.6809258858362833
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6803698738416036
+        "seed_mean": 0.7975573937098185
+      }
+    },
+    "sicdb": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8954787453015646
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8863404829008209
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8937859336535136
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.9062351304857069
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8907154244394828
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8926477034886678
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.8988863031069437
+      }
+    },
+    "zigong": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.5626533428827921
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.5596444938203027
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.5709160765012106
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.648659908346063
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.5699208443271768
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.5775123635927836
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.5706152121225992
       }
     }
   },
@@ -902,225 +1004,259 @@
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7481491367022196
+        "seed_mean": 0.7547600666681925
       },
       "LGBMClassifier": {
         "metric": "AUROC",
-        "n_seeds": 2,
-        "seed_mean": 0.7408707002716612
-      },
-      "LGBMClassifier+icd": {
-        "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7518469624364442
+        "seed_mean": 0.750924206019262
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7578911979993185
-      },
-      "LSTM+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.7607671022415161
+        "seed_mean": 0.7668104966481527
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6792188821788855
+        "seed_mean": 0.7088326436663284
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7174473639172062
+        "seed_mean": 0.6632645000795834
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.760851263999939
+        "seed_mean": 0.7634391188621521
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7519519130388895
+        "seed_mean": 0.7571840484937032
       }
     },
     "hirid": {
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8182233572006226
+        "seed_mean": 0.8014154235521952
       },
       "LGBMClassifier": {
         "metric": "AUROC",
-        "n_seeds": 2,
-        "seed_mean": 0.7829048469087678
+        "n_seeds": 3,
+        "seed_mean": 0.7573217713303052
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8097070256868998
+        "seed_mean": 0.7985361417134603
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7716793860841732
+        "seed_mean": 0.7432520516003535
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7699097348175958
+        "seed_mean": 0.7172543611744917
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8148237268129984
+        "seed_mean": 0.7990520795186361
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8101393183072408
+        "seed_mean": 0.7934289971987406
       }
     },
     "miiv": {
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7997980912526449
+        "seed_mean": 0.7956265409787496
       },
       "LGBMClassifier": {
         "metric": "AUROC",
-        "n_seeds": 2,
-        "seed_mean": 0.7809262710081748
-      },
-      "LGBMClassifier+icd": {
-        "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7689526215180926
+        "seed_mean": 0.7684049346367693
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8073620200157166
-      },
-      "LSTM+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.7552364667256674
+        "seed_mean": 0.8130138317743937
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7060919617517141
+        "seed_mean": 0.7105758551872047
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7735159281284348
+        "seed_mean": 0.7030071055937398
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.800085723400116
+        "seed_mean": 0.8111819823582967
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7911824385325114
+        "seed_mean": 0.7735070586204529
       }
     },
     "nwicu": {
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7338075439135233
+        "seed_mean": 0.7447932759920756
       },
       "LGBMClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6548315876196376
+        "seed_mean": 0.6421994764949251
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7591082056363424
+        "seed_mean": 0.7449264923731486
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7221745512758284
+        "seed_mean": 0.7292753078926277
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6680511214953562
+        "seed_mean": 0.6657611757263483
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.757131040096283
+        "seed_mean": 0.7607710560162863
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7274156014124552
+        "seed_mean": 0.7460565765698751
       }
     },
     "omix": {
       "GRU": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8115693728129069
+        "seed_mean": 0.8258164922396342
       },
       "LGBMClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.6765470759011082
-      },
-      "LGBMClassifier+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.7032089511779914
-      },
-      "LGBMClassifier+icd_notes": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.6865427346593972
+        "seed_mean": 0.7201779278581496
       },
       "LSTM": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7527170777320862
-      },
-      "LSTM+icd": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.6550765832265218
-      },
-      "LSTM+icd_notes": {
-        "metric": "AUROC",
-        "n_seeds": 3,
-        "seed_mean": 0.6881535053253174
+        "seed_mean": 0.7658921877543131
       },
       "LogisticRegression": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7052581977305877
+        "seed_mean": 0.7195189078628029
       },
       "RFClassifier": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7144042455695926
+        "seed_mean": 0.7118900950281183
       },
       "TCN": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.8081271052360535
+        "seed_mean": 0.8299187223116556
       },
       "Transformer": {
         "metric": "AUROC",
         "n_seeds": 3,
-        "seed_mean": 0.7946465214093527
+        "seed_mean": 0.821537713209788
+      }
+    },
+    "sicdb": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7814170519510905
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7466175499320067
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7858465512593588
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7319318589995772
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7369810244473148
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7895063161849976
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7783372600873312
+      }
+    },
+    "zigong": {
+      "GRU": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7353960474332174
+      },
+      "LGBMClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.5028029487481573
+      },
+      "LSTM": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6758880217870077
+      },
+      "LogisticRegression": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.5051047749853939
+      },
+      "RFClassifier": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.5865315186292431
+      },
+      "TCN": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.7713713447252909
+      },
+      "Transformer": {
+        "metric": "AUROC",
+        "n_seeds": 3,
+        "seed_mean": 0.6793523629506429
       }
     }
   }

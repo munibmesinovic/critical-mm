@@ -30,12 +30,28 @@ class FusionStrategy(ABC):
         *,
         fusion: FusionConfig,
         vars: dict[str, Any],
-        icd_block: pl.DataFrame | None,
-        notes_block: pl.DataFrame | None,
+        blocks: dict[str, pl.DataFrame | None] | None = None,
+        icd_block: pl.DataFrame | None = None,
+        notes_block: pl.DataFrame | None = None,
     ) -> dict[Any, dict[Any, pd.DataFrame]]: ...
 
 def _value_cols(block: pl.DataFrame, keys: list[str]) -> list[str]:
     return [c for c in block.columns if c not in keys]
+
+def _coerce_blocks(
+    blocks: dict[str, pl.DataFrame | None] | None,
+    icd_block: pl.DataFrame | None,
+    notes_block: pl.DataFrame | None,
+) -> dict[str, pl.DataFrame | None]:
+    """Accept either the new ``blocks`` dict or the legacy positional pair.
+
+    When the legacy positional ``icd_block``/``notes_block`` args are supplied
+    (``blocks is None``), this reconstructs ``{"icd": icd_block, "notes": notes_block}``
+    so the existing locked-cell path is byte-identical to the dict path.
+    """
+    if blocks is not None:
+        return blocks
+    return {"icd": icd_block, "notes": notes_block}
 
 @register_fusion("feature_augmentation")
 class FeatureAugmentationFusion(FusionStrategy):
@@ -45,11 +61,15 @@ class FeatureAugmentationFusion(FusionStrategy):
         *,
         fusion: FusionConfig,
         vars: dict[str, Any],
-        icd_block: pl.DataFrame | None,
-        notes_block: pl.DataFrame | None,
+        blocks: dict[str, pl.DataFrame | None] | None = None,
+        icd_block: pl.DataFrame | None = None,
+        notes_block: pl.DataFrame | None = None,
     ) -> dict[Any, dict[Any, pd.DataFrame]]:
         if fusion.rung == "structured":
             return preprocessed
+        blocks = _coerce_blocks(blocks, icd_block, notes_block)
+        icd_block = blocks.get("icd")
+        notes_block = blocks.get("notes")
         group, seq = vars["GROUP"], vars["SEQUENCE"]
         out: dict[Any, dict[Any, pd.DataFrame]] = {}
         for split, segs in preprocessed.items():
@@ -64,6 +84,15 @@ class FeatureAugmentationFusion(FusionStrategy):
                     note_keys = [group]
                     right = notes_block
                 feat = _merge_block(feat, right, on=note_keys, present="notes_present")
+            if fusion.uses_treatments and blocks.get("treatments") is not None:
+                tblock = blocks["treatments"]
+                if "hour" in tblock.columns:
+                    tkeys = [group, seq]
+                    tright = tblock.rename({"hour": seq})
+                else:
+                    tkeys = [group]
+                    tright = tblock
+                feat = _merge_block(feat, tright, on=tkeys, present="treatments_present")
             feat = feat.sort_values([group, seq], kind="stable").reset_index(drop=True)
             out[split] = {**segs, Segment.features: feat}
         return out
@@ -82,9 +111,12 @@ class IcdOnlyFusion(FusionStrategy):
         *,
         fusion: FusionConfig,
         vars: dict[str, Any],
-        icd_block: pl.DataFrame | None,
-        notes_block: pl.DataFrame | None,
+        blocks: dict[str, pl.DataFrame | None] | None = None,
+        icd_block: pl.DataFrame | None = None,
+        notes_block: pl.DataFrame | None = None,
     ) -> dict[Any, dict[Any, pd.DataFrame]]:
+        blocks = _coerce_blocks(blocks, icd_block, notes_block)
+        icd_block = blocks.get("icd")
         if icd_block is None:
             return preprocessed
         group, seq = vars["GROUP"], vars["SEQUENCE"]
@@ -124,14 +156,15 @@ def augment_preprocessed(
     *,
     fusion: FusionConfig,
     vars: dict[str, Any],
-    icd_block: pl.DataFrame | None,
-    notes_block: pl.DataFrame | None,
+    blocks: dict[str, pl.DataFrame | None] | None = None,
+    icd_block: pl.DataFrame | None = None,
+    notes_block: pl.DataFrame | None = None,
     strategy: str = "feature_augmentation",
 ) -> dict[Any, dict[Any, pd.DataFrame]]:
     """Resolve the named strategy and apply it. Entry called from the training hook."""
     from critical_mm.registry import get_fusion
 
+    blocks = _coerce_blocks(blocks, icd_block, notes_block)
     strat: FusionStrategy = get_fusion(strategy)()
-    return strat.augment(
-        preprocessed, fusion=fusion, vars=vars, icd_block=icd_block, notes_block=notes_block
-    )
+    return strat.augment(preprocessed, fusion=fusion, vars=vars, blocks=blocks)
+

@@ -360,7 +360,7 @@ class MIMICIVReader(DatasetReader):
     def _collapse_gcs_components(self, chart_events: pl.LazyFrame) -> pl.LazyFrame:
         """Sum the 3 GCS component sub-scores into one total per (stay, time).
 
-        Audit round 10y (2026-05-20). After ``_events_subframe`` has
+        . After ``_events_subframe`` has
         mapped itemid → "gcs" for {220739, 223900, 223901, 226755}, this
         helper groups by (patient_id, stay_id, charttime) and sums the
         per-component sub-score `value` into a single 3-15 total. The
@@ -485,7 +485,10 @@ class MIMICIVReader(DatasetReader):
         ).select(list(TABLES["meds"][0].keys()))
 
         try:
-            presc = self._scan_csv("hosp/prescriptions.csv.gz").select(
+            presc = self._scan_csv(
+                "hosp/prescriptions.csv.gz",
+                schema_overrides={"gsn": pl.Utf8(), "ndc": pl.Utf8()},
+            ).select(
                 "subject_id",
                 "hadm_id",
                 "starttime",
@@ -612,7 +615,7 @@ class MIMICIVReader(DatasetReader):
         ).select(list(TABLES["diagnoses"][0].keys()))
 
     def read_abx_duration(self) -> pl.LazyFrame:
-        """ricu-faithful abx_duration extraction (audit round 10m).
+        """ricu-faithful abx_duration extraction (review).
 
         Verbatim port of
         ``configs/medications/concept-dict.json#abx_duration.sources.miiv``:

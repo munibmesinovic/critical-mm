@@ -121,6 +121,25 @@ def main() -> None:
         "without touching the locked tree.",
     )
     ap.add_argument(
+        "--splits-root",
+        type=Path,
+        default=None,
+        help="Root dir containing data/processed/splits (default: derived from "
+        "--data-root). Point at an alternative split tree (e.g. "
+        "data/processed/splits_patient) to retrain cells against different "
+        "splits without touching the locked stay-grouped splits. Default None "
+        "preserves current paths bit-exact.",
+    )
+    ap.add_argument(
+        "--checkpoint-root",
+        type=Path,
+        default=None,
+        help="Root dir for checkpoints (default: <data-root>/data/checkpoints). "
+        "Point at a parallel tree (e.g. data/checkpoints_patient) to write "
+        "retrained cells without touching the locked tree. Default None "
+        "preserves current paths bit-exact.",
+    )
+    ap.add_argument(
         "--max-epochs",
         type=int,
         default=None,
@@ -178,6 +197,8 @@ def main() -> None:
         debug=args.debug,
         skip_existing=not args.force_retrain,
         data_root=args.data_root or REPO,
+        splits_root=args.splits_root,
+        checkpoint_root=args.checkpoint_root,
         extra_hyperparams=extra_hyperparams,
     )
     sys.exit(0 if result["n_fail"] == 0 else 1)

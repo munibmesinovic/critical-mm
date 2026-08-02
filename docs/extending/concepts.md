@@ -10,7 +10,7 @@ A "concept" in CRITICAL-MM is a clinical feature (vital sign, lab test, etc.) wi
 
 | Column | Type | Purpose |
 |---|---|---|
-| `name` | str | Canonical short name (`hr`, `sbp`, `crea`,...). Used as dyn column name. |
+| `name` | str | Canonical short name (`hr`, `sbp`, `crea`, ...). Used as dyn column name. |
 | `category` | str | One of `vital`, `lab`, `outcome`. Only `vital` + `lab` enter `DYNAMIC_CONCEPTS`. |
 | `loinc_code` | str | LOINC code for the concept (used by external mapping tools). |
 | `canonical_unit` | str | Unit after harmonisation. **Required for inclusion in `DYNAMIC_CONCEPTS`.** |
@@ -22,7 +22,7 @@ The auto-discovery in `critical_mm/tasks/base.py`:
 
 ```python
 DYNAMIC_CONCEPTS = sorted(
-    name for name, cc in CONCEPTS_BY_NAME.items
+    name for name, cc in CONCEPTS_BY_NAME.items()
     if cc.category in ("vital", "lab")
     and cc.canonical_unit is not None
     and cc.valid_range is not None
@@ -49,7 +49,7 @@ If your new concept is "internal use only," add it to this exclusion set.
 2. CM_REFERENCE numbers become meaningless for the new schema (they describe a 48-feature model, you're now training a 49-feature one).
 3. Any oracle comparison against CM_REFERENCE produces `outside_tolerance` even on identical training because the architecture is different.
 
-This isn't a bug — it's the locked-reference contract. Once we publish CM_REFERENCE_v1, **everyone training against v1 uses 48 features**. 's multi-version registry (see Option A below) is the mechanism for adding new concepts without invalidating v1: publish a `CM_REFERENCE_v2` alongside.
+This isn't a bug — it's the locked-reference contract. Once we publish CM_REFERENCE_v1, **everyone training against v1 uses 48 features**. the multi-version registry (see Option A below) is the mechanism for adding new concepts without invalidating v1: publish a `CM_REFERENCE_v2` alongside.
 
 ## How to actually add a concept
 
@@ -57,7 +57,7 @@ Two options:
 
 ### Option A — publish a CM_REFERENCE_v2
 
- introduced multi-version coexistence: `CM_REFERENCE_V1` stays locked at 48 features for paper reproducibility; new versions register alongside via `register_cm_reference`. Workflow:
+Multi-version coexistence was introduced: `CM_REFERENCE_V1` stays locked at 48 features for paper reproducibility; new versions register alongside via `register_cm_reference()`. Workflow:
 
 1. Add the row to `configs/concepts_loinc.csv` with `canonical_unit` + `valid_range`.
 2. Add per-dataset itemid mappings for every dataset you train on.
@@ -69,7 +69,7 @@ Two options:
 
    register_cm_reference(
        "v2",
-       cells={...}, # your 80+ cells with the 49-feature architecture
+       cells={...},  # your 80+ cells with the 49-feature architecture
        manifest={
            "source_json": "data/cm_reference/v2/cm_grid_metrics.json",
            "git_sha": "<your-grid-run-sha>",
@@ -93,7 +93,7 @@ For internal-only research where you don't need to compare against the published
 4. Re-aggregate: `python scripts/aggregate_cm_grid.py && python scripts/lift_cm_reference.py`. CM_REFERENCE is now your fork's 49-feature reference.
 5. Document your fork's schema bump in a `docs/sessions/<date>-schema-v2.md`.
 
-This invalidates forever for your fork — you've baked in your custom schema. That's a defensible choice for internal projects; less so for publishable benchmarks.
+This invalidates the multi-version registry forever for your fork — you've baked in your custom schema. That's a defensible choice for internal projects; less so for publishable benchmarks.
 
 ## Suggested workflow for "I want to try a new feature"
 
@@ -112,3 +112,4 @@ Most "new feature" exploration is feature engineering, not schema extension — 
 - `critical_mm/tasks/base.py::DYNAMIC_CONCEPTS` — the auto-derived 48-feature list
 - `critical_mm/validation/oracle.py::CM_REFERENCE` — the locked 80-cell ship gate
 - [overview.md](overview.md) — full extension surface map
+

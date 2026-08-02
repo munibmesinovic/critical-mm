@@ -12,7 +12,7 @@ Criteria match YAIB paper App C.2 + Figure 6 + external/YAIB-cohorts/R/base_coho
   4. no_12h_gap (excl4, no consecutive run of >12 measurement-free hours)
   5. age>=18 (excl5)
 
-Audit round 10 (2026-05-19): rewritten from the original 5-criterion set
+rewritten from the original 5-criterion set
 (age, los>=6h, los<=28d, has_hr_in_24h, first_admission). The `has_hr_in_24h`
 proxy was replaced with the proper paper-spec BASE-3/4; `los<=28d` was
 dropped because YAIB has no upper LoS cap at base-cohort level (the 168h
@@ -52,6 +52,7 @@ INCLUSION_CRITERIA: list[tuple[int, str, str]] = [
 _MIN_LOS_HOURS: float = 6.0
 _MIN_MEASURED_BINS: int = 4
 _MAX_GAP_HOURS: int = 12
+_DATASET_MAX_GAP_HOURS: dict[str, int] = {"zigong": 48}
 
 _DYNAMIC_CONCEPTS_FOR_GATING: frozenset[str] = frozenset(
     name
@@ -82,7 +83,7 @@ def _measured_hour_buckets_lf(stays: pl.DataFrame, events_long: pl.LazyFrame) ->
     computed on the per-hour task grid, not the entire stay duration —
     matches YAIB's `stop_obs_at(patients, offset=7*24h)`).
 
-    Audit round 10b (2026-05-19, B1 lazy-stream refactor): events_long is
+    events_long is
     passed as a LazyFrame so the 48-concept filter + admits-join + window
     filter + unique can pipeline through polars' streaming engine. Eager
     `.collect()` of the full events_long at top-level (pre-refactor) blew
@@ -115,7 +116,7 @@ def _longest_gap_hours_per_stay_lf(stays: pl.DataFrame, measured_lf: pl.LazyFram
     full grid). Sentinel measurements at -1 and at max_hour fold the
     leading + trailing gaps into the same diff-based logic.
 
-    Audit round 10b (2026-05-19, B1): takes LazyFrame; the caller streams.
+    takes LazyFrame; the caller streams.
     """
     capped = stays.lazy().select(
         "stay_id",
@@ -152,7 +153,7 @@ def _stream_collect(lf: pl.LazyFrame) -> pl.DataFrame:
         return lf.collect()
 
 def _apply_criteria(
-    stays: pl.DataFrame, events_long: pl.LazyFrame
+    stays: pl.DataFrame, events_long: pl.LazyFrame, max_gap_hours: int = _MAX_GAP_HOURS
 ) -> tuple[pl.DataFrame, list[dict[str, int | str | float]]]:
     """Apply the five YAIB-paper inclusion criteria in order; return survivors + attrition.
 
@@ -199,7 +200,7 @@ def _apply_criteria(
     if surviving.height > 0:
         measured_lf = _measured_hour_buckets_lf(surviving, events_long)
         gap_per_stay = _stream_collect(_longest_gap_hours_per_stay_lf(surviving, measured_lf))
-        passing = gap_per_stay.filter(pl.col("max_gap") <= _MAX_GAP_HOURS).select("stay_id")
+        passing = gap_per_stay.filter(pl.col("max_gap") <= max_gap_hours).select("stay_id")
         surviving = surviving.join(passing, on="stay_id", how="inner")
     after = surviving.height
     per_step.append(_attrition_row(4, "no_12h_gap", before, after))
@@ -271,7 +272,10 @@ def build_base_cohort(
     target_stays = processed_root / "base_cohort" / dataset / "stays.parquet"
     target_attrition = processed_root / "base_cohort" / dataset / "attrition.csv"
 
+    max_gap_hours = _DATASET_MAX_GAP_HOURS.get(dataset, _MAX_GAP_HOURS)
     extra = f"base_cohort/{dataset}/{_criteria_hash()}"
+    if max_gap_hours != _MAX_GAP_HOURS:
+        extra += f"/gap{max_gap_hours}"
     key = build_cache_key(
         source_paths=[stays_path, events_path],
         tree_roots=[repo_root / "critical_mm", repo_root / "configs"],
@@ -292,7 +296,7 @@ def build_base_cohort(
     events_long_lf = scan(events_path)
     n_in = stays.height
 
-    surviving, per_step = _apply_criteria(stays, events_long_lf)
+    surviving, per_step = _apply_criteria(stays, events_long_lf, max_gap_hours=max_gap_hours)
     n_out = surviving.height
 
     def _writer(tmp_path: Path) -> None:

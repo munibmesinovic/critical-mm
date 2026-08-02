@@ -3,11 +3,11 @@
 The CSV is the single source of truth for the 56-concept v1 set. Module-level
 validation runs once at import time; the resulting registry is frozen.
 
- (2026-05-16): `gcs` added under include_with_nwicu_null for B8 Sepsis-3
+P21 (2026-05-16): `gcs` added under include_with_nwicu_null for B8 Sepsis-3
 SOFA CNS component (MIMIC-IV + eICU wired; HiRID component-summing deferred
 to Phase 2; NWICU absent in d_items).
 
- (2026-05-21): `urine_rate` added under include_with_nwicu_null
+An earlier review (2026-05-21): `urine_rate` added under include_with_nwicu_null
 for the AKI urine arm. ricu's YAIB has a separate urine_rate concept (hirid
 variableid 10020000, already mL/h) that the KDIGO urine arm consumes
 directly. Other datasets (eicu/miiv/nwicu) emit no urine_rate events and
@@ -94,13 +94,13 @@ def _row_to_concept(row: dict[str, str]) -> Concept:
 
     return Concept(
         name=row["name"],
-        category=row["category"], # type: ignore[arg-type]
+        category=row["category"],
         description=row["description"],
-        v1_status=row["v1_status"], # type: ignore[arg-type]
+        v1_status=row["v1_status"],
         miiv_prevalence=_opt_float(row["miiv_prevalence"]),
         eicu_prevalence=_opt_float(row["eicu_prevalence"]),
         hirid_prevalence=_opt_float(row["hirid_prevalence"]),
-        nwicu_status=row["nwicu_status"], # type: ignore[arg-type]
+        nwicu_status=row["nwicu_status"],
         nwicu_mapping=nwicu_mapping,
         canonical_unit=_opt_str(row["canonical_unit"]),
         valid_range=valid_range,
@@ -137,3 +137,4 @@ NWICU_NULL_CONCEPTS: list[str] = sorted(
 EXCLUDE_MANUAL_CONCEPTS: list[str] = sorted(
     c.name for c in CONCEPTS if c.v1_status == "exclude_manual"
 )
+

@@ -134,7 +134,7 @@ def _ensure_builtin_modalities_loaded() -> None:
     if _BUILTIN_MODALITIES_LOADED:
         return
     with contextlib.suppress(ImportError):
-        import critical_mm.modalities # noqa: F401
+        import critical_mm.modalities
     _BUILTIN_MODALITIES_LOADED = True
 
 def register_note_reader(name: str) -> Callable[[T], T]:
@@ -224,7 +224,7 @@ def _ensure_builtin_fusion_loaded() -> None:
     if _BUILTIN_FUSION_LOADED:
         return
     with contextlib.suppress(ImportError):
-        import critical_mm.fusion # noqa: F401
+        import critical_mm.fusion
     _BUILTIN_FUSION_LOADED = True
 
 def discover_tasks() -> dict[str, type[Task]]:

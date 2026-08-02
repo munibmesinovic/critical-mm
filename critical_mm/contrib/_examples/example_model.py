@@ -31,7 +31,6 @@ from critical_mm.api import register_model
 from critical_mm.models._runmode import RunMode
 from critical_mm.models.wrappers import DLPredictionWrapper
 
-
 @register_model("ExampleNet")
 class ExampleNet(DLPredictionWrapper):
     """A single-hidden-layer MLP applied independently at every timestep."""

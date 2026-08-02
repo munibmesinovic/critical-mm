@@ -27,9 +27,9 @@ class Mortality48(Task):
 
 Two ways to make the decorator fire:
 
-1. **Drop into `critical_mm/contrib/<name>.py`** — `critical_mm.registry._ensure_contrib_loaded` walks the contrib package on first `discover_*` call and imports every module. Your decorated class lands in the registry. `scripts/train.py` then accepts `--tasks mortality48` automatically.
+1. **Drop into `critical_mm/contrib/<name>.py`** — `critical_mm.registry._ensure_contrib_loaded()` walks the contrib package on first `discover_*()` call and imports every module. Your decorated class lands in the registry. `scripts/train.py` then accepts `--tasks mortality48` automatically.
 
-2. **Pip-publish your own package** — put the decorated class in `my_extension_pkg/tasks/foo.py`, then `pip install -e.` your package and `import my_extension_pkg.tasks.foo` before running `scripts/train.py`. The decorator runs at import; the registry picks it up. (Entry-points-based auto-discovery is on the + roadmap but not yet implemented.)
+2. **Pip-publish your own package** — put the decorated class in `my_extension_pkg/tasks/foo.py`, then `pip install -e .` your package and `import my_extension_pkg.tasks.foo` before running `scripts/train.py`. The decorator runs at import; the registry picks it up. (Entry-points-based auto-discovery is on the the initial split work+ roadmap but not yet implemented.)
 
 The `critical_mm/contrib/_examples/` subpackage is **never** auto-loaded — it carries copy-paste templates only. To activate a template, copy it out of `_examples/`.
 
@@ -40,7 +40,7 @@ What are you adding?
 ├── A new prediction target → see tasks.md
 ├── A new ICU data source → see datasets.md
 ├── A new neural network architecture or classical ML estimator → see models.md
-└── A new vital/lab feature → see concepts.md ⚠ (invalidates CM_REFERENCE_v1!)
+└── A new vital/lab feature → see concepts.md  ⚠ (invalidates CM_REFERENCE_v1!)
 ```
 
 ## Important: the CM_REFERENCE_v1 invariant
@@ -51,7 +51,7 @@ CM_REFERENCE (in `critical_mm/validation/oracle.py`) is the locked 80-cell ship 
 - The 5 canonical tasks (mortality24, AKI, sepsis, LoS, kidney_function).
 - 4 datasets × 4 DL models × 1 seed.
 
-You can **add new** tasks, datasets, and models without touching CM_REFERENCE — they simply produce *new* cells, not replacements for existing ones. Adding a **new feature concept** changes the architecture's `input_dim` so it can't share `CM_REFERENCE_v1`; instead, register a new version side-by-side via 's multi-version registry. See [concepts.md](concepts.md) for the workflow.
+You can **add new** tasks, datasets, and models without touching CM_REFERENCE — they simply produce *new* cells, not replacements for existing ones. Adding a **new feature concept** changes the architecture's `input_dim` so it can't share `CM_REFERENCE_v1`; instead, register a new version side-by-side via the multi-version registry. See [concepts.md](concepts.md) for the workflow.
 
 ## See also
 
@@ -59,3 +59,4 @@ You can **add new** tasks, datasets, and models without touching CM_REFERENCE �
 - [datasets.md](datasets.md) — DatasetReader contract + worked example
 - [models.md](models.md) — DL + ML wrapper contracts + worked examples
 - [concepts.md](concepts.md) — concept CSV format + CM_REFERENCE versioning
+

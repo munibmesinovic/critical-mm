@@ -67,7 +67,7 @@ def apply_canonical_units(
     Concepts without a registered `canonical_unit` (sex, inr_pt, ph, aki,
     sepsis) keep the incoming `unit` value via `coalesce`. After unit
     canonicalisation, rows whose value falls outside the concept's registry
-    valid_range are handled per `out_of_range` (audit 10ah, 2026-05-20).
+    valid_range are handled per `out_of_range` (2026-05-20).
     Finally, null-row cleanup drops schema-violating rows — typically
     text-only labevents (NWICU labs without a numeric value) and source rows
     where the timestamp failed to parse.
@@ -116,3 +116,4 @@ def apply_canonical_units(
         )
     handled = handled.drop("_cmm_range_lo", "_cmm_range_hi")
     return drop_null_required(handled)
+

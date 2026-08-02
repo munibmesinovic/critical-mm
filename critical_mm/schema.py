@@ -169,7 +169,7 @@ def validate_frame(df: pl.LazyFrame, table_name: str) -> None:
     if non_nullable:
         null_counts = df.select(
             [pl.col(c).is_null().sum().alias(c) for c in non_nullable]
-        ).collect()
+        ).collect(engine="streaming")
         for col in non_nullable:
             n = null_counts[col][0]
             if n is not None and int(n) > 0:
@@ -182,3 +182,22 @@ def validate_frame(df: pl.LazyFrame, table_name: str) -> None:
             UserWarning,
             stacklevel=2,
         )
+
+    non_nullable = [c for c in expected_schema if c not in nullable]
+    if non_nullable:
+        null_counts = df.select(
+            [pl.col(c).is_null().sum().alias(c) for c in non_nullable]
+        ).collect(engine="streaming")
+        for col in non_nullable:
+            n = null_counts[col][0]
+            if n is not None and int(n) > 0:
+                raise ValueError(f"null in non-nullable column {table_name}.{col}: {int(n)} rows")
+
+    extra = [c for c in actual_schema if c not in expected_schema]
+    if extra:
+        warnings.warn(
+            f"extra columns in {table_name} (not in canonical schema): {extra}",
+            UserWarning,
+            stacklevel=2,
+        )
+

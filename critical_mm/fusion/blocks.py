@@ -13,9 +13,12 @@ val/test statistics leak into the representation.
 from __future__ import annotations
 
 import math
+import warnings
 from typing import TYPE_CHECKING
 
 import polars as pl
+
+from critical_mm.fusion.leakage_matrix import admissible_treatments
 
 if TYPE_CHECKING:
     import numpy as np
@@ -101,10 +104,26 @@ def _maybe_pca(
     mat = block.select(val_cols).to_numpy().astype(np.float32)
     train_mask = block["stay_id"].is_in(list(train_stay_ids)).to_numpy()
     n_train = int(train_mask.sum())
-    n_comp = max(1, min(pca_dim, n_train if n_train else mat.shape[0], mat.shape[1]))
+    if n_train == 0:
+        raise ValueError(
+            f"no training stays intersect this block's stay_id column "
+            f"({mat.shape[0]} block rows, {len(train_stay_ids)} train ids). "
+            "Fitting on all splits here would leak val+test into the PCA/scaler. "
+            "The usual cause is an ISO-root/patient-split stay_id namespace mismatch "
+            "(see docs/extending/datasets.md, 'Cohort roots')."
+        )
+    if n_train < 0.5 * mat.shape[0]:
+        warnings.warn(
+            f"only {n_train} of {mat.shape[0]} block rows are in the training split "
+            "— a partial stay_id namespace mismatch would look like this "
+            "(see docs/extending/datasets.md, 'Cohort roots')",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+    n_comp = max(1, min(pca_dim, n_train, mat.shape[1]))
     pca = PCA(n_components=n_comp, random_state=0)
     scaler = StandardScaler()
-    train_mat = mat[train_mask] if n_train > 0 else mat
+    train_mat = mat[train_mask]
     pca.fit(train_mat)
     scaler.fit(pca.transform(train_mat))
     reduced = scaler.transform(pca.transform(mat)).astype(np.float32)
@@ -216,7 +235,7 @@ def _emb_matrix_f32(emb_col: pl.Series) -> np.ndarray:
     import numpy as np
 
     raw_width = emb_col.list.len().max()
-    width = 0 if raw_width is None else int(float(raw_width)) # type: ignore[arg-type]
+    width = 0 if raw_width is None else int(float(raw_width))
     return emb_col.list.to_array(width).to_numpy().astype(np.float32, copy=False)
 
 def _decay_weights(
@@ -600,7 +619,23 @@ def build_notes_block(
         mat = np.asarray(pooled["pooled"].to_list(), dtype=np.float64)
     train_mask = pooled["stay_id"].is_in(list(train_stay_ids)).to_numpy()
     n_train = int(train_mask.sum())
-    train_mat = mat[train_mask] if n_train > 0 else mat
+    if n_train == 0:
+        raise ValueError(
+            f"no training stays intersect this block's stay_id column "
+            f"({mat.shape[0]} block rows, {len(train_stay_ids)} train ids). "
+            "Fitting on all splits here would leak val+test into the PCA/scaler. "
+            "The usual cause is an ISO-root/patient-split stay_id namespace mismatch "
+            "(see docs/extending/datasets.md, 'Cohort roots')."
+        )
+    if n_train < 0.5 * mat.shape[0]:
+        warnings.warn(
+            f"only {n_train} of {mat.shape[0]} block rows are in the training split "
+            "— a partial stay_id namespace mismatch would look like this "
+            "(see docs/extending/datasets.md, 'Cohort roots')",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+    train_mat = mat[train_mask]
 
     scaler = StandardScaler()
     pca: PCA | None
@@ -610,7 +645,7 @@ def build_notes_block(
         pca = None
         n_comp = mat.shape[1]
     else:
-        n_comp = max(1, min(pca_dim, n_train if n_train > 0 else mat.shape[0], mat.shape[1]))
+        n_comp = max(1, min(pca_dim, n_train, mat.shape[1]))
         pca = PCA(n_components=n_comp, random_state=0)
         pca.fit(train_mat)
         scaler.fit(pca.transform(train_mat))
@@ -664,3 +699,340 @@ def _asof_reduced_to_grid(
         .select("stay_id", "hour", *val_cols)
         .with_columns(pl.lit(1.0, dtype=pl.Float32).alias("notes_present"))
     )
+
+def _treatment_concept_names() -> tuple[tuple[str, ...], tuple[str, ...]]:
+    """The (binary, dose) concept-name tuples, sourced from the frozen registry.
+
+    Deferred import (``critical_mm.modalities.treatments``) so ``blocks.py`` stays
+    importable without the modality layer; the registry is the single source of
+    truth (``configs/treatments.csv``) for which concepts are occupancy (binary)
+    vs which carry a numeric dose/setting channel. Names are kept in registry
+    order so the emitted ``tx__<concept>`` columns are deterministic.
+    """
+    from critical_mm.modalities.treatments import TREATMENT_CONCEPTS
+
+    binary = tuple(t.name for t in TREATMENT_CONCEPTS if t.support == "binary")
+    dose = tuple(t.name for t in TREATMENT_CONCEPTS if t.support == "dose")
+    return binary, dose
+
+TREATMENT_BINARY_CONCEPTS, TREATMENT_DOSE_CONCEPTS = _treatment_concept_names()
+
+def _hashed_treatment_aligned(aligned: pl.DataFrame) -> pl.DataFrame:
+    """Hash the string ``stay_id`` to the Int64 preamble key, keep the columns we need.
+
+    Mirrors the notes/ICD builders: the on-disk aligned treatment frame carries a
+    string ``stay_id``; the preamble (and dyn_grid) are Int64-hashed. Hashing here
+    keeps the per-(stay,hour) join keys aligned with the structured rung.
+    """
+    return aligned.select(
+        _hash_stay_id_expr("stay_id"),
+        pl.col("treatment").cast(pl.Utf8),
+        pl.col("dose").cast(pl.Float64),
+        pl.col("delta_h").cast(pl.Float64),
+        pl.col("end_delta_h").cast(pl.Float64),
+    )
+
+def _grid_int64(dyn_grid: pl.DataFrame) -> pl.DataFrame:
+    """Distinct (Int64 stay_id, Float64 hour) grid, hashing stay_id only if string-keyed.
+
+    The real preamble's dyn_grid stay_id is ALREADY Int64-hashed; we hash only when a
+    caller passed a string-keyed grid (so the join keys match the hashed aligned side).
+    """
+    grid_stay = (
+        pl.col("stay_id")
+        if dyn_grid.schema["stay_id"] == pl.Int64()
+        else _hash_stay_id_expr("stay_id")
+    )
+    return (
+        dyn_grid.with_columns(grid_stay)
+        .select("stay_id", pl.col("hour").cast(pl.Float64))
+        .unique()
+        .sort(["stay_id", "hour"])
+    )
+
+def _binary_occupancy_perhour(
+    intervals: pl.DataFrame, grid: pl.DataFrame, concept: str
+) -> pl.DataFrame:
+    """Active-at-hour occupancy for one binary concept over the (stay,hour) grid.
+
+    An interval covers hour ``h`` iff ``delta_h <= h`` (the visibility gate — never
+    let a not-yet-started interval mark ``h`` active) AND it has not yet ended:
+
+    - non-null ``end_delta_h``: ``end_delta_h >= h`` (true interval containment).
+    - null ``end_delta_h``: treated as a SHORT/point observation, active ONLY in its
+      own hour bucket ``floor(delta_h) == floor(h)`` — NOT active-forever. Most
+      null-end rows are point charts (an RRT/PEEP reading, a 1-row abx), and
+      extending them to end-of-stay would be a leakage-y over-extension.
+
+    Implemented as an inner stay-keyed join (small per-stay fan-out) + the
+    containment predicate, then collapsed to a 0/1 ``active`` flag per (stay,hour).
+    """
+    conc = intervals.filter(pl.col("treatment") == concept)
+    col = f"tx__{concept}_active"
+    if conc.height == 0:
+        return grid.select("stay_id", "hour").head(0).with_columns(
+            pl.lit(1.0, dtype=pl.Float32).alias(col)
+        )
+    covered = (
+        grid.join(conc.select("stay_id", "delta_h", "end_delta_h"), on="stay_id", how="inner")
+        .filter(
+            (pl.col("delta_h") <= pl.col("hour"))
+            & (
+                pl.when(pl.col("end_delta_h").is_not_null())
+                .then(pl.col("end_delta_h") >= pl.col("hour"))
+                .otherwise(pl.col("delta_h").floor() == pl.col("hour").floor())
+            )
+        )
+        .select("stay_id", "hour")
+        .unique()
+        .with_columns(pl.lit(1.0, dtype=pl.Float32).alias(col))
+    )
+    return covered
+
+def _binary_occupancy_staylevel(
+    intervals: pl.DataFrame, present_stays: pl.DataFrame, concept: str, cutoff_h: float
+) -> pl.DataFrame:
+    """Stay-level occupancy: active iff any interval starts at/before ``cutoff_h``.
+
+    The early-window flag for the stay-level tasks (mortality24/kidney_function):
+    ``delta_h <= cutoff_h`` is the visibility gate. End is irrelevant — any
+    pre-cutoff onset counts the stay as exposed.
+    """
+    col = f"tx__{concept}_active"
+    active_stays = (
+        intervals.filter((pl.col("treatment") == concept) & (pl.col("delta_h") <= cutoff_h))
+        .select("stay_id")
+        .unique()
+        .with_columns(pl.lit(1.0, dtype=pl.Float32).alias(col))
+    )
+    return present_stays.join(active_stays, on="stay_id", how="left").with_columns(
+        pl.col(col).fill_null(0.0).cast(pl.Float32)
+    )
+
+def _dose_asof_perhour(
+    intervals: pl.DataFrame, grid: pl.DataFrame, concept: str
+) -> pl.DataFrame:
+    """As-of CURRENT dose value for one dose concept over the (stay,hour) grid.
+
+    Dose channels (peep/vasopressor_nee/sedation_rate/insulin) are point
+    MEASUREMENTS, not occupancy: at hour ``h`` we carry the most-recent dose with
+    ``delta_h <= h`` (backward as-of, by stay). Reuses the same ``join_asof(...,
+    strategy="backward")`` pattern as ``_asof_reduced_to_grid``. Grid rows with no
+    dose at/below the hour get no match -> dropped (the strategy merge zero-fills).
+    """
+    col = f"tx__{concept}"
+    conc = (
+        intervals.filter((pl.col("treatment") == concept) & pl.col("dose").is_not_null())
+        .select("stay_id", "delta_h", pl.col("dose").alias(col))
+        .sort(["stay_id", "delta_h"])
+    )
+    if conc.height == 0:
+        return grid.select("stay_id", "hour").head(0).with_columns(
+            pl.lit(0.0, dtype=pl.Float32).alias(col)
+        )
+    conc = conc.group_by(["stay_id", "delta_h"], maintain_order=True).agg(pl.col(col).last())
+    conc = conc.sort(["stay_id", "delta_h"])
+    matched = grid.join_asof(
+        conc,
+        left_on="hour",
+        right_on="delta_h",
+        by="stay_id",
+        strategy="backward",
+        check_sortedness=False,
+    )
+    return (
+        matched.filter(pl.col(col).is_not_null())
+        .select("stay_id", "hour", pl.col(col).cast(pl.Float32))
+    )
+
+def _standardise_dose_train_only(
+    block: pl.DataFrame, dose_cols: list[str], train_stay_ids: set[int]
+) -> pl.DataFrame:
+    """Standardise the continuous dose channels using TRAIN-stay statistics only.
+
+    For each ``tx__<dose>`` column we compute the mean/std over the rows belonging
+    to ``train_stay_ids`` (the dose value carried by the as-of for those stays) and
+    apply ``(x - mean) / std`` to ALL rows of ``block``. This mirrors the train-only
+    StandardScaler used by ``build_notes_block`` / ``_maybe_pca`` for the other
+    modality blocks; the binary ``tx__*_active`` channels are NOT passed in here and
+    are left as 0/1.
+
+    Leakage discipline: the mean/std are derived strictly from the train-stay rows,
+    so no val/test dose magnitude influences the scaling of any split.
+
+    Guards: a channel that is all-null on the train stays, or has zero variance
+    (constant on train), is left UNSCALED (no divide-by-zero / no spurious NaN);
+    the as-of zero-fill sentinel for absent stays is applied downstream by
+    ``_merge_block`` and is intentionally left out of the fit (it only sees present
+    rows here).
+    """
+    if not dose_cols:
+        return block
+    train_mask = block["stay_id"].is_in(list(train_stay_ids))
+    train = block.filter(train_mask)
+    exprs: list[pl.Expr] = []
+    for col in dose_cols:
+        stats = train.select(
+            pl.col(col).mean().alias("mu"), pl.col(col).std(ddof=0).alias("sd")
+        )
+        mu = stats["mu"].item()
+        sd = stats["sd"].item()
+        if mu is None or sd is None or sd == 0.0:
+            continue
+        exprs.append(((pl.col(col) - mu) / sd).cast(pl.Float32).alias(col))
+    if exprs:
+        block = block.with_columns(*exprs)
+    return block
+
+def build_treatments_block(
+    aligned: pl.DataFrame,
+    *,
+    train_stay_ids: set[int],
+    per_hour: bool,
+    dyn_grid: pl.DataFrame | None = None,
+    cutoff_h: float | None = None,
+    task: str,
+    dose: bool = False,
+    scale_dose: bool = False,
+    apply_leakage_matrix: bool = True,
+) -> tuple[pl.DataFrame, list[str]]:
+    """Per-(stay,hour) (or stay-level) treatment occupancy / dose block.
+
+    Returns ``(block, value_col_names)``. block columns: stay_id (Int64)
+    [, hour (Float64) when ``per_hour``], one ``tx__<concept>_active`` f32 in {0,1}
+    per binary concept, optionally one ``tx__<concept>`` f32 dose channel per dose
+    concept when ``dose=True``, and ``treatments_present`` f32.
+
+    ``treatments_present`` is 1.0 once an ADMISSIBLE treatment has become visible and
+    0.0 before that — i.e. it obeys the same leakage matrix and the same visibility
+    gate as the ``tx__*`` channels beside it. It was previously 1.0 on every row of
+    any stay appearing anywhere in ``aligned``, which both re-admitted withheld
+    concepts and exposed the flag at hour 0; see ``the project notes`` §B1.
+
+    Two consequences of that change worth knowing:
+
+    * It collapses two previously distinct states into 0.0 — "this stay has no
+      treatment record at all" and "this stay has one, but nothing is visible yet".
+      Absent stays are zero-filled by ``_merge_block`` and now look identical to
+      pre-onset rows of a present stay.
+    * "Admissible" means the concepts this call actually emits, so it depends on
+      ``dose``. A stay whose only records are dose-only concepts (e.g.
+      ``vasopressor_nee``, ``peep``) reads 0.0 in the ``dose=False`` arm and 1.0 in
+      the ``dose=True`` arm for the same task. That is intended — the bit tracks what
+      the block exposes — but the dose rung is reported separately, so do not compare
+      its presence rate against the binary rung's.
+
+    Visibility gate (this task): per-hour requires ``delta_h <= hour``; stay-level
+    requires ``delta_h <= cutoff_h``. An interval with ``delta_h > h`` NEVER marks
+    hour ``h`` active. Null ``end_delta_h`` is a point event (active only in its own
+    hour bucket) — see ``_binary_occupancy_perhour``.
+
+    Leakage matrix (Task 2): the concept lists are filtered through
+    ``admissible_treatments(task, ...)`` BEFORE any channel is built, so a treatment
+    that is a LABEL CONSTITUENT (or mechanistic response to the target) for ``task``
+    is NEVER emitted as a feature for it. Filtering on the concept name drops the
+    binary ``tx__<concept>_active`` and the ``tx__<concept>`` dose channel together
+    (e.g. for sepsis both ``vasopressor`` and its dose ``vasopressor_nee`` are
+    excluded → neither ``tx__vasopressor_active`` nor ``tx__vasopressor_nee``
+    appears). See ``critical_mm.fusion.leakage_matrix``.
+
+    ``apply_leakage_matrix`` (default ``True``) is the audit opt-out: with the
+    default the matrix is consulted exactly as above (the GATED arm — byte-identical
+    to the locked behavior). With ``apply_leakage_matrix=False`` the matrix is
+    SKIPPED and every registered concept is emitted regardless of task (the NAIVE,
+    deliberately-leaky arm). This knob exists only so the naive-vs-gated leakage
+    audit can train both arms on identical folds/seed/backbone and report the AUROC
+    inflation; production fusion always uses the gated default.
+
+    Train-only dose scaling (Task 3): with ``scale_dose=True`` the continuous dose
+    channels (``tx__vasopressor_nee``, ``tx__sedation_rate``, ``tx__peep``,
+    ``tx__insulin``) are standardised — ``(x - mean) / std`` — with the mean/std fit
+    STRICTLY on the rows of ``train_stay_ids`` (the as-of dose value carried for
+    those stays), then applied to every split. This mirrors the train-only
+    StandardScaler the notes/ICD blocks use, and keeps val/test dose magnitudes out
+    of the scaling statistics. The binary ``tx__*_active`` channels are 0/1 and are
+    left unscaled. The standardisation is applied while the "no dose visible at this
+    (stay,hour)" cells are still null, so they zero-fill downstream via
+    ``_merge_block`` exactly as before (and never enter the fit). A channel that is
+    all-null or zero-variance on the train stays is left unscaled (guard). Default
+    ``scale_dose=False`` preserves the raw as-of values.
+    """
+    raw_binary = list(TREATMENT_BINARY_CONCEPTS)
+    binary = admissible_treatments(task, raw_binary) if apply_leakage_matrix else raw_binary
+    raw_dose = list(TREATMENT_DOSE_CONCEPTS if dose else ())
+    dose_concepts = admissible_treatments(task, raw_dose) if apply_leakage_matrix else raw_dose
+    dose_cols = [f"tx__{c}" for c in dose_concepts]
+    value_cols = [f"tx__{c}_active" for c in binary] + dose_cols
+
+    intervals = _hashed_treatment_aligned(aligned)
+    present_stays = intervals.select("stay_id").unique()
+
+    admissible_concepts = list(dict.fromkeys([*binary, *dose_concepts]))
+    admissible_intervals = intervals.filter(pl.col("treatment").is_in(admissible_concepts))
+
+    if per_hour:
+        assert dyn_grid is not None, "per_hour=True requires a dyn_grid"
+        grid = _grid_int64(dyn_grid)
+        first_admissible = admissible_intervals.group_by("stay_id").agg(
+            pl.col("delta_h").min().alias("_first_delta_h")
+        )
+        flagged = (
+            grid.join(first_admissible, on="stay_id", how="inner")
+            .filter(pl.col("_first_delta_h") <= pl.col("hour"))
+            .select("stay_id", "hour")
+            .with_columns(pl.lit(1.0, dtype=pl.Float32).alias("treatments_present"))
+        )
+        present_rows = (
+            grid.join(present_stays, on="stay_id", how="inner")
+            .select("stay_id", "hour")
+            .join(flagged, on=["stay_id", "hour"], how="left")
+            .with_columns(pl.col("treatments_present").fill_null(0.0).cast(pl.Float32))
+        )
+        block = present_rows
+        for c in binary:
+            occ = _binary_occupancy_perhour(intervals, grid, c)
+            block = block.join(occ, on=["stay_id", "hour"], how="left")
+        for c in dose_concepts:
+            dch = _dose_asof_perhour(intervals, grid, c)
+            block = block.join(dch, on=["stay_id", "hour"], how="left")
+        if scale_dose and dose_cols:
+            block = _standardise_dose_train_only(block, dose_cols, train_stay_ids)
+        block = block.with_columns(
+            *[pl.col(v).fill_null(0.0).cast(pl.Float32) for v in value_cols]
+        )
+        block = block.select("stay_id", "hour", *value_cols, "treatments_present")
+        return block, value_cols
+
+    assert cutoff_h is not None, "per_hour=False requires a cutoff_h"
+    flagged = (
+        admissible_intervals.filter(pl.col("delta_h") <= cutoff_h)
+        .select("stay_id")
+        .unique()
+        .with_columns(pl.lit(1.0, dtype=pl.Float32).alias("treatments_present"))
+    )
+    block = present_stays.join(flagged, on="stay_id", how="left").with_columns(
+        pl.col("treatments_present").fill_null(0.0).cast(pl.Float32)
+    )
+    for c in binary:
+        occ = _binary_occupancy_staylevel(intervals, present_stays, c, cutoff_h)
+        block = block.join(occ, on="stay_id", how="left")
+    for c in dose_concepts:
+        col = f"tx__{c}"
+        last = (
+            intervals.filter(
+                (pl.col("treatment") == c)
+                & (pl.col("delta_h") <= cutoff_h)
+                & pl.col("dose").is_not_null()
+            )
+            .sort(["stay_id", "delta_h"])
+            .group_by("stay_id", maintain_order=True)
+            .agg(pl.col("dose").last().alias(col))
+        )
+        block = block.join(last, on="stay_id", how="left")
+    if scale_dose and dose_cols:
+        block = _standardise_dose_train_only(block, dose_cols, train_stay_ids)
+    block = block.with_columns(
+        *[pl.col(v).fill_null(0.0).cast(pl.Float32) for v in value_cols]
+    )
+    block = block.select("stay_id", *value_cols, "treatments_present")
+    return block, value_cols

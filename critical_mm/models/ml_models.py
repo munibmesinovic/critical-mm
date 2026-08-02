@@ -112,3 +112,4 @@ class MLPRegressor(MLWrapper):
     def __init__(self, *args, **kwargs):
         self.model = self.set_model_args(neural_network.MLPRegressor, *args, **kwargs)
         super().__init__(*args, **kwargs)
+

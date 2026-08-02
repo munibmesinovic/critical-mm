@@ -46,9 +46,7 @@ def test_discover_returns_five_builtin_datasets() -> None:
 
 def test_discover_returns_dl_and_ml_models() -> None:
     """Four canonical DL models + the 11 vendored ML models are registered."""
-    pytest.importorskip(
-        "torch", reason="DL model registration requires torch (critical-mm-train env)"
-    )
+    pytest.importorskip("torch", reason="DL model registration requires torch (critical-mm-train env)")
     pytest.importorskip("sklearn", reason="ML model registration requires sklearn")
     pytest.importorskip("lightgbm", reason="LGBM registration requires lightgbm")
     importlib.import_module("critical_mm.models.dl_models")
@@ -83,3 +81,4 @@ def test_discover_tasks_returns_built_in_class_identities() -> None:
     from critical_mm.tasks.aki import AKI
 
     assert api.discover_tasks()["aki"] is AKI
+

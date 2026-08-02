@@ -39,6 +39,8 @@ def run_grid(
     skip_existing: bool = True,
     summary_path: Path | None = None,
     data_root: Path | None = None,
+    splits_root: Path | None = None,
+    checkpoint_root: Path | None = None,
     extra_hyperparams: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Iterate over (task x dataset x model x seed) cells, calling train_one.
@@ -50,12 +52,13 @@ def run_grid(
     ``skip_existing=False`` to force a full retrain.
 
     ``extra_hyperparams`` is an optional dict of trainer / model overrides
-    injected into every constructed ``TrainConfig``. When ``None`` or empty
+    injected into every constructed ``TrainConfig``.  When ``None`` or empty
     (the default), behaviour is identical to prior runs (preservation-safe).
     Typical use: cap FM probe cells via ``{"max_epochs": 5}``.
     """
     data_root = data_root if data_root is not None else REPO
-    summary_path = summary_path or (data_root / "data" / "checkpoints" / "grid_summary.json")
+    _summary_base = checkpoint_root or (data_root / "data" / "checkpoints")
+    summary_path = summary_path or (_summary_base / "grid_summary.json")
     summary_path.parent.mkdir(parents=True, exist_ok=True)
     _extra: dict[str, Any] = dict(extra_hyperparams) if extra_hyperparams else {}
 
@@ -90,6 +93,8 @@ def run_grid(
                         cpu=cpu,
                         debug=debug,
                         data_root=data_root,
+                        splits_root=splits_root,
+                        checkpoint_root=checkpoint_root,
                         extra_hyperparams=_extra,
                     )
                     existing_meta_path = cfg.checkpoint_dir / "metadata.json"
@@ -139,7 +144,7 @@ def run_grid(
                     else:
                         n_skip += 1
 
-                    print(f" [{status:18s}] {label:50s} ({cell_record['duration_s']:.1f}s)")
+                    print(f"  [{status:18s}] {label:50s} ({cell_record['duration_s']:.1f}s)")
 
                     summary_path.write_text(
                         json.dumps(
@@ -173,3 +178,4 @@ def run_grid(
     }
 
 __all__ = ["run_grid"]
+

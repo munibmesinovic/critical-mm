@@ -18,7 +18,7 @@ from critical_mm.modalities.build import build_aligned_view, coverage_row
 from critical_mm.modalities.diagnoses import DiagnosesModalityReader
 
 REPO = Path(__file__).resolve().parent.parent
-DATASETS = ["miiv", "eicu", "nwicu", "omix", "sicdb"]
+DATASETS = ["miiv", "eicu", "nwicu", "omix", "sicdb", "zigong"]
 TASKS = ["mortality24", "aki", "sepsis", "los", "kidney_function"]
 
 def main() -> None:
@@ -67,3 +67,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

@@ -1,0 +1,273 @@
+{
+  "cohort": "mortality24",
+  "dataset": "eicu",
+  "grouping": "patient",
+  "n_patients": 90775,
+  "n_stays_total": 113405,
+  "n_stays": 113405,
+  "n_positive": 6254,
+  "classification": true,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "1aee374d1b316fcfd8a9de5999ed7f7522ac10e79e80c71f52121caae01fd240",
+  "dyn_content_sha256": "db52b91425cc82c454939f02978f4ad9829c0741d8da601163ef93085d7ad24a",
+  "outc_content_sha256": "f71c7ec9089675b676e9ff78843120e0c1d97014d1a27d9d3fd793a2ff51218f",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_0_fold_0.parquet",
+      "n_train": 72599,
+      "n_val": 18028,
+      "n_test": 22778,
+      "content_sha256": "930d0e0167029d13923f48a3bb3993a146b5493bf7fd060c98cabb2a5655af96"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_0_fold_1.parquet",
+      "n_train": 72477,
+      "n_val": 18150,
+      "n_test": 22778,
+      "content_sha256": "f7ae165ace9dc30ab66f20538bc8bf1e2256349b4bace0de49352939862d23ff"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_0_fold_2.parquet",
+      "n_train": 72513,
+      "n_val": 18114,
+      "n_test": 22778,
+      "content_sha256": "c590e9a30e2929b4407b6a26886dd5166e10712e363ebbc88e347d222c4f124e"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_0_fold_3.parquet",
+      "n_train": 72434,
+      "n_val": 18193,
+      "n_test": 22778,
+      "content_sha256": "670a5867e855e9d34ac9169bc9e34f007e7729ea456b25e99cb2a1128fd11a53"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_0_fold_4.parquet",
+      "n_train": 72485,
+      "n_val": 18142,
+      "n_test": 22778,
+      "content_sha256": "d8f5a94f57b197453f80e07455a8af55cc5837d2c8b0b833307976ce965bac2f"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_1_fold_0.parquet",
+      "n_train": 72587,
+      "n_val": 18103,
+      "n_test": 22715,
+      "content_sha256": "8337c9e090185e8aa486b70e70b25a8358cf6187a4d51e8b9005a281a8a1b561"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_1_fold_1.parquet",
+      "n_train": 72546,
+      "n_val": 18144,
+      "n_test": 22715,
+      "content_sha256": "b93e48385d56380a7d58ee293124466e5c9ecbbfe47958358b5ff60d135065cc"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_1_fold_2.parquet",
+      "n_train": 72569,
+      "n_val": 18121,
+      "n_test": 22715,
+      "content_sha256": "185e4e06729129d7d6fb74ceca6552dedb07287319c0ed1bf69d41fd170e2759"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_1_fold_3.parquet",
+      "n_train": 72505,
+      "n_val": 18185,
+      "n_test": 22715,
+      "content_sha256": "f8629f0d6dca384fe2971dfd2dd6c1ecf6fc6eaccbc6e85a6b8512da1f5c0c0f"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_1_fold_4.parquet",
+      "n_train": 72553,
+      "n_val": 18137,
+      "n_test": 22715,
+      "content_sha256": "52aa1119a7841ba047e003b72a8f512772f7a50219571fe9498b11d042c5c6c7"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_2_fold_0.parquet",
+      "n_train": 72767,
+      "n_val": 18057,
+      "n_test": 22581,
+      "content_sha256": "04c1ef11ad4fa504b4023fcecc4455b62a359194bf7642a17cf1685225295925"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_2_fold_1.parquet",
+      "n_train": 72655,
+      "n_val": 18169,
+      "n_test": 22581,
+      "content_sha256": "daafc0ae27d34079a8625ded6f1f4c14fa1b222830ff613c40831927a19ef366"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_2_fold_2.parquet",
+      "n_train": 72499,
+      "n_val": 18325,
+      "n_test": 22581,
+      "content_sha256": "2ba4146b4eaaad589b91be7f51f3334d9656f42a847227966951823783672f16"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_2_fold_3.parquet",
+      "n_train": 72704,
+      "n_val": 18120,
+      "n_test": 22581,
+      "content_sha256": "eba53bea0d9317bfad6c3f84a85ec7d428fb7e503546357ddebd4d740d81787b"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_2_fold_4.parquet",
+      "n_train": 72671,
+      "n_val": 18153,
+      "n_test": 22581,
+      "content_sha256": "9ef8f1d735d4d701f7b795012bdc21a67d631f97f84fb40ab48d403e76c546aa"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_3_fold_0.parquet",
+      "n_train": 72722,
+      "n_val": 18119,
+      "n_test": 22564,
+      "content_sha256": "93a9f226726444ee1287f6d493e281ba11ce8bd244d21d18f3857a5cd9d5ff33"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_3_fold_1.parquet",
+      "n_train": 72693,
+      "n_val": 18148,
+      "n_test": 22564,
+      "content_sha256": "d2dc87d7544390dea8c18aa9dd0133688a8ae097aa485cc4341eb99eb4c200bc"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_3_fold_2.parquet",
+      "n_train": 72512,
+      "n_val": 18329,
+      "n_test": 22564,
+      "content_sha256": "e7a2878e861481ebcc8026878359e4a4edb853b2aa9084007258f39875eeda39"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_3_fold_3.parquet",
+      "n_train": 72741,
+      "n_val": 18100,
+      "n_test": 22564,
+      "content_sha256": "9c378d880a75aad0565898c393634f35bfaebfad5aba735c1d49870968920d13"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_3_fold_4.parquet",
+      "n_train": 72696,
+      "n_val": 18145,
+      "n_test": 22564,
+      "content_sha256": "23c54cc0fc29a1dcadb151c2f1d523181bb47323e782a6b7e370bc3b5e096b59"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_4_fold_0.parquet",
+      "n_train": 72637,
+      "n_val": 18001,
+      "n_test": 22767,
+      "content_sha256": "84a0e01575454813ababe30d17c9da8c1e7bcdb6f21e8bb297af26ea9ca5ef0d"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_4_fold_1.parquet",
+      "n_train": 72446,
+      "n_val": 18192,
+      "n_test": 22767,
+      "content_sha256": "e956d83ea69d83ac4346eefd80819c5e534d6c4b92b6cc84202568585963d7cb"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_4_fold_2.parquet",
+      "n_train": 72502,
+      "n_val": 18136,
+      "n_test": 22767,
+      "content_sha256": "b6298003de19633edd32eb5beb93a668ec1d56ec56592068da120bd555e6d278"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_4_fold_3.parquet",
+      "n_train": 72448,
+      "n_val": 18190,
+      "n_test": 22767,
+      "content_sha256": "1490c230e7721b4b479d421781ead6be98a3d1dbc2e41ef85be25cc5cf48eacb"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24/eicu/cv_rep_4_fold_4.parquet",
+      "n_train": 72519,
+      "n_val": 18119,
+      "n_test": 22767,
+      "content_sha256": "3bc75556856e3aa451a577a7db095dfe27355be18218131929dcb212ce979098"
+    }
+  ],
+  "cohort_restoration": {
+    "event": "data/processed/mortality24/eicu/{sta,dyn,outc}.parquet were destroyed (overwritten with 9-byte placeholders) by a buggy test in an automated fix wave, then restored from a verified, value-identical copy.",
+    "incident_date": "2026-07-30",
+    "measured": false,
+    "values_verified_identical": true,
+    "segments": {
+      "sta_content_sha256": {
+        "previous": "66e4e12d3b98f74f93fb6c17e601d01d55932bfbf988e087856942f66be1fb4e",
+        "new": "1aee374d1b316fcfd8a9de5999ed7f7522ac10e79e80c71f52121caae01fd240"
+      },
+      "dyn_content_sha256": {
+        "previous": "199fbb8b160fcc36e28b37695c8dcf4e829ae97d6ab6ebfc64f9d62e0b6bc731",
+        "new": "db52b91425cc82c454939f02978f4ad9829c0741d8da601163ef93085d7ad24a"
+      },
+      "outc_content_sha256": {
+        "previous": "1120b6c5c77844b6945d97169276cb42b1dbc16076566eb72d98719c88edc604",
+        "new": "f71c7ec9089675b676e9ff78843120e0c1d97014d1a27d9d3fd793a2ff51218f"
+      }
+    },
+    "evidence": {
+      "path": "reports/verify_eicu_repro.json",
+      "claim": "cohorts.mortality24.{sta,dyn,outc}.parquet.value_identical_sorted == true"
+    },
+    "note": "The byte difference between the previous and new hash is provenance-only (non-deterministic parquet compression at rebuild time) -- no label or feature value changed for any row of any segment. See evidence.path for the shape/dtype/value equality check this rests on.",
+    "stamp": "2026-07-30-cohort-restoration-reattest-split-manifest",
+    "artifact": "data/processed/splits_patient/mortality24/eicu/manifest.json -- the locked-split manifest's cohort provenance hashes",
+    "new_hashes_measured_from_disk": true,
+    "reattested_in_place_not_relocked": "The fold assignments are unchanged and still correct: the restore is value-identical, so re-running lock_one_patient would reproduce the same grouping while rewriting all 25 fold parquets and potentially moving folds_combined_sha256, re-staling the 153 checkpoints this same incident just brought current. Only the three cohort provenance hashes were edited; the fold lock signature is asserted unchanged."
+  }
+}

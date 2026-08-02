@@ -55,16 +55,30 @@ def _metric_key_for(task: str) -> str:
         return "test/MAE"
     raise ValueError(f"unknown task: {task}")
 
-def _collect_cells(ckpt_root: Path, datasets: set[str] | None = None) -> CellTable:
+def _collect_cells(
+    ckpt_root: Path,
+    datasets: set[str] | None = None,
+    renamed: list[dict[str, str]] | None = None,
+) -> CellTable:
     """Return {(task, ds, model): [(seed, metric_value, splits_fp), ...]}.
 
     Iterates metadata.json under <task>/<ds>/<model>/seed_<n>/. Skips cells with
     no `test_metrics` or where the metric key is absent.
 
+    `model` is taken from the DIRECTORY, not from `config["model"]`. The 126
+    `CM-EHR{,-mean}-probe-aligned` cells record `config["model"]` without the
+    `-aligned` suffix, so keying on the config silently merged the aligned arm
+    (Appendix M, `tab:app-ehrfm-perhour`) into the non-aligned cell and emitted
+    n=6 means averaged across two different arms. The directory name is what
+    every consumer of `f"{ds}_{model}"` means, and it is what
+    scripts/build_auprc_table.py keys on. Disagreements are appended to
+    `renamed` so the manifest records them rather than hiding them.
+
     Args:
         ckpt_root: Root directory containing the checkpoint tree.
         datasets: If provided, restrict to cells whose dataset is in this set.
                   If None, all canonical-task cells are collected.
+        renamed: Optional sink for (path, config model, directory model) records.
     """
     out: CellTable = defaultdict(list)
     for meta_path in sorted(ckpt_root.glob("*/*/*/seed_*/metadata.json")):
@@ -72,7 +86,7 @@ def _collect_cells(ckpt_root: Path, datasets: set[str] | None = None) -> CellTab
         cfg = meta.get("config", {})
         task = cfg.get("task")
         dataset = cfg.get("dataset")
-        model = cfg.get("model")
+        model = meta_path.parents[1].name
         seed = cfg.get("seed")
         if not all([task, dataset, model, isinstance(seed, int)]):
             continue
@@ -80,6 +94,14 @@ def _collect_cells(ckpt_root: Path, datasets: set[str] | None = None) -> CellTab
             continue
         if datasets is not None and dataset not in datasets:
             continue
+        if cfg.get("model") not in (None, model) and renamed is not None:
+            renamed.append(
+                {
+                    "path": str(meta_path.relative_to(ckpt_root)),
+                    "config_model": str(cfg.get("model")),
+                    "directory_model": model,
+                }
+            )
         metric_key = _metric_key_for(task)
         test_metrics = meta.get("test_metrics") or {}
         if metric_key not in test_metrics:
@@ -154,7 +176,12 @@ def main() -> None:
     )
     args = ap.parse_args()
 
-    cells = _collect_cells(args.ckpt_root, datasets=set(args.datasets) if args.datasets else None)
+    renamed: list[dict[str, str]] = []
+    cells = _collect_cells(
+        args.ckpt_root,
+        datasets=set(args.datasets) if args.datasets else None,
+        renamed=renamed,
+    )
     if not cells:
         print(f"aggregate_cm_grid: no metadata.json found under {args.ckpt_root}", file=sys.stderr)
         sys.exit(1)
@@ -187,6 +214,8 @@ def main() -> None:
             "seeds_per_cell_max": seeds_max,
             "n_under_seeded_cells": len(under_seeded_cells),
             "under_seeded_cells": under_seeded_cells,
+            "n_config_model_mismatches": len(renamed),
+            "config_model_mismatches": renamed,
             "splits_fingerprint": fp,
         },
         "reference": dict(summary),
@@ -195,6 +224,22 @@ def main() -> None:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, indent=2) + "\n")
     print(f"aggregate_cm_grid: wrote {args.out} ({n_uniq} cells, {n_cells} per-seed entries)")
+    if renamed:
+        dirs = sorted({Path(r["path"]).parent.parent.name for r in renamed})
+        print(
+            f" NOTE: {len(renamed)} cells whose config['model'] disagrees with their "
+            f"directory; keyed on the directory. Affected model dirs: {', '.join(dirs)}"
+        )
+    if under_seeded_cells:
+        print(
+            f" UNDER-SEEDED ({len(under_seeded_cells)} of {n_uniq}, max={seeds_max}): "
+            + ", ".join(
+                f"{c['task']}/{c['dataset']}/{c['model']}(n={c['n_seeds']})"
+                for c in under_seeded_cells[:12]
+            )
+            + (" ..." if len(under_seeded_cells) > 12 else ""),
+            file=sys.stderr,
+        )
     if not fp["fingerprints_consistent"]:
         print(
             " WARNING: splits fingerprints inconsistent across cells "

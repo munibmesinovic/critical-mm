@@ -13,7 +13,7 @@ from critical_mm.tasks.base import LOS_CAP_HOURS, Task
 class LengthOfStay(Task):
     """Predict remaining length of stay at every hour from h=0 onwards.
 
-    outcome_max = 168 (7-day cap in hours) per documented
+    outcome_max = 168 (7-day cap in hours) per the documented
     correction to the YAIB-models checkpoints — NOT the 15-day default
     in YAIB's Regression.gin (that value targets creatinine, not los).
 
@@ -21,8 +21,7 @@ class LengthOfStay(Task):
     YAIB-cohorts (reproductions/yaib_cohorts/outputs/los/eicu/outc.parquet:
     min(time)=0ms, max rows/stay=169 for stays with los≥7d).
 
-    Cohort restriction: NONE beyond the base cohort. Audit round 10p
-    (2026-05-20): pre-fix this task applied `los_hours >= 48h` citing
+    Cohort restriction: NONE beyond the base cohort. pre-fix this task applied `los_hours >= 48h` citing
     "YAIB paper App C.2 + Figure 8", but the paper's App C.2 only
     applies a 48h filter to KF (kidney function), NOT LoS. Table 14
     confirms LoS task n = base cohort n (e.g. eICU LoS = 182,774 =
@@ -94,3 +93,4 @@ def _empty_labels() -> pl.DataFrame:
             "label_value": pl.Float32(),
         }
     )
+

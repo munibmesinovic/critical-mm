@@ -184,3 +184,4 @@ class JSONMetricsLogger(Logger):
     @rank_zero_only
     def log_hyperparams(self, params):
         pass
+

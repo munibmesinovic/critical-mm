@@ -20,6 +20,7 @@ from critical_mm.datasets.nwicu import NWICUReader
 from critical_mm.datasets.omix import OMIXReader
 from critical_mm.datasets.sicdb import SICdbReader
 from critical_mm.datasets.synthetic import SyntheticReader
+from critical_mm.datasets.zigong import ZigongReader
 
 __all__ = [
     "DatasetReader",
@@ -30,4 +31,6 @@ __all__ = [
     "OMIXReader",
     "SICdbReader",
     "SyntheticReader",
+    "ZigongReader",
 ]
+

@@ -19,20 +19,20 @@ Per-dataset arm:
     susp_inf time; SOFA ΔSOFA≥2 check still runs. Matches YAIB-cohorts/R/
     sepsis.R:58-60 which pins eICU to `si_mode="abx"` because "microbiology
     data in eICU was not reliable (Moor et al. 2021a)" — paper App D.3.
-    Audit round 10, 2026-05-19. Pre-fix this routed through microbio,
+    Review, 2026-05-19. Pre-fix this routed through microbio,
     diverging from ricu reference by design.
   - `hirid`: v1 abx-class surrogate — first abx admin (no SOFA, no
     microbio). Deviation `sepsis_v1_abx_only_no_sofa_no_microbio`.
   - `nwicu`: v1 abx-span surrogate — first abx admin per stay whose abx
     span ≥ 3 days. Deviation `nwicu_sepsis_abx_only`.
 
-Cohort exclusions (audit round 10, 2026-05-19) — YAIB paper App C.2 + Fig 7:
+Cohort exclusions (review, 2026-05-19) — YAIB paper App C.2 + Fig 7:
 - Sepsis onset within the first 6h of ICU → stay excluded entirely
   (YAIB-cohorts/R/sepsis.R:100-105).
 - For eICU only: drop stays whose hospital_id has zero sepsis cases
   (sepsis.R:77-97 prevalence filter).
 
-Per-hour outc shape (YAIB-cohorts parity, audit round 2026-05-15):
+Per-hour outc shape (YAIB-cohorts parity, review-05-15):
 - One row per (stay, hour) for hour in 0..floor(los_hours). Cumulative
   semantics: `label_value` is 1 in [onset_hour - 6, onset_hour + 6]
   (13-hour window centred on onset). Negatives carry 0 throughout.
@@ -71,7 +71,7 @@ class Sepsis(Task):
     prediction_horizon_hours: ClassVar[int] = 6
 
     def supports_microbio_arm(self, dataset: str) -> bool:
-        return dataset not in {"nwicu", "sicdb"}
+        return dataset not in {"nwicu", "sicdb", "zigong"}
 
     def supports_sep3_arm(self, dataset: str) -> bool:
         """True iff full SEP-3 cascade (abx_cont + susp_inf + SOFA + sep3) runs.
@@ -79,19 +79,19 @@ class Sepsis(Task):
         miiv, eicu, and hirid all run the cascade. Whether the susp_inf gate
         uses microbio is gated separately by `supports_microbio_in_sep3`.
 
-        Audit round 7 (2026-05-16): the canonical downstream dataset name for
+        the canonical downstream dataset name for
         MIMIC-IV is ``"miiv"`` (matches ``MIMICIVReader.dataset_name`` and
         the ``miiv_<int>`` stay_id prefix). Production heavy-run scripts pass
         this name; ``"mimic_iv"`` is the separate raw-dir alias in
         ``io/paths.py`` and must NOT silently activate the SEP-3 arm.
 
-        Audit round 10n (2026-05-20): HiRID added to the SEP-3 set. Matches
+        HiRID added to the SEP-3 set. Matches
         ricu's ``sepsis.R:50`` which activates ``si_mode="abx"`` for
         ``c("eicu", "eicu_demo", "hirid")``. Pre-fix CM routed hirid
         through a first-abx-admin surrogate, causing a 26% under-count
         vs ricu's hirid sepsis cohort (21,993 → expected ~29,698).
 
-        Audit round 10w (2026-05-20): NWICU added to the SEP-3 set. NWICU
+        NWICU added to the SEP-3 set. NWICU
         has no microbio table (same as HiRID) so it joins the ``si_mode=
         "abx"`` group: susp_inf_time == abx_cont episode_start_time, then
         ΔSOFA≥2 over [si-48h, si+24h]. Replaces the v1 3-day-span
@@ -114,7 +114,7 @@ class Sepsis(Task):
         needed, same as OMIX. Antibiotics are a name-matched surrogate over
         the d_references drug names (no ATC codes).
         """
-        return dataset in {"miiv", "eicu", "hirid", "nwicu", "omix", "sicdb"}
+        return dataset in {"miiv", "eicu", "hirid", "nwicu", "omix", "sicdb", "zigong"}
 
     def supports_microbio_in_sep3(self, dataset: str) -> bool:
         """True iff microbio joins as part of the SEP-3 susp_inf gate.
@@ -131,7 +131,7 @@ class Sepsis(Task):
             episode_start_time same as eICU. The SOFA ΔSOFA≥2 check still
             runs (HiRID has the full vitals + labs to compute SOFA).
 
-        Audit round 10 (2026-05-19): pre-fix this gate did not exist; eICU ran
+        pre-fix this gate did not exist; eICU ran
         full SEP-3 with microbio, diverging from the ricu reference by design
         (the ricu reference at reproductions/yaib_cohorts/outputs/sepsis/eicu/
         outc.parquet was produced with si_mode="abx", and the YAIB-models
@@ -194,7 +194,7 @@ class Sepsis(Task):
         return _per_hour_outc_from_onsets(base_cohort, onsets)
 
     def build(self, **kwargs: object) -> TaskBuildResult:
-        result = super().build(**kwargs) # type: ignore[arg-type]
+        result = super().build(**kwargs)
         dataset = str(kwargs["dataset"])
         deviations_path = result["sta_path"].parent / "deviations.csv"
         deviations: list[tuple[str, str]] = []
@@ -205,7 +205,7 @@ class Sepsis(Task):
                     "NWICU v0.1.0 has no microbiologyevents → full SEP-3 cascade "
                     "runs with si_mode='abx' (susp_inf_time == abx_cont "
                     "episode_start_time), SOFA ΔSOFA≥2 check still applied. "
-                    "Same routing as HiRID/eICU. Audit round 10w (2026-05-20). "
+                    "Same routing as HiRID/eICU. . "
                     "Replaces prior 3-day-span abx-only surrogate.",
                 )
             )
@@ -217,7 +217,7 @@ class Sepsis(Task):
                     "runs with si_mode='abx' (susp_inf_time == abx_cont "
                     "episode_start_time), SOFA ΔSOFA≥2 check still applied. "
                     "Matches ricu's sepsis.R:50 si_mode='abx' for hirid. "
-                    "Audit round 10n (2026-05-20).",
+                    ".",
                 )
             )
         elif dataset == "omix":
@@ -280,6 +280,36 @@ class Sepsis(Task):
                     "surrogate over d_references drug names (no ATC codes).",
                 )
             )
+        elif dataset == "zigong":
+            deviations.append(
+                (
+                    "zigong_sepsis_no_microbio",
+                    "Zigong has no microbiology table → full SEP-3 cascade runs "
+                    "with si_mode='abx' (susp_inf_time == abx_cont "
+                    "episode_start_time), SOFA ΔSOFA≥2 check still applied. Same "
+                    "routing as eICU/HiRID/NWICU/SICdb. Antibiotics are a "
+                    "name-matched surrogate over dtDrugs DrugName (no ATC codes).",
+                )
+            )
+            deviations.append(
+                (
+                    "zigong_sepsis_infection_cohort_not_comparable",
+                    "Zigong is an infection-enriched cohort by construction "
+                    "(Zigong Fourth People's Hospital infection registry, Burger "
+                    "et al. 2024). The sepsis prevalence is therefore NOT directly "
+                    "comparable to the other datasets and must be reported with an "
+                    "infection-cohort + small-N caveat.",
+                )
+            )
+            deviations.append(
+                (
+                    "zigong_sofa_cns_arm_real_gcs",
+                    "Unlike OMIX/SICdb (which lack GCS → SOFA-CNS falls through to "
+                    "score=0), Zigong recovers GCS at the reader level by summing "
+                    "the prefix-coded E/M/V components (open_one's_eyes/motion/"
+                    "language) of same-ChartTime triplets, a genuine SOFA-CNS gain.",
+                )
+            )
         _write_deviations(deviations_path, deviations)
         return result
 
@@ -333,7 +363,7 @@ def _sepsis_sep3_onsets(
 ) -> pl.DataFrame:
     """Compose abx_cont → susp_inf_alt → SOFA → sep3_alt.
 
-    `use_microbio` (audit round 10, 2026-05-19): when False, the susp_inf
+    `use_microbio` (review, 2026-05-19): when False, the susp_inf
     time IS the abx_cont episode_start_time (no microbio AND clause). This
     matches YAIB-cohorts' `si_mode="abx"` routing for eICU. SOFA ΔSOFA≥2
     check still runs against this SI time.
@@ -342,7 +372,7 @@ def _sepsis_sep3_onsets(
     returns an empty frame for empty inputs; the next step's join
     yields zero rows; the final output is an empty `_ONSET_SCHEMA` frame).
 
-    Audit round 10m (2026-05-20): when ``abx_duration`` is non-empty (the
+    when ``abx_duration`` is non-empty (the
     ricu-faithful path is wired for this dataset), use ``abx_cont_ricu``
     consuming the dedicated abx_duration frame. Otherwise fall back to
     the v1 ``abx_cont`` that filters meds by ``drug_class == "antibiotic"``

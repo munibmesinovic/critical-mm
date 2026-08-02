@@ -1,0 +1,244 @@
+{
+  "cohort": "sepsis",
+  "dataset": "miiv",
+  "grouping": "patient",
+  "n_patients": 59506,
+  "n_stays_total": 82075,
+  "n_stays": 82075,
+  "n_positive": 3374,
+  "classification": true,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "04d1a1e0683f1fd79d7546f2fff5d3205cafcaaf3f41748c8223242d4a348eb4",
+  "dyn_content_sha256": "ca75977343e516a80c097d5b8a49554afd1fde0d2d7b99df01f5775f8b684848",
+  "outc_content_sha256": "5c381f0530b65385ee2718474cbbfb84445b906fded21ac5ec9ba5c55184da04",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_0_fold_0.parquet",
+      "n_train": 52398,
+      "n_val": 13315,
+      "n_test": 16362,
+      "content_sha256": "2e3feed92ed7077576247c34ce9156acda932e743c7cc4e3456514043080a6cf"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_0_fold_1.parquet",
+      "n_train": 52577,
+      "n_val": 13136,
+      "n_test": 16362,
+      "content_sha256": "d4e287a9744b60a0d83a1052a8ea8260aa16461c9a9939fa974c9cc91384ab50"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_0_fold_2.parquet",
+      "n_train": 52826,
+      "n_val": 12887,
+      "n_test": 16362,
+      "content_sha256": "af5b1d51f4dd02bcb49e06b2cce5e55d8ba013ad64b2c5d803349fa785aa363c"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_0_fold_3.parquet",
+      "n_train": 52518,
+      "n_val": 13195,
+      "n_test": 16362,
+      "content_sha256": "54bfee64232986bfa7978b05ce9fd95d8576e883c0c1f0743e0612277c9dbb71"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_0_fold_4.parquet",
+      "n_train": 52533,
+      "n_val": 13180,
+      "n_test": 16362,
+      "content_sha256": "e2804a6dd949465b9e57a3edf4622096974fb18f867b3fd0ca6237cb555a77b5"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_1_fold_0.parquet",
+      "n_train": 52552,
+      "n_val": 13116,
+      "n_test": 16407,
+      "content_sha256": "448e3e6ac47186a5cb161a3720a8bb70849817b243197a3e9f1a895762d93868"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_1_fold_1.parquet",
+      "n_train": 52520,
+      "n_val": 13148,
+      "n_test": 16407,
+      "content_sha256": "b8b43bdebeda3760207ffe8818b9f690067b31a1a959a73486eb07d3c1a24e81"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_1_fold_2.parquet",
+      "n_train": 52488,
+      "n_val": 13180,
+      "n_test": 16407,
+      "content_sha256": "7b633589d37e49330fc6c3e8f7f72aef64f4779ae73b5aacb19fa12b16bb15bb"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_1_fold_3.parquet",
+      "n_train": 52533,
+      "n_val": 13135,
+      "n_test": 16407,
+      "content_sha256": "cea84d912306179b5a6b10eb3c693b8e31e80f696a7eb1cb7118c3c15b27da82"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_1_fold_4.parquet",
+      "n_train": 52579,
+      "n_val": 13089,
+      "n_test": 16407,
+      "content_sha256": "44af13aa4d76612e03cf14a20d6d7cfee4946bf8ed4ac9d128f379d3a06313c8"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_2_fold_0.parquet",
+      "n_train": 52488,
+      "n_val": 13114,
+      "n_test": 16473,
+      "content_sha256": "e0992cbce2bfacfa10f5503ce97f4e9caab800aaf1ad4b0f7f38124c4c0b6459"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_2_fold_1.parquet",
+      "n_train": 52508,
+      "n_val": 13094,
+      "n_test": 16473,
+      "content_sha256": "c590da43fc72f378393310dc2a13fca8a61a77cb824e9e436fee94a5ded7b4e0"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_2_fold_2.parquet",
+      "n_train": 52677,
+      "n_val": 12925,
+      "n_test": 16473,
+      "content_sha256": "f3343a33b6275122348f521585d1fd6776d954c62d8ddea1013f3a6619880314"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_2_fold_3.parquet",
+      "n_train": 52268,
+      "n_val": 13334,
+      "n_test": 16473,
+      "content_sha256": "4e35a65ca7cd55c27e4e664644f51eb11fe9ce7961c6756ae7bfb931545f7ccf"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_2_fold_4.parquet",
+      "n_train": 52467,
+      "n_val": 13135,
+      "n_test": 16473,
+      "content_sha256": "49d7bfded890bc5840dac4e9b776f6b1ab00ab48d670757536d3b6a6edc1b0b8"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_3_fold_0.parquet",
+      "n_train": 52670,
+      "n_val": 13065,
+      "n_test": 16340,
+      "content_sha256": "810827f08decfc0fe434bc776433aedc362b0b9338f21493e2da7bd00cbf4d1c"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_3_fold_1.parquet",
+      "n_train": 52541,
+      "n_val": 13194,
+      "n_test": 16340,
+      "content_sha256": "a4b2fa633242cc27d5f0d503c56dcf764746ca614bcc5beaf0f3d83d8fc062d8"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_3_fold_2.parquet",
+      "n_train": 52590,
+      "n_val": 13145,
+      "n_test": 16340,
+      "content_sha256": "7988f81bae5663bb3fa8175fd9c3e7787a17ae191e69ba1e48986c37ebfc1a58"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_3_fold_3.parquet",
+      "n_train": 52543,
+      "n_val": 13192,
+      "n_test": 16340,
+      "content_sha256": "5082ab968bbcf55b2a93be5cf5e0a85b98894f13fbfebc299954fdfe985f3b4d"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_3_fold_4.parquet",
+      "n_train": 52596,
+      "n_val": 13139,
+      "n_test": 16340,
+      "content_sha256": "b6eb56638f9cf9ab3ca29e7a73da64dd654a90b9232f672b4009eba5e5665212"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_4_fold_0.parquet",
+      "n_train": 52400,
+      "n_val": 13182,
+      "n_test": 16493,
+      "content_sha256": "e63abbd02f010c3a311a8a5607780dee1c8bbb6f78a960a0ba32d91fa6b5899b"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_4_fold_1.parquet",
+      "n_train": 52450,
+      "n_val": 13132,
+      "n_test": 16493,
+      "content_sha256": "e3f50401533c5d865bd5226e90f23c433815183739bf0724b87053d8d2d92b82"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_4_fold_2.parquet",
+      "n_train": 52398,
+      "n_val": 13184,
+      "n_test": 16493,
+      "content_sha256": "abe2ef270e303c497e91c24da472cf14f38754e062c4dcafeb9f60ddaffa364e"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_4_fold_3.parquet",
+      "n_train": 52390,
+      "n_val": 13192,
+      "n_test": 16493,
+      "content_sha256": "db929608eb4aaa49b8e8f626043c1394fed5c9530f0062e2db35e1162797ffb9"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis/miiv/cv_rep_4_fold_4.parquet",
+      "n_train": 52690,
+      "n_val": 12892,
+      "n_test": 16493,
+      "content_sha256": "6c3b3d4f3abb71a8a107ad524523ab0a2f93d8f40ad911f628bfbc12ec8668fa"
+    }
+  ]
+}

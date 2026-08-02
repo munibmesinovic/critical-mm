@@ -1,6 +1,6 @@
 """Sepsis-3 logic — abx_cont, susp_inf_alt, sep3_alt port.
 
-This module composes 's per-hour SOFA + 's microbio table into the
+This module composes P23's per-hour SOFA + P22's microbio table into the
 full SEP-3 label. Used by `Sepsis.build_labels` for datasets that satisfy
 `Sepsis.supports_sep3_arm(dataset)` (mimic_iv, eicu).
 
@@ -9,9 +9,8 @@ References:
     Consensus Definitions for Sepsis and Septic Shock (Sepsis-3).
     JAMA. 2016;315(8):801-810.
   - ricu callback-sep3.R (commit caee690).
-  - Spec: §2 + §5 Phase 3.
 
-Audit round 10z (2026-05-20): ported ricu's two-window asymmetric
+ported ricu's two-window asymmetric
 susp_inf scheme (abx_win=24h, samp_win=72h, si_mode='and'). Pre-fix
 this module used a single symmetric ±48h window; the simpler scheme
 under-detected 48-72h pre-abx samp pairs (dominant cause of miiv's
@@ -55,7 +54,7 @@ def abx_cont_ricu(
     abx_duration_df: pl.DataFrame,
     base_cohort: pl.DataFrame,
 ) -> pl.DataFrame:
-    """ricu-faithful ``abx_cont`` callback port (audit round 10m, Phase B).
+    """ricu-faithful ``abx_cont`` callback port (review, Phase B).
 
     Verbatim port of
     ``external/YAIB-cohorts/ricu-extensions/callbacks/callback-sepsis.R::abx_cont``
@@ -74,7 +73,7 @@ def abx_cont_ricu(
        Real-data inputevents.csv.gz (miiv) frequently has same-stay
        same-starttime duplicates that pre-collapse merges.
     3. **Post-death drop.** Drops abx rows whose ``starttime > death_time``
-       BEFORE the cross-product. added a window-end
+       BEFORE the cross-product. An earlier review added a window-end
        truncation; this adds the candidate-set filter ricu's
        ``abx_death[is.na(get(dind)) | get(aind) <= get(dind)]`` applies.
 
@@ -191,21 +190,20 @@ def abx_cont(meds: pl.DataFrame, base_cohort: pl.DataFrame) -> pl.DataFrame:
 
     A stay has a continuous abx episode iff there is some 72h sliding
     window starting at an abx admin where the maximum gap is ≤ 24h.
-    Gaps are measured END-of-previous to START-of-next (audit round 10e),
+    Gaps are measured END-of-previous to START-of-next (review),
     AND the trailing-edge gap from the last admin's cumulative max end to
-    the window end is also bounded by the same threshold (audit round
-    10f). Output = the START time of the earliest such window per stay.
+    the window end is also bounded by the same threshold (review). Output = the START time of the earliest such window per stay.
 
     The trailing-edge gap mirrors ricu's
     `min(c(get(dind), get(aind)[1] + abx_win)) - cummax_difftime(...)`
     in callback-sepsis.R:50-52. This lets a SINGLE long-duration admin
     qualify if its duration ≥ 48h (i.e. trailing gap = 72h - 48h = 24h).
-    Audit round 10f drops the prior `≥2 admins` filter — that was a CM-
+    Review drops the prior `≥2 admins` filter — that was a CM-
     specific interpretation that excluded ricu's single-long-admin case
     and was a major driver of the eICU sepsis-3 recall gap (12% → 18%
     after the 10e end-to-start fix; remaining gap to ~50% targeted by 10f).
 
-    Audit round 10l (2026-05-20): death_icu truncation now wired in.
+    death_icu truncation now wired in.
     The per-anchor window is `min(anchor + 72h, death_time)` where
     `death_time = discharge_time` for stays with `mortality_in_icu==True`,
     else infinity (no truncation). Matches ricu's
@@ -219,7 +217,7 @@ def abx_cont(meds: pl.DataFrame, base_cohort: pl.DataFrame) -> pl.DataFrame:
     Implementation note: the per-stay cross-product is O(n²) where n is
     admins-per-stay. Test fixtures use n ≤ 4 so this is trivial; heavy
     real-data runs (n in the hundreds for sustained-abx ICU stays) are
-    a candidate for the audit pass — replace with a streaming
+    a candidate for the P25 audit pass — replace with a streaming
     sliding-window if profiling flags this hot.
 
     Returns [stay_id, episode_start_time]. One row per qualifying
@@ -317,11 +315,11 @@ def susp_inf_alt(abx_cont_df: pl.DataFrame, microbio: pl.DataFrame) -> pl.DataFr
     microbio.charttime fall in ricu's asymmetric (abx_win, samp_win)
     pair:
 
-        samp_time - abx_time ∈ [-samp_win, +abx_win] = [-72h, +24h]
+        samp_time - abx_time ∈ [-samp_win, +abx_win]  = [-72h, +24h]
 
     Equivalent forms:
       - samp may occur up to 72h BEFORE abx (culture → empiric abx)
-      - samp may occur up to 24h AFTER abx (empiric abx → culture)
+      - samp may occur up to 24h AFTER  abx (empiric abx → culture)
 
     SI time = `min(episode_start_time, charttime)` for the qualifying
     pair (SEP-3 convention: the earlier of the two events; Singer 2016).
@@ -329,7 +327,7 @@ def susp_inf_alt(abx_cont_df: pl.DataFrame, microbio: pl.DataFrame) -> pl.DataFr
     When a stay has multiple qualifying (abx, samp) pairs, the SI
     time is the earliest min(abx, samp) across all qualifying pairs.
 
-    Audit round 10z (2026-05-20): replaced the symmetric ±48h window
+    replaced the symmetric ±48h window
     with ricu's two-window asymmetric scheme. Pre-fix we missed
     48-72h pre-abx samp pairs (dominant under-detection on miiv;
     miiv recall 59 % vs ricu) and over-called 24-48h post-abx samps.
@@ -362,7 +360,7 @@ def sep3_alt(
 
     For each stay with a susp_inf time t:
       baseline = min(sofa) over hours in [t-48h, t]
-      peak = max(sofa) over hours in [t-48h, t+24h]
+      peak     = max(sofa) over hours in [t-48h, t+24h]
       positive iff (peak - baseline) >= 2
 
     Onset time = susp_inf_time (= the SI time per ricu sep3.R:174-188).
@@ -370,7 +368,7 @@ def sep3_alt(
     (Datetime) → si_hour (Int32 relative to admit_time + h*1h), matching
     the hour axis of `sofa_per_hour` produced by compute_sofa_per_hour.
 
-    Audit round 10e (2026-05-19): switched from
+    switched from
     `max(peak window) - min(baseline window)` to ricu's element-wise
     `delta_cummin` (sep3.R:142-149). At each hour t in the window, the
     baseline is the running min over [si-48h, t] and delta_t is
@@ -416,3 +414,16 @@ def sep3_alt(
         .agg(pl.col("susp_inf_time").min().alias("onset_time"))
         .select("stay_id", "onset_time")
     )
+
+    return (
+        positive.group_by("stay_id")
+        .agg(pl.col("susp_inf_time").min().alias("onset_time"))
+        .select("stay_id", "onset_time")
+    )
+
+    return (
+        positive.group_by("stay_id")
+        .agg(pl.col("susp_inf_time").min().alias("onset_time"))
+        .select("stay_id", "onset_time")
+    )
+

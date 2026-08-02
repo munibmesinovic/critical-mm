@@ -38,3 +38,4 @@ def add_grouping(df: pl.LazyFrame, *, rep: str = "ccsr") -> pl.LazyFrame:
         result: pl.LazyFrame = add_ccsr_grouping(df)
         return result
     raise ValueError(f"unknown rep {rep!r}; valid: icd10_root, ccsr")
+

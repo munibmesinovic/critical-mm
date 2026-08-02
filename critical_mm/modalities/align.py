@@ -15,6 +15,8 @@ _DS_PREFIXES = {
     "eicu": "eicu",
     "nwicu": "nwicu",
     "omix": "omix",
+    "sicdb": "sicdb",
+    "zigong": "zigong",
 }
 
 def normalize_stay_id(expr: pl.Series | pl.Expr, dataset: str) -> pl.Expr:
@@ -72,3 +74,4 @@ def attach_split(aligned: pl.LazyFrame, split: pl.LazyFrame, dataset: str) -> pl
         normalize_stay_id(pl.col("stay_id"), dataset).alias("stay_id")
     )
     return aligned_norm.join(split_norm.select("stay_id", "split"), on="stay_id", how="inner")
+

@@ -1,0 +1,244 @@
+{
+  "cohort": "kidney_function",
+  "dataset": "eicu",
+  "grouping": "patient",
+  "n_patients": 58053,
+  "n_stays_total": 69321,
+  "n_stays": 69321,
+  "n_positive": null,
+  "classification": false,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "92e18ba9d761addef980477a580cd1b341061ba57c37b0ea08ce302e60fc5e14",
+  "dyn_content_sha256": "bb5589fb42b8085090be0ab30d39e2bc812b2168ef1e00e583ffa2d9f9954699",
+  "outc_content_sha256": "15b8ab11140bbc702402abc4959a40401f73add4ca35162b193b42e49011a598",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_0_fold_0.parquet",
+      "n_train": 44354,
+      "n_val": 11093,
+      "n_test": 13874,
+      "content_sha256": "a3fd25f75de81c46c59624fae3e89058a8266655e7a8e57a4df1f1bc419931e9"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_0_fold_1.parquet",
+      "n_train": 44262,
+      "n_val": 11185,
+      "n_test": 13874,
+      "content_sha256": "376f7c5df279be1e2a1da2960afadb997d6c8f0be581069cc4acce15072ce1c8"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_0_fold_2.parquet",
+      "n_train": 44378,
+      "n_val": 11069,
+      "n_test": 13874,
+      "content_sha256": "90891bbf9882f0f7ceba3e5c3c3c567407417f7cf5a72d0ac2be2efee824cb13"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_0_fold_3.parquet",
+      "n_train": 44421,
+      "n_val": 11026,
+      "n_test": 13874,
+      "content_sha256": "2924527e59bd74aff620aa6c335290f945bbe04e895293d9d36ee8d943fa4bcc"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_0_fold_4.parquet",
+      "n_train": 44373,
+      "n_val": 11074,
+      "n_test": 13874,
+      "content_sha256": "5838d0a1c9cd52d2235dec2cdcc80bbbfc58c081b001043968b3f18774fe4911"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_1_fold_0.parquet",
+      "n_train": 44384,
+      "n_val": 11119,
+      "n_test": 13818,
+      "content_sha256": "5c33a0e6c14ee2e836ffe1ba2c4ebd5d054e0640a49453793efdd58331b8e3dd"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_1_fold_1.parquet",
+      "n_train": 44373,
+      "n_val": 11130,
+      "n_test": 13818,
+      "content_sha256": "26b96c10e6fa5f2417003359ef1e1d07143d0716666eccda81d2653d09e484d8"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_1_fold_2.parquet",
+      "n_train": 44317,
+      "n_val": 11186,
+      "n_test": 13818,
+      "content_sha256": "32ea3ef01835fe2baa9ad1f5c2cbdf37a29af861159a14f0dc12e2332626fbc3"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_1_fold_3.parquet",
+      "n_train": 44479,
+      "n_val": 11024,
+      "n_test": 13818,
+      "content_sha256": "be9494827e52dcc6bd7482c11375f83aae841049e5cb00f9d78a5219a7582825"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_1_fold_4.parquet",
+      "n_train": 44459,
+      "n_val": 11044,
+      "n_test": 13818,
+      "content_sha256": "3a47ed99b24b2d3445633ecd458a40d532617d2e6938c032c5dbed390f3b087d"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_2_fold_0.parquet",
+      "n_train": 44340,
+      "n_val": 11077,
+      "n_test": 13904,
+      "content_sha256": "4fb38ec99c97ebe891dd612cfc19bfba4a186c31e19c37a32a54279c7c053ca9"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_2_fold_1.parquet",
+      "n_train": 44346,
+      "n_val": 11071,
+      "n_test": 13904,
+      "content_sha256": "1f5adf1ca466ed6b551202033c30bce33efbf558fb3e6bbfe854ab249a0d4166"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_2_fold_2.parquet",
+      "n_train": 44374,
+      "n_val": 11043,
+      "n_test": 13904,
+      "content_sha256": "226c9fa0c18f5920239753787f967cd3f83c2c5dd39c861d3b2eb9aaee637179"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_2_fold_3.parquet",
+      "n_train": 44266,
+      "n_val": 11151,
+      "n_test": 13904,
+      "content_sha256": "ad160433806245c42fc3ef9c5dfa75029bfa145cfffffb3d7435e16bc4eb3652"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_2_fold_4.parquet",
+      "n_train": 44342,
+      "n_val": 11075,
+      "n_test": 13904,
+      "content_sha256": "f460abe89fdbc6701322ee449cda89fff4d39b2c59b52ed76a1a026ba7620a70"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_3_fold_0.parquet",
+      "n_train": 44345,
+      "n_val": 11125,
+      "n_test": 13851,
+      "content_sha256": "4c13537eef418c62c34b5907ca49d4f1bb964b3809d8e491f6d9990b536dbfe8"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_3_fold_1.parquet",
+      "n_train": 44342,
+      "n_val": 11128,
+      "n_test": 13851,
+      "content_sha256": "c1449fdbf2025ba15932d4a1d62697890b174443c9a5f47200e37cc27e6e9209"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_3_fold_2.parquet",
+      "n_train": 44424,
+      "n_val": 11046,
+      "n_test": 13851,
+      "content_sha256": "8a33c403df598decf22539f14268f32bebe4fdb694e9c36290cc807b0d6e559d"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_3_fold_3.parquet",
+      "n_train": 44354,
+      "n_val": 11116,
+      "n_test": 13851,
+      "content_sha256": "19690112eb0848dc83cedaa74a8acd74be82b0d6a8145cceef9bbc89240187bc"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_3_fold_4.parquet",
+      "n_train": 44415,
+      "n_val": 11055,
+      "n_test": 13851,
+      "content_sha256": "b8dd0eb2b41ca87eb581e7bf160a2003336a469c4a7f01ff4d77024c4c4d73ca"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_4_fold_0.parquet",
+      "n_train": 44313,
+      "n_val": 11134,
+      "n_test": 13874,
+      "content_sha256": "0b64497a625302bfc6a16093000d784581818f38bd92f9222a10d535bd75e94c"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_4_fold_1.parquet",
+      "n_train": 44402,
+      "n_val": 11045,
+      "n_test": 13874,
+      "content_sha256": "57c9cfe1663468aa8037a046295bab35934dfe8d48d48f7d7081f44ccdf63e63"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_4_fold_2.parquet",
+      "n_train": 44394,
+      "n_val": 11053,
+      "n_test": 13874,
+      "content_sha256": "c9c1e575d29c2c6f61d3328172145ee3655b52b9fbacf91174cd446c04a40041"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_4_fold_3.parquet",
+      "n_train": 44366,
+      "n_val": 11081,
+      "n_test": 13874,
+      "content_sha256": "81ab943b5863f8c73b7814fb82be716e381355cc250f631a4a5c06a813ac3958"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/eicu/cv_rep_4_fold_4.parquet",
+      "n_train": 44313,
+      "n_val": 11134,
+      "n_test": 13874,
+      "content_sha256": "74627d32e47259c9a7c8009d71ed999364d2bdc743c8b4816e2c709403f3c36e"
+    }
+  ]
+}

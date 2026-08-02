@@ -1,7 +1,6 @@
 """OMIXReader — harmonise OMIX005817 (Zhejiang Provincial ICU, Jin et al. 2023).
 
-The released dataset has three structural quirks that drive this reader's design
-(documented in 
+The released dataset has three structural quirks that drive this reader's design:
 
 1. Hospital_ID is corrupted by R `write.csv` scientific-notation serialization
    on 5,682 of 8,180 admissions, collapsing them onto 4 indistinguishable
@@ -18,7 +17,7 @@ The released dataset has three structural quirks that drive this reader's design
    9 vital types, no vent/invasive BP/I/O). The mask-channel pipeline handles
    the era split implicitly; no explicit era flag.
 
- conformance + correctness pass (2026-05-28). The reader
+Session-19 conformance + correctness pass (2026-05-28). The session-18 reader
 emitted a non-canonical schema (patient_id/time/Unit_measure, eager DataFrames)
 that `validate_frame`/`build_base_cohort` reject; it had never run end-to-end.
 This rewrite makes every read_* emit the canonical schema as a LazyFrame
@@ -50,7 +49,6 @@ Notable gaps in the released Lab table (vs ricu-faithful concept registries):
 - TnI present (44k rows) merged into canonical `tnt` per NWICU precedent.
 
 References:
-- Spec: 
 - Audit: reports/omix_dataset_audit.md
 - Paper: data/raw/OMIX005817/s41597-023-01952-3.pdf (Jin et al. 2023)
 """
@@ -690,3 +688,4 @@ def _apply_unit_conversion_omix(events: pl.LazyFrame) -> pl.LazyFrame:
         & pl.col("concept").is_not_null()
         & pl.col("value").is_not_null()
     )
+

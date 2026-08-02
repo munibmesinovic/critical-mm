@@ -24,9 +24,9 @@ torch = pytest.importorskip("torch", reason="torch not installed; skipping model
 pytest.importorskip("gin", reason="gin not installed; skipping model kwarg tests")
 pytest.importorskip("pytorch_lightning", reason="pytorch_lightning not installed; skipping")
 
-from torch.optim import Adam # noqa: E402 (after importorskip guard)
+from torch.optim import Adam
 
-from critical_mm.models._runmode import RunMode # noqa: E402
+from critical_mm.models._runmode import RunMode
 
 def test_grunet_constructs_with_explicit_kwargs() -> None:
     """GRUNet should instantiate purely from explicit kwargs, no gin globals needed."""

@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 # rebuild_sepsis.sh — rebuild the SEP-3 cascade outputs for one dataset
 # under a cgroup memory cap. Always use this instead of bare
-# `python -c "Sepsis.build(...)"` from a shell — uncapped rebuilds
+# `python -c "Sepsis().build(...)"` from a shell — uncapped rebuilds
 # have OOM-killed the user cgroup and broken the SSH login session
-# (see "Phase 1 interim builds" follow-up +
-# postmortem).
+#.
 #
 # Usage:
-# scripts/rebuild_sepsis.sh <dataset> [--skip-abx_duration] [--uncapped]
-# where <dataset> ∈ {eicu, miiv, hirid, nwicu}
+#   scripts/rebuild_sepsis.sh <dataset> [--skip-abx_duration] [--uncapped]
+#     where <dataset> ∈ {eicu, miiv, hirid, nwicu}
 #
 # Pass --uncapped to skip the mem_run.sh self-wrap. Use this for datasets
 # whose natural peak exceeds the cgroup accounting limits (hirid sepsis
@@ -18,19 +17,19 @@
 # but for known-good workloads on an otherwise idle host, it's safe.
 #
 # Env overrides:
-# MEM_MAX hard cap for the scope. If unset, the script picks a per-dataset
-# default that's empirically safe under cold cache:
-# eicu → 110G (events_long pivot is the heaviest)
-# miiv → 80G
-# hirid → 100G (full SEP-3 cascade on 32k stays + SOFA pivot)
-# nwicu → 30G (small dataset)
+#   MEM_MAX  hard cap for the scope. If unset, the script picks a per-dataset
+#            default that's empirically safe under cold cache:
+#              eicu  → 110G (events_long pivot is the heaviest)
+#              miiv  → 80G
+#              hirid → 100G  (full SEP-3 cascade on 32k stays + SOFA pivot)
+#              nwicu → 30G   (small dataset)
 #
 # What it does (in order, per the ricu-faithful path):
-# 1. read_abx_duration → data/interim/<ds>/abx_duration.parquet
-# (cached; rebuilt only on cache miss)
-# 2. build_base_cohort → data/processed/base_cohort/<ds>/stays.parquet
-# 3. Sepsis.build → data/processed/sepsis/<ds>/{sta,dyn,outc}.parquet (CM-native)
-# 4. export_yaib(sepsis) → same paths, overwritten to YAIB-shape
+#   1. read_abx_duration  → data/interim/<ds>/abx_duration.parquet
+#                           (cached; rebuilt only on cache miss)
+#   2. build_base_cohort   → data/processed/base_cohort/<ds>/stays.parquet
+#   3. Sepsis().build()    → data/processed/sepsis/<ds>/{sta,dyn,outc}.parquet (CM-native)
+#   4. export_yaib(sepsis) → same paths, overwritten to YAIB-shape
 #
 # Idempotent. Safe to re-run after a failure.
 
@@ -40,24 +39,24 @@ REPO="$(cd "$(dirname "$0")/.." && pwd)"
 
 # Resolve per-dataset MEM_MAX before the self-wrap (so the cap is set
 # correctly when the script re-execs inside mem_run.sh).
-_resolve_mem_max {
+_resolve_mem_max() {
     if [ -n "${MEM_MAX:-}" ]; then echo "$MEM_MAX"; return; fi
     # Caps empirically set above each dataset's natural memory peak
     # measured via uncapped trace on 2026-05-20 (host has 123 GiB RAM,
     # we leave 3-8 GiB headroom for OS / other users):
-    # hirid natural peak 102.3 GiB → cap 120G
-    # eicu natural peak (unknown, similar magnitude expected) → 120G
-    # miiv natural peak ~50 GiB → 80G
-    # nwicu natural peak ~5 GiB → 30G
+    #   hirid natural peak  102.3 GiB → cap 120G
+    #   eicu  natural peak  (unknown, similar magnitude expected) → 120G
+    #   miiv  natural peak  ~50 GiB → 80G
+    #   nwicu natural peak  ~5 GiB → 30G
     # The cap exists for ISOLATION (kill the scope cleanly, not the
     # SSH session) — it's not meant to make the workload fit in less
     # memory than it needs.
     case "${1:-}" in
-        eicu) echo "120G";;
-        miiv) echo "80G";;
-        hirid) echo "120G";;
-        nwicu) echo "30G";;
-        *) echo "120G";; # safe-ish default for unknown
+        eicu)  echo "120G" ;;
+        miiv)  echo "80G"  ;;
+        hirid) echo "120G" ;;
+        nwicu) echo "30G"  ;;
+        *)     echo "120G" ;;  # safe-ish default for unknown
     esac
 }
 
@@ -101,7 +100,7 @@ if [ -z "${CMM_MEM_RUN_ACTIVE:-}" ] && [ -z "$_uncapped_flag" ] && [ -x "$REPO/s
 fi
 
 # Use the project's conda env if available; fall back to PATH python.
-PY="$HOME/miniforge3/envs/critical-mm/bin/python"
+PY="python3"
 if [[ ! -x "$PY" ]]; then
     PY="$(command -v python3 || command -v python || true)"
 fi
@@ -115,10 +114,10 @@ SKIP_ABX=""
 UNCAPPED=""
 for arg in "$@"; do
     case "$arg" in
-        --skip-abx_duration) SKIP_ABX="--skip-abx_duration";;
-        --uncapped) UNCAPPED="1";;
-        --*) echo "unknown flag: $arg" >&2; exit 2;;
-        *) DATASET="$arg";;
+        --skip-abx_duration) SKIP_ABX="--skip-abx_duration" ;;
+        --uncapped)          UNCAPPED="1" ;;
+        --*)                 echo "unknown flag: $arg" >&2; exit 2 ;;
+        *)                   DATASET="$arg" ;;
     esac
 done
 if [ -z "$DATASET" ]; then
@@ -126,14 +125,14 @@ if [ -z "$DATASET" ]; then
     exit 2
 fi
 case "$DATASET" in
-    eicu|miiv|hirid|nwicu);;
-    *) echo "unknown dataset: $DATASET" >&2; exit 2;;
+    eicu|miiv|hirid|nwicu) ;;
+    *) echo "unknown dataset: $DATASET" >&2; exit 2 ;;
 esac
 
 LOG_DIR="$REPO/logs/rebuilds"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/rebuild_sepsis_${DATASET}_$(date +%Y%m%dT%H%M%S).log"
-echo "rebuild_sepsis $DATASET log=$LOG_FILE MEM_MAX=${MEM_MAX:-(scope default)}"
+echo "rebuild_sepsis $DATASET  log=$LOG_FILE  MEM_MAX=${MEM_MAX:-(scope default)}"
 
 cd "$REPO"
 
@@ -144,7 +143,7 @@ from pathlib import Path
 DATASET = "${DATASET}"
 SKIP_ABX = "${SKIP_ABX}" == "--skip-abx_duration"
 
-def ts -> str:
+def ts() -> str:
     return time.strftime("%H:%M:%S")
 
 
@@ -175,38 +174,39 @@ def reader_for(ds):
 
 # Step 1: abx_duration (cached; cache hit on second run is ~1s).
 if not SKIP_ABX:
-    t0 = time.time
-    print(f"[{ts}] step 1/4: read_abx_duration({DATASET})...", flush=True)
+    t0 = time.time()
+    print(f"[{ts()}] step 1/4: read_abx_duration({DATASET}) ...", flush=True)
     reader_for(DATASET)._harmonise_one("abx_duration", concepts=[], force=False)
-    print(f"[{ts}] step 1/4: ok ({time.time-t0:.1f}s)", flush=True)
+    print(f"[{ts()}] step 1/4: ok ({time.time()-t0:.1f}s)", flush=True)
 else:
-    print(f"[{ts}] step 1/4: SKIPPED (--skip-abx_duration)", flush=True)
+    print(f"[{ts()}] step 1/4: SKIPPED (--skip-abx_duration)", flush=True)
 
 # Step 2: base cohort.
 from critical_mm.cohorts.base import build_base_cohort
-t0 = time.time
-print(f"[{ts}] step 2/4: build_base_cohort({DATASET})...", flush=True)
+t0 = time.time()
+print(f"[{ts()}] step 2/4: build_base_cohort({DATASET}) ...", flush=True)
 build_base_cohort(dataset=DATASET, interim_root=Path("data/interim"),
                   processed_root=Path("data/processed"), repo_root=Path("."))
-print(f"[{ts}] step 2/4: ok ({time.time-t0:.1f}s)", flush=True)
+print(f"[{ts()}] step 2/4: ok ({time.time()-t0:.1f}s)", flush=True)
 
-# Step 3: Sepsis.build.
+# Step 3: Sepsis().build.
 from critical_mm.tasks import Sepsis
-t0 = time.time
-print(f"[{ts}] step 3/4: Sepsis.build({DATASET})...", flush=True)
-Sepsis.build(dataset=DATASET, interim_root=Path("data/interim"),
+t0 = time.time()
+print(f"[{ts()}] step 3/4: Sepsis.build({DATASET}) ...", flush=True)
+Sepsis().build(dataset=DATASET, interim_root=Path("data/interim"),
                processed_root=Path("data/processed"), repo_root=Path("."))
-print(f"[{ts}] step 3/4: ok ({time.time-t0:.1f}s)", flush=True)
+print(f"[{ts()}] step 3/4: ok ({time.time()-t0:.1f}s)", flush=True)
 
 # Step 4: YAIB-shape export (overwrites the CM-native outc/dyn/sta).
 from critical_mm.exports.yaib import export_yaib
-t0 = time.time
-print(f"[{ts}] step 4/4: export_yaib(sepsis, {DATASET})...", flush=True)
+t0 = time.time()
+print(f"[{ts()}] step 4/4: export_yaib(sepsis, {DATASET}) ...", flush=True)
 export_yaib(task="sepsis", dataset=DATASET,
             base_cohort_root=Path("data/processed/base_cohort"),
             task_output_root=Path("data/processed"),
             yaib_output_root=Path("data/processed"))
-print(f"[{ts}] step 4/4: ok ({time.time-t0:.1f}s)", flush=True)
+print(f"[{ts()}] step 4/4: ok ({time.time()-t0:.1f}s)", flush=True)
 
-print(f"[{ts}] DONE: data/processed/sepsis/{DATASET}/{{sta,dyn,outc}}.parquet in YAIB shape", flush=True)
+print(f"[{ts()}] DONE: data/processed/sepsis/{DATASET}/{{sta,dyn,outc}}.parquet in YAIB shape", flush=True)
 PY
+

@@ -143,3 +143,4 @@ SICDB_DRUG_CLASS_PATTERNS: list[tuple[str, str]] = [
 ]
 
 SICDB_VENT_RANGE_IDS: frozenset[int] = frozenset({720, 3041})
+

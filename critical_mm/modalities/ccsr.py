@@ -57,3 +57,4 @@ def add_ccsr_grouping(df: pl.LazyFrame) -> pl.LazyFrame:
         .otherwise(pl.lit("root_fallback"))
         .alias("group_source"),
     ).drop("__dotless", "__cm10", "__ccsr")
+

@@ -163,6 +163,30 @@ class HiRIDReader(DatasetReader):
         )
         return lf.select(list(TABLES["stays"][0].keys()))
 
+    def _sink_scratch(self, lf: pl.LazyFrame, name: str) -> Path:
+        """Stream a single-source LazyFrame to a per-source scratch parquet.
+
+        Memory fix (2026-06-18, mirror of eICUReader._sink_scratch): the HiRID
+        events_long composite previously materialised one monolithic lazy graph
+        over ~365M filtered observation rows (776M raw rows narrowed to 77
+        variableids), which OOMed past the ~100 GiB host ceiling. The fix is
+        structural — exactly as eICU did: every major piece is streamed to its
+        own parquet first, then read_events_long returns
+        ``apply_canonical_units(concat([scan_parquet(s) for s in scratch_files]))``.
+
+        The large bulk (all concepts except urine + neut/lymph ratio) is a plain
+        filter/join/select pipeline with NO streaming barrier, so its per-part
+        peak is bounded. The order-dependent urine ``.diff().over("stay_id")``
+        and the neut/lymph ``join_asof(by="stay_id")`` run on their TINY concept
+        subsets (~1.48M and ~0.33M rows), each sunk to its own parquet, so their
+        sort/asof barriers materialise only those small frames. The final
+        harmonise_all sink streams parquet→parquet with a small footprint.
+        """
+        path = self.interim_root / self.dataset_name / f"_evt_{name}.parquet"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        lf.sink_parquet(path, compression="zstd", statistics=True)
+        return path
+
     def read_events_long(self, concepts: list[str]) -> pl.LazyFrame:
         wanted = set(concepts)
         blood_cell_ratio_targets = wanted & {"neut", "lymph"}
@@ -202,8 +226,27 @@ class HiRIDReader(DatasetReader):
             pl.lit(None, dtype=pl.Utf8).alias("unit"),
             pl.col("_cmm_unit_src").alias("unit_source"),
         ).select("patient_id", "stay_id", "charttime", "concept", "value", "unit", "unit_source")
+
+        ratio_concepts = {"neut", "lymph"}
+        exclude_from_bulk: set[str] = set()
         if "urine" in wanted:
-            others = events.filter(pl.col("concept") != "urine")
+            exclude_from_bulk.add("urine")
+        if blood_cell_ratio_targets:
+            exclude_from_bulk |= ratio_concepts
+            exclude_from_bulk.add("wbc")
+
+        scratch_files: list[Path] = []
+
+        if exclude_from_bulk:
+            bulk = events.filter(~pl.col("concept").is_in(sorted(exclude_from_bulk)))
+        else:
+            bulk = events
+        scratch_files.append(self._sink_scratch(bulk, "bulk"))
+        if blood_cell_ratio_targets and "wbc" in wanted:
+            wbc_passthrough = events.filter(pl.col("concept") == "wbc")
+            scratch_files.append(self._sink_scratch(wbc_passthrough, "wbc"))
+
+        if "urine" in wanted:
             urine = events.filter(pl.col("concept") == "urine").sort(["stay_id", "charttime"])
             urine_diff = urine.with_columns(
                 pl.col("value").cast(pl.Float64).diff().over("stay_id").alias("_diff"),
@@ -218,7 +261,8 @@ class HiRIDReader(DatasetReader):
             ).select(
                 "patient_id", "stay_id", "charttime", "concept", "value", "unit", "unit_source"
             )
-            events = pl.concat([others, urine_out], how="vertical")
+            scratch_files.append(self._sink_scratch(urine_out, "urine"))
+
         if blood_cell_ratio_targets:
             event_cols = events.collect_schema().names()
             wbc = (
@@ -232,7 +276,6 @@ class HiRIDReader(DatasetReader):
                 .sort("charttime")
             )
             targets = events.filter(pl.col("concept").is_in(["neut", "lymph"])).sort("charttime")
-            others = events.filter(~pl.col("concept").is_in(["neut", "lymph"]))
             targets_with_wbc = targets.join_asof(
                 wbc,
                 by="stay_id",
@@ -246,10 +289,14 @@ class HiRIDReader(DatasetReader):
                 .alias("value"),
                 pl.lit("%").alias("unit"),
             ).select(event_cols)
-            events = pl.concat([others, targets_ratio], how="vertical")
-            if "wbc" not in wanted:
-                events = events.filter(pl.col("concept") != "wbc")
-        return apply_canonical_units(events)
+            scratch_files.append(self._sink_scratch(targets_ratio, "ratio"))
+
+        return apply_canonical_units(
+            pl.concat(
+                [pl.scan_parquet(p) for p in scratch_files],
+                how="vertical_relaxed",
+            )
+        )
 
     def read_meds(self) -> pl.LazyFrame:
         pharma_class_lf = pl.LazyFrame(
@@ -305,7 +352,7 @@ class HiRIDReader(DatasetReader):
         return empty_frame("microbio")
 
     def read_abx_duration(self) -> pl.LazyFrame:
-        """ricu-faithful abx_duration extraction (audit round 10m).
+        """ricu-faithful abx_duration extraction (review).
 
         Verbatim port of
         ``configs/medications/concept-dict.json#abx_duration.sources.hirid``:

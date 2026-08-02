@@ -34,3 +34,4 @@ Tier-2 grouping (`critical_mm/modalities/grouping.py`).
 - **Extraction (reproducible):** drop `no_map=1` and `NoDx` rows; keep the FIRST
   `icd10cm` per `icd9cm` (maintain_order); columns `icd9,icd10` (dotless); `gzip -9`.
 - **Vendored file SHA256:** see `CHECKSUMS.sha256`.
+

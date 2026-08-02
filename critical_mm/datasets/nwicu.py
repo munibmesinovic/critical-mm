@@ -1,14 +1,14 @@
 """NWICUReader — harmonise NWICU v0.1.0 with imperial-unit conversion at ingest.
 
-Five -session-verified itemids (o2sat, po2, ck, ckmb, tnt) are locked and
+Five P00-session-verified itemids (o2sat, po2, ck, ckmb, tnt) are locked and
 re-verified at every ingest start; any drift triggers a STOP. Imperial-unit
 chartevents (temp °F, weight oz, height in) are converted at row level via
-the unit converters so events_long carries canonical SI only.
+the P03 unit converters so events_long carries canonical SI only.
 
 Coverage decisions (after the audit at `verification_reports/datasets/nwicu.md`):
 - read_meds parses `emar.csv.gz` (the actual administration record, 19.2M
   rows) for drug start times. `prescriptions.csv.gz` is layered on for
-  route/dose where emar's free-text doesn't disambiguate. The original 
+  route/dose where emar's free-text doesn't disambiguate. The original P07
   draft used only prescriptions; emar was the major omission.
 - read_events_long includes BOTH the non-invasive (320179/320180) and the
   invasive arterial-line (320050/320051) SBP/DBP itemids, collapsed into
@@ -17,7 +17,7 @@ Coverage decisions (after the audit at `verification_reports/datasets/nwicu.md`)
   (HEMODIALYSIS 704890 + PERITONEAL DIALYSIS 772042 + two catheter-placement
   itemids 798351/724671), and ecmo (ECMO PUMP SETTINGS 736876). The
   prompt's claim that RRT/ECMO are "not in v0.1.0" was wrong; the audit
-  confirms these exist with different itemids than the prompt anticipated.
+  confirms these exist with different itemids than the specification anticipated.
 
 Known v0.1.0 gaps (documented for downstream consumers):
 - Notes table is empty (NWICU has no clinical notes).
@@ -101,7 +101,7 @@ class NWICUReader(DatasetReader):
         return [p for p in rel.get(table, []) if p.exists()]
 
     def _verify_locked_itemids(self) -> None:
-        """Re-verify the 5 -locked itemids exist in hosp/d_labitems.csv.gz.
+        """Re-verify the 5 P00-locked itemids exist in hosp/d_labitems.csv.gz.
 
         STOPs loudly with RuntimeError if any locked lab itemid is missing.
         Chartevents-locked items (o2sat) are skipped here — those live in
@@ -126,7 +126,7 @@ class NWICUReader(DatasetReader):
         if missing:
             raise RuntimeError(
                 "NWICU drift detected: locked itemids absent from "
-                f"d_labitems.csv.gz — {missing}. Re-check verification."
+                f"d_labitems.csv.gz — {missing}. Re-check P00 verification."
             )
 
     def read_stays(self) -> pl.LazyFrame:
@@ -464,7 +464,7 @@ class NWICUReader(DatasetReader):
         ).select(list(TABLES["interventions"][0].keys()))
 
     def read_abx_duration(self) -> pl.LazyFrame:
-        """ricu-faithful abx_duration extraction (audit round 10w, 2026-05-20).
+        """ricu-faithful abx_duration extraction (review, 2026-05-20).
 
         Two-source pattern mirroring eICU:
 
@@ -557,3 +557,6 @@ class NWICUReader(DatasetReader):
         return empty_frame("microbio")
 
 __all__ = ["NWICUReader"]
+
+__all__ = ["NWICUReader"]
+

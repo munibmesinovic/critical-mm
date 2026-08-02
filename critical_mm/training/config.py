@@ -6,12 +6,10 @@ TrainConfig.extra_hyperparams as a dict update.
 
 from __future__ import annotations
 
-import os
-
 from dataclasses import dataclass, field
 from pathlib import Path
 
-REPO = Path(os.environ.get("CRITICAL_MM_DATA_ROOT", Path(__file__).resolve().parents[2]))
+REPO = Path("$CRITICAL_MM_REPO")
 
 _KNOWN_TASKS: frozenset[str] = frozenset({"sepsis", "aki", "mortality24", "los", "kidney_function"})
 
@@ -34,6 +32,8 @@ class TrainConfig:
     debug: bool = False
     extra_hyperparams: dict[str, object] = field(default_factory=dict)
     data_root: Path = field(default_factory=lambda: REPO)
+    splits_root: Path | None = None
+    checkpoint_root: Path | None = None
 
     def __post_init__(self) -> None:
         from critical_mm.registry import discover_models
@@ -54,24 +54,24 @@ class TrainConfig:
 
     @property
     def splits_dir(self) -> Path:
-        return self.data_root / "data" / "processed" / "splits" / self.task / self.dataset
+        base = self.splits_root or (self.data_root / "data" / "processed" / "splits")
+        return base / self.task / self.dataset
 
     @property
     def checkpoint_dir(self) -> Path:
-        return (
-            self.data_root
-            / "data"
-            / "checkpoints"
-            / self.task
-            / self.dataset
-            / self.model
-            / f"seed_{self.seed}"
-        )
+        base = self.checkpoint_root or (self.data_root / "data" / "checkpoints")
+        return base / self.task / self.dataset / self.model / f"seed_{self.seed}"
 
 def _model_defaults(num_classes: int) -> dict[str, dict[str, object]]:
     return {
         "GRU": {"hidden_dim": 256, "layer_dim": 1, "num_classes": num_classes},
         "LSTM": {"hidden_dim": 256, "layer_dim": 1, "num_classes": num_classes},
+        "LSTM_GatedICD": {
+            "hidden_dim": 256,
+            "layer_dim": 1,
+            "num_classes": num_classes,
+            "mod_dim": None,
+        },
         "TCN": {
             "num_channels": [64, 64, 64],
             "kernel_size": 7,
@@ -110,8 +110,9 @@ def resolve_trainer_overrides(
     model constructor (they are not model hyperparameters).
     """
     extra = dict(extra_hyperparams)
-    max_epochs = int(extra.pop("max_epochs", 100)) # type: ignore[call-overload]
+    max_epochs = int(extra.pop("max_epochs", 100))
     precision = extra.pop("precision", None)
     if precision is None:
         precision = "16-mixed" if use_cuda else 32
     return extra, max_epochs, precision
+

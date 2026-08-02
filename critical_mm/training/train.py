@@ -36,6 +36,7 @@ from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING, Any, cast
 
 from critical_mm.training.config import REPO, TrainConfig, resolve_trainer_overrides
+from critical_mm.validation.cohort_fingerprint import SEGMENTS, segment_key
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -68,7 +69,7 @@ def _splits_fingerprint(cfg: TrainConfig) -> dict[str, Any]:
     h = hashlib.sha256()
     for fold in manifest["folds"]:
         h.update(fold["content_sha256"].encode())
-    return {
+    fp = {
         "manifest_path": str(manifest_path.relative_to(REPO)),
         "data_git_sha_when_locked": manifest["data_git_sha"],
         "outc_content_sha256": manifest["outc_content_sha256"],
@@ -76,6 +77,11 @@ def _splits_fingerprint(cfg: TrainConfig) -> dict[str, Any]:
         "n_stays_total": manifest["n_stays_total"],
         "n_folds": len(manifest["folds"]),
     }
+    for seg in SEGMENTS:
+        key = segment_key(seg)
+        if key in manifest:
+            fp[key] = manifest[key]
+    return fp
 
 def _load_split_parquet(cfg: TrainConfig) -> pd.DataFrame:
     """Load locked split as pandas (CM-native trainer uses pandas-shaped frames)."""
@@ -166,7 +172,7 @@ def _build_base_preamble(cfg: TrainConfig, generate_features: bool = False) -> _
 
     from critical_mm.models._data.constants import DataSegment as Segment
     from critical_mm.models._data.constants import DataSplit as Split
-    from critical_mm.models._data.loader import PredictionDataset # noqa: F401
+    from critical_mm.models._data.loader import PredictionDataset
     from critical_mm.models._runmode import RunMode
     from critical_mm.training.preprocess import preprocess as cm_preprocess
 
@@ -246,6 +252,7 @@ def _train_one_preamble(
     fusion: object | None = None,
     dynamic_pad: bool = False,
     base: _BasePreamble | None = None,
+    apply_leakage_matrix: bool = True,
 ) -> _TrainContext:
     """Shared steps for both DL and ML training paths.
 
@@ -258,6 +265,12 @@ def _train_one_preamble(
         generate_features: forward to `preprocess()`; ML path passes True so
             each stay's last row carries per-stay running aggregates rather
             than a single time-step observation.
+        apply_leakage_matrix: forwarded verbatim to
+            ``build_blocks_dict_for_preamble`` -> ``build_treatments_block``.
+            ``True`` (default) is the gated (locked) behavior — byte-identical
+            to prior runs; ``False`` is the naive leakage-audit arm that keeps
+            the label-constituent treatments. It affects ONLY the treatments
+            rung; all other rungs ignore it.
     """
     from critical_mm.models._data.constants import DataSegment as Segment
     from critical_mm.models._data.constants import DataSplit as Split
@@ -275,32 +288,34 @@ def _train_one_preamble(
 
     metadata_fusion = None
     if fusion is not None and getattr(fusion, "rung", "structured") != "structured":
-        from critical_mm.fusion.loader import build_blocks_for_preamble
+        from critical_mm.fusion.loader import build_blocks_dict_for_preamble
         from critical_mm.fusion.strategy import augment_preprocessed
 
         fusion_cfg = cast("FusionConfig", fusion)
         train_ids = set(
             preprocessed[Split.train][Segment.features][vars["GROUP"]].unique().tolist()
         )
-        icd_block, notes_block = build_blocks_for_preamble(
+        blocks = build_blocks_dict_for_preamble(
             cfg=cfg,
             fusion=fusion_cfg,
             vars=vars,
             preprocessed=preprocessed,
             train_stay_ids=train_ids,
+            apply_leakage_matrix=apply_leakage_matrix,
         )
         preprocessed = augment_preprocessed(
             preprocessed,
             fusion=fusion_cfg,
             vars=vars,
-            icd_block=icd_block,
-            notes_block=notes_block,
+            blocks=blocks,
             strategy=getattr(fusion_cfg, "icd_strategy", "feature_augmentation"),
         )
         metadata_fusion = fusion_cfg.to_metadata()
 
     _cfg_dict = asdict(cfg)
     _cfg_dict.pop("data_root", None)
+    _cfg_dict.pop("splits_root", None)
+    _cfg_dict.pop("checkpoint_root", None)
     metadata: dict[str, Any] = {
         "config": _cfg_dict,
         "data_git_sha_at_train": _git_sha(),
@@ -401,7 +416,7 @@ def _train_one_dl(
     extra_hp, epochs, precision = resolve_trainer_overrides(cfg.extra_hyperparams, use_cuda)
     batch_size_override = extra_hp.pop("batch_size", None)
     if batch_size_override is not None:
-        bs = int(batch_size_override) # type: ignore[call-overload]
+        bs = int(batch_size_override)
         batch_size = min(bs, len(train_dataset), len(val_dataset))
         print(f" [batch_size override] using batch_size={batch_size}")
     patience = 10
@@ -447,7 +462,7 @@ def _train_one_dl(
         **hparams,
     )
     model.set_weight("balanced" if cfg.is_classification else None, train_dataset)
-    model.set_trained_columns(train_dataset.get_feature_names()) # type: ignore[no-untyped-call]
+    model.set_trained_columns(train_dataset.get_feature_names())
 
     tb_logger = TensorBoardLogger(str(ckpt))
     callbacks = [
@@ -457,6 +472,7 @@ def _train_one_dl(
             filename="model",
             save_top_k=1,
             save_last=True,
+            enable_version_counter=False,
         ),
     ]
     trainer = Trainer(
@@ -483,7 +499,17 @@ def _train_one_dl(
     trainer.fit(model, train_dataloaders=train_loader, val_dataloaders=val_loader)
     metadata["duration_fit_s"] = round(time.perf_counter() - fit_start, 2)
 
-    test_metrics_list = trainer.test(model, dataloaders=test_loader, verbose=False)
+    test_trainer = Trainer(
+        max_epochs=1,
+        accelerator="cuda" if use_cuda else "cpu",
+        devices=1,
+        precision="32-true" if use_cuda else 32,
+        deterministic="warn" if use_cuda else True,
+        enable_progress_bar=False,
+        logger=False,
+        num_sanity_val_steps=0,
+    )
+    test_metrics_list = test_trainer.test(model, dataloaders=test_loader, verbose=False)
     metadata["test_metrics"] = test_metrics_list[0] if test_metrics_list else {}
     metadata["duration_total_s"] = round(time.perf_counter() - ctx.t0, 2)
 
@@ -497,9 +523,10 @@ _CUML_GPU_MODELS = frozenset(
 )
 
 def _ml_cache_root(cfg: TrainConfig) -> Path:
-    """Root of the ML array cache, under cfg.data_root so an isolated re-lock
-    does not write into the locked tree's _ml_array_cache."""
-    return cfg.data_root / "data" / "checkpoints" / "_ml_array_cache"
+    """Root of the ML array cache. Follows checkpoint_root when set so a
+    split-variant retrain does not write into the locked tree's cache."""
+    base = cfg.checkpoint_root or (cfg.data_root / "data" / "checkpoints")
+    return base / "_ml_array_cache"
 
 def _evict_other_ml_caches(keep_dir: Path, cache_root: Path) -> None:
     """Keep only the current cohort's cache (arrays are multi-GB; the box is
@@ -518,6 +545,8 @@ def _ml_array_cache(cfg: TrainConfig) -> tuple[Any, dict[str, Any]]:
     """Return (cache_dir, meta) for cfg's (task, dataset), materializing the
     arrays on a cache miss. cache_dir holds arrays.npz (Xtr/ytr/Xva/yva/Xte/
     yte) + meta.json, reused across all model x seed cells of the cohort."""
+    import gc
+
     import numpy as np
 
     splits_fp = _splits_fingerprint(cfg)
@@ -533,9 +562,16 @@ def _ml_array_cache(cfg: TrainConfig) -> tuple[Any, dict[str, Any]]:
 
     _evict_other_ml_caches(cache_dir, _ml_cache_root(cfg))
     ctx = _train_one_preamble(cfg, generate_features=True, ram_cache=False)
+    feature_names = list(ctx.train_dataset.get_feature_names())
     Xtr, ytr = ctx.train_dataset.get_data_and_labels()
+    ctx.train_dataset = None
+    gc.collect()
     Xva, yva = ctx.val_dataset.get_data_and_labels()
+    ctx.val_dataset = None
+    gc.collect()
     Xte, yte = ctx.test_dataset.get_data_and_labels()
+    ctx.test_dataset = None
+    gc.collect()
     cache_dir.mkdir(parents=True, exist_ok=True)
     np.savez(npz_path, Xtr=Xtr, ytr=ytr, Xva=Xva, yva=yva, Xte=Xte, yte=yte)
     meta = {
@@ -545,7 +581,7 @@ def _ml_array_cache(cfg: TrainConfig) -> tuple[Any, dict[str, Any]]:
         "splits": ctx.metadata["splits"],
         "duration_load_s": ctx.metadata["duration_load_s"],
         "runmode": ctx.metadata["runmode"],
-        "feature_names": list(ctx.train_dataset.get_feature_names()), # type: ignore[no-untyped-call]
+        "feature_names": feature_names,
     }
     meta_path.write_text(json.dumps(meta, default=str))
     return cache_dir, meta
@@ -565,6 +601,7 @@ def _fit_ml_inprocess(
     model_class: type,
     t0: float,
     checkpoint_dir: Path | None = None,
+    low_memory: bool = False,
 ) -> dict[str, Any]:
     """In-process LGBM/CPU fit on already-materialized arrays.
 
@@ -603,6 +640,9 @@ def _fit_ml_inprocess(
         except Exception:
             device_name = "GPU"
     backend = f"lightgbm-{lightgbm.__version__}" if is_lgbm else f"sklearn-{sklearn.__version__}"
+
+    if low_memory and is_lgbm:
+        model.model.set_params(force_col_wise=True)
 
     fit_start = time.perf_counter()
     model.fit_model(Xtr, ytr, Xva, yva)
@@ -670,29 +710,39 @@ def _train_one_ml(cfg: TrainConfig, model_class: type) -> dict[str, Any]:
         model_out = cfg.checkpoint_dir / "model.joblib"
         cuml_py = os.environ.get(
             "CMM_CUML_PYTHON",
-            "python",
+            "python3",
         )
         runner = REPO / "scripts" / "cuml_runner.py"
+        cached = np.load(cache_dir / "arrays.npz")
+        datadir = cfg.checkpoint_dir / "_cuml_in"
+        datadir.mkdir(parents=True, exist_ok=True)
+        np.save(datadir / "train_X.npy", cached["Xtr"])
+        np.save(datadir / "train_y.npy", cached["ytr"])
+        np.save(datadir / "test_X.npy", cached["Xte"])
+        np.save(datadir / "test_y.npy", cached["yte"])
         wall_start = time.perf_counter()
-        subprocess.run(
-            [
-                cuml_py,
-                str(runner),
-                "--npz",
-                str(cache_dir / "arrays.npz"),
-                "--model",
-                cfg.model,
-                "--runmode",
-                runmode_str,
-                "--hparams",
-                json.dumps(cfg.extra_hyperparams),
-                "--metrics-out",
-                str(metrics_out),
-                "--model-out",
-                str(model_out),
-            ],
-            check=True,
-        )
+        try:
+            subprocess.run(
+                [
+                    cuml_py,
+                    str(runner),
+                    "--datadir",
+                    str(datadir),
+                    "--model",
+                    cfg.model,
+                    "--runmode",
+                    runmode_str,
+                    "--hparams",
+                    json.dumps(cfg.extra_hyperparams),
+                    "--metrics-out",
+                    str(metrics_out),
+                    "--model-out",
+                    str(model_out),
+                ],
+                check=True,
+            )
+        finally:
+            shutil.rmtree(datadir, ignore_errors=True)
         res = json.loads(metrics_out.read_text())
         metrics_out.unlink(missing_ok=True)
         metadata["test_metrics"] = res["test_metrics"]

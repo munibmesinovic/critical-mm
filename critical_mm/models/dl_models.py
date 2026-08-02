@@ -1,6 +1,7 @@
 from numbers import Integral
 
 import numpy as np
+import torch
 import torch.nn as nn
 
 from critical_mm.models._runmode import RunMode
@@ -71,6 +72,92 @@ class LSTMNet(DLPredictionWrapper):
         h0, c0 = self.init_hidden(x)
         out, h = self.rnn(x, (h0, c0))
         pred = self.logit(out)
+        return pred
+
+@register_model("LSTM_GatedICD")
+class LSTMGatedICDNet(DLPredictionWrapper):
+    """Gated late-fusion LSTM over structured time series + a static ICD block.
+
+    The DL loader hands a single ``[B, T, F]`` tensor in which the augmented ICD
+    diagnosis block (top-k CCSR groups + an ``icd_present`` bit) occupies the
+    TRAILING ``mod_dim`` columns, constant across the time axis (left-joined per
+    stay by ``FeatureAugmentationFusion``). This model splits that tensor:
+
+        seq = x[..., :-mod_dim]   # structured time series   (width F - mod_dim)
+        mod = x[..., -mod_dim:]   # static ICD block         (width mod_dim)
+
+    The LSTM runs over ``seq`` only; a structured head ``self.logit`` and a
+    modality head ``self.mod_head`` each emit ``num_classes`` logits per step. A
+    learned per-step gate ``g = sigmoid(self.gate([h_t, mod_t]))`` (scalar in
+    [0, 1] per timestep) modulates the modality contribution, giving a genuine
+    *late* fusion rather than the naive feature-concat baseline:
+
+        pred = logit(h_t) + g_t * mod_head(mod_t)            # [B, T, num_classes]
+
+    Returns a SINGLE ``[B, T, num_classes]`` tensor (NOT an aux-loss tuple): the
+    wrapper's ``step_fn`` expects a plain tensor and only special-cases a 2-tuple.
+
+    ``mod_dim`` (the ICD block width) MUST be supplied by the caller (threaded via
+    ``extra_hyperparams`` from the driver) because it is data-dependent: the top-k
+    CCSR vocabulary that survives the train-only prevalence floor differs by
+    (task, dataset), so it is NOT a fixed 64 + 1.
+    """
+
+    _supported_run_modes = [RunMode.classification, RunMode.regression]
+
+    def __init__(
+        self,
+        input_size,
+        hidden_dim,
+        layer_dim,
+        num_classes,
+        mod_dim,
+        *args,
+        **kwargs,
+    ):
+        super().__init__(
+            input_size=input_size,
+            hidden_dim=hidden_dim,
+            layer_dim=layer_dim,
+            num_classes=num_classes,
+            mod_dim=mod_dim,
+            *args,
+            **kwargs,
+        )
+        if mod_dim is None or mod_dim <= 0:
+            raise ValueError(
+                f"LSTM_GatedICD requires a positive mod_dim (ICD block width); got {mod_dim!r}"
+            )
+        total_feats = input_size[2]
+        seq_dim = total_feats - mod_dim
+        if seq_dim <= 0:
+            raise ValueError(
+                f"mod_dim={mod_dim} >= total feature width {total_feats}; "
+                "the structured branch would be empty"
+            )
+        self.hidden_dim = hidden_dim
+        self.layer_dim = layer_dim
+        self.mod_dim = mod_dim
+        self.seq_dim = seq_dim
+        self.rnn = nn.LSTM(seq_dim, hidden_dim, layer_dim, batch_first=True)
+        self.logit = nn.Linear(hidden_dim, num_classes)
+        self.mod_head = nn.Linear(mod_dim, num_classes)
+        self.gate = nn.Linear(hidden_dim + mod_dim, 1)
+
+    def init_hidden(self, x):
+        h0 = x.new_zeros(self.layer_dim, x.size(0), self.hidden_dim)
+        c0 = x.new_zeros(self.layer_dim, x.size(0), self.hidden_dim)
+        return [t for t in (h0, c0)]
+
+    def forward(self, x):
+        seq = x[..., : self.seq_dim]
+        mod = x[..., self.seq_dim :]
+        h0, c0 = self.init_hidden(seq)
+        out, _ = self.rnn(seq, (h0, c0))
+        struct_logits = self.logit(out)
+        mod_logits = self.mod_head(mod)
+        g = torch.sigmoid(self.gate(torch.cat([out, mod], dim=-1)))
+        pred = struct_logits + g * mod_logits
         return pred
 
 @register_model("GRU")
@@ -309,3 +396,4 @@ class TemporalConvNet(DLPredictionWrapper):
         o = o.permute(0, 2, 1)
         pred = self.logit(o)
         return pred
+

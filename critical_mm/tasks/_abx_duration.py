@@ -10,9 +10,9 @@ table.
 
 Output schema (per dataset):
 
-    stay_id Utf8 "<dataset>_<int>"
-    starttime Datetime us UTC
-    endtime Datetime us UTC (per ricu's per-source callback;
+    stay_id    Utf8         "<dataset>_<int>"
+    starttime  Datetime us UTC
+    endtime    Datetime us UTC   (per ricu's per-source callback;
                                   see notes below)
 
 Why a separate frame instead of reusing meds.drug_class:
@@ -20,25 +20,25 @@ Why a separate frame instead of reusing meds.drug_class:
 ricu's eICU + HiRID sources collapse the matched abx rows to
 **one-minute point events** via ``ts_to_win_tbl(mins(1L))`` —
 overwriting whatever real infusion duration was recorded. Our
-harmonised ``meds.parquet`` carries the real (or synthesized)
+harmonised ``meds.parquet`` carries the real (or an earlier review synthesized)
 duration because other downstream code (SOFA cardio vasopressor
 classification) needs it. Mixing the two semantics on one column was
-the silent driver of the post- AUROC drift (-0.10 to -0.13
+the silent driver of the post-an earlier review AUROC drift (-0.10 to -0.13
 on eICU sepsis vs the YAIB pretrained baselines). This module
 materialises the ricu-faithful 1-minute semantics on its own column.
 
 Per-dataset map (source: concept-dict.json#abx_duration.sources):
 
-    eicu infusiondrug regex on drugname 1-min point event
-    eicu medication regex on drugname drugstopoffset (real)
-    miiv inputevents 51 itemids endtime (real)
-    aumc drugitems 68 itemids stop (real)
-    hirid pharma 81 pharmaids 1-min point event
-    nwicu prescriptions regex on drug stoptime (real)
-    nwicu emar regex on medication 1-min point event
+    eicu   infusiondrug  regex on drugname   1-min point event
+    eicu   medication    regex on drugname   drugstopoffset (real)
+    miiv   inputevents   51 itemids          endtime (real)
+    aumc   drugitems     68 itemids          stop (real)
+    hirid  pharma        81 pharmaids        1-min point event
+    nwicu  prescriptions regex on drug       stoptime (real)
+    nwicu  emar          regex on medication 1-min point event
 
-Audit round 10m (2026-05-20): introduced.
-Audit round 10w (2026-05-20): added nwicu (prescriptions + emar)
+introduced.
+added nwicu (prescriptions + emar)
 following the eICU two-source pattern. NWICU was previously on the
 v1 abx-span surrogate (`_sepsis_nwicu_abx_only_onsets`) because the
 ricu concept-dict has no nwicu source — but NWICU's MIMIC-IV-style
@@ -217,3 +217,4 @@ ABX_DURATION_SCHEMA: dict[str, pl.DataType] = {
 def empty_abx_duration() -> pl.LazyFrame:
     """Empty frame with the canonical abx_duration schema."""
     return pl.LazyFrame(schema=ABX_DURATION_SCHEMA)
+

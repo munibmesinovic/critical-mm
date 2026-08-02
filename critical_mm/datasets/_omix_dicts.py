@@ -19,7 +19,7 @@ is not a GCS substitute. 观察结果 (free-text "observation results", 291k row
 may contain GCS scores in some stays but is out of scope for v1 ingest.
 Result: SOFA _sofa_cns falls through to score=0 per the documented ricu
 pattern in scoring/sofa.py:455-478. Expected sepsis recall hit: -5 to -8 pp
-(matches miiv pre- baseline).
+(matches miiv pre-an earlier review baseline).
 """
 
 from __future__ import annotations
@@ -118,3 +118,4 @@ OMIX_DRUG_CLASS_HINTS: dict[str, str] = {
     "taineng": "antibiotic",
     "dafukang": "antibiotic",
 }
+

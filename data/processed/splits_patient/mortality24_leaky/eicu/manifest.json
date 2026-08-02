@@ -1,0 +1,244 @@
+{
+  "cohort": "mortality24_leaky",
+  "dataset": "eicu",
+  "grouping": "patient",
+  "n_patients": 103932,
+  "n_stays_total": 131842,
+  "n_stays": 131842,
+  "n_positive": 6869,
+  "classification": true,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "330e25a0e7ea4dd2384043481fbb891196c271a6cf9c92ddbf5b3a2c59f3b1f6",
+  "dyn_content_sha256": "a77b2e5daa4f967af05bf809023b08e8cd9fd1768c0316d0138b918593959bd3",
+  "outc_content_sha256": "aea520c4a78f32f7640e620d05c0954202d612b82e318bcddc6d5ade1f94fcd8",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_0_fold_0.parquet",
+      "n_train": 84322,
+      "n_val": 21074,
+      "n_test": 26446,
+      "content_sha256": "b789ea934f594626a2f6b8aa00a6fd53da345e9be1a7b6bdc09f285a8474b986"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_0_fold_1.parquet",
+      "n_train": 84263,
+      "n_val": 21133,
+      "n_test": 26446,
+      "content_sha256": "f0e0715370208c00249cce1875bf854bd9cfd9b38a7207e1cfe0c1718bab0b2d"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_0_fold_2.parquet",
+      "n_train": 84360,
+      "n_val": 21036,
+      "n_test": 26446,
+      "content_sha256": "56f054d7eef3a13f4ecc28cf102d76dc42d021e78f231133e9c23664d2247040"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_0_fold_3.parquet",
+      "n_train": 84399,
+      "n_val": 20997,
+      "n_test": 26446,
+      "content_sha256": "3247cf2ebdc19f374aef66e4481d0d8a3c790fe1981208cde1de1af2ca3e270d"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_0_fold_4.parquet",
+      "n_train": 84240,
+      "n_val": 21156,
+      "n_test": 26446,
+      "content_sha256": "2a387444e6d37d26c737ce26fbf7e6b6cdf30c649c88080ea073a973ced24a9d"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_1_fold_0.parquet",
+      "n_train": 84543,
+      "n_val": 21076,
+      "n_test": 26223,
+      "content_sha256": "f5562a0e74dbebda32b29bcfedcb322e09f45f090bd21751695d859047574a4d"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_1_fold_1.parquet",
+      "n_train": 84598,
+      "n_val": 21021,
+      "n_test": 26223,
+      "content_sha256": "2a2bf7c74a39bc4e4801655382c2fd4bd8372046fb2c24e39c2db1dee0d3527a"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_1_fold_2.parquet",
+      "n_train": 84369,
+      "n_val": 21250,
+      "n_test": 26223,
+      "content_sha256": "978ae90dc4d84495373036d3ca7d4c8c0659839ac04d94d7e1cbc8a0161f6879"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_1_fold_3.parquet",
+      "n_train": 84398,
+      "n_val": 21221,
+      "n_test": 26223,
+      "content_sha256": "b075f9d56eab2fae494a86cb2409764538f116bb8619d47fa1b26444c6178c08"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_1_fold_4.parquet",
+      "n_train": 84568,
+      "n_val": 21051,
+      "n_test": 26223,
+      "content_sha256": "bae404ee6c57375b2af5d737c46dfd2a9371399c9e1b271b36f47d4a29de80f4"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_2_fold_0.parquet",
+      "n_train": 84515,
+      "n_val": 21093,
+      "n_test": 26234,
+      "content_sha256": "f18389bdcdeb16ed5e3bc6aedd9ffe11f06cc398eca3622a48804a84bb8d6482"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_2_fold_1.parquet",
+      "n_train": 84561,
+      "n_val": 21047,
+      "n_test": 26234,
+      "content_sha256": "97b9202bddb00b0cef619a859bfe70d3bc507e05cee4207660e25ef60c7b3a14"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_2_fold_2.parquet",
+      "n_train": 84367,
+      "n_val": 21241,
+      "n_test": 26234,
+      "content_sha256": "ba43fa055948c41383c1e55c3867aadb63502ef12af6f9ed70017869e64da41f"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_2_fold_3.parquet",
+      "n_train": 84479,
+      "n_val": 21129,
+      "n_test": 26234,
+      "content_sha256": "78301c37ebc4d9e462526fdbae66d1ef67f0a3430dd0e06deed310638df75f07"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_2_fold_4.parquet",
+      "n_train": 84510,
+      "n_val": 21098,
+      "n_test": 26234,
+      "content_sha256": "3811cd331ca5564700fe859a9d2d920f272bdc125815c3c728b2445d2e90fce7"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_3_fold_0.parquet",
+      "n_train": 84326,
+      "n_val": 21020,
+      "n_test": 26496,
+      "content_sha256": "c2a0c7cf147639205dd82405c7819411c24672a2cb27d6732e39b3522b9667a9"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_3_fold_1.parquet",
+      "n_train": 84278,
+      "n_val": 21068,
+      "n_test": 26496,
+      "content_sha256": "ee9d9b09162223e543d07291c4ee3fbe2ae819319c72ccfdd39a82cd2ad1094a"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_3_fold_2.parquet",
+      "n_train": 84335,
+      "n_val": 21011,
+      "n_test": 26496,
+      "content_sha256": "e6e36ea43288aca90f9de0b41de6c97e3fb8922f8c17a124103af2f5580b6ddc"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_3_fold_3.parquet",
+      "n_train": 84200,
+      "n_val": 21146,
+      "n_test": 26496,
+      "content_sha256": "17f5b8a1fca4c17866ef474919c9dc772ceba92edc79e91d09bc22589da9bc95"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_3_fold_4.parquet",
+      "n_train": 84245,
+      "n_val": 21101,
+      "n_test": 26496,
+      "content_sha256": "27e2c187fb0d94c690b1b033699394981b4d7e3ef08e0083e6245ce324786d8a"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_4_fold_0.parquet",
+      "n_train": 84240,
+      "n_val": 21159,
+      "n_test": 26443,
+      "content_sha256": "bc90036433f92e8740fa78b6e451aea1648b8c8328adf36ad2a65a049415ea13"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_4_fold_1.parquet",
+      "n_train": 84225,
+      "n_val": 21174,
+      "n_test": 26443,
+      "content_sha256": "ea24679f6fbf3e5f0915db27ae55c348df58900eb7507605ca7507f25551dcf2"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_4_fold_2.parquet",
+      "n_train": 84318,
+      "n_val": 21081,
+      "n_test": 26443,
+      "content_sha256": "7855cd86ade7d3948df859a0439201f10f5ef18b3c3300a479d42ca93c781c39"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_4_fold_3.parquet",
+      "n_train": 84449,
+      "n_val": 20950,
+      "n_test": 26443,
+      "content_sha256": "751b1abded6332f8e1554262b1435a984ff3d4d79b91c74ee2b8f9451a17e90f"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24_leaky/eicu/cv_rep_4_fold_4.parquet",
+      "n_train": 84364,
+      "n_val": 21035,
+      "n_test": 26443,
+      "content_sha256": "43aefdcaebceeac1d7f32110854a595bb36b6411d57b70a21300ef5f97121e21"
+    }
+  ]
+}

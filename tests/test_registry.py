@@ -57,7 +57,7 @@ def _make_fake_task(name: str) -> type[Task]:
 
     class _FakeTask(Task):
         task_name: ClassVar[str] = name
-        task_type: ClassVar[str] = "classification" # type: ignore[assignment]
+        task_type: ClassVar[str] = "classification"
         prediction_horizon_hours: ClassVar[int] = 24
 
         def build_labels(

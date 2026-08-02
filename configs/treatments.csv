@@ -1,0 +1,16 @@
+# CRITICAL-MM treatment-concept registry (Plan B). The leakage-safe treatment
+# DATA layer's single source of truth: 6 core binary indicators + 4 enrichment
+# dose channels. `support`: binary (presence flag) | dose (numeric rate/level).
+# `source`: harmonised table / derivation the reader draws from.
+# `datasets`: comma list (double-quoted when multi-valued) or "all".
+name,family,support,source,datasets,notes
+vasopressor,vasopressor,binary,meds:drug_class==vasopressor,all,
+mech_vent,ventilation,binary,interventions:mech_vent,all,
+niv,ventilation,binary,interventions:niv,all,
+rrt,rrt,binary,interventions:rrt | raw-derived (hirid/sicdb/omix/zigong),all,
+sedation,sedation,binary,meds:drug_class==sedative,all,
+antibiotic,antibiotic,binary,abx_duration,all,
+vasopressor_nee,vasopressor,dose,meds:vaso rate→µg/kg/min,"miiv,eicu,hirid,sicdb,omix",
+sedation_rate,sedation,dose,meds:sedative rate,"miiv,eicu,hirid,sicdb,omix",
+peep,ventilation,dose,raw:vent settings,"hirid,sicdb,miiv,eicu",
+insulin,other,dose,meds/raw:insulin,"sicdb,zigong,+raw",

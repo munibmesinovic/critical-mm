@@ -12,8 +12,8 @@ trainer (`critical_mm.training.train.train_one`) loads them at training time.
 Layout written by this script:
 
     data/processed/splits/<task>/<dataset>/
-        manifest.json # data git_sha, fingerprints, schema
-        cv_rep_<r>_fold_<f>.parquet # one parquet per (rep, fold) pair
+        manifest.json                       # data git_sha, fingerprints, schema
+        cv_rep_<r>_fold_<f>.parquet        # one parquet per (rep, fold) pair
                                              with columns [stay_id, split]
                                              split ∈ {train, val, test}
 
@@ -21,18 +21,16 @@ Manifest includes per-fold content_sha256 so training scripts can verify the
 splits match what the checkpoint was trained against.
 
 Usage:
-    python scripts/lock_splits.py # all tasks x datasets
-    python scripts/lock_splits.py --tasks sepsis aki # subset
-    python scripts/lock_splits.py --datasets eicu miiv # subset
-    python scripts/lock_splits.py --seed 42 --cv-reps 5 --cv-folds 5 # explicit
+    python scripts/lock_splits.py                              # all tasks x datasets
+    python scripts/lock_splits.py --tasks sepsis aki           # subset
+    python scripts/lock_splits.py --datasets eicu miiv         # subset
+    python scripts/lock_splits.py --seed 42 --cv-reps 5 --cv-folds 5    # explicit
 
 The default cv_reps=5, cv_folds=5 matches YAIB's `execute_repeated_cv`
 defaults; the default seed=42 matches YAIB's gin config.
 """
 
 from __future__ import annotations
-
-import os
 
 import argparse
 import hashlib
@@ -45,7 +43,7 @@ from pathlib import Path
 import polars as pl
 from sklearn.model_selection import KFold, StratifiedKFold
 
-REPO = Path(os.environ.get("CRITICAL_MM_DATA_ROOT", str(Path(__file__).resolve().parents[1])))
+REPO = Path("$CRITICAL_MM_REPO")
 
 _DEFAULT_TASKS: tuple[str, ...] = ("sepsis", "aki", "mortality24", "los", "kidney_function")
 _DEFAULT_DATASETS: tuple[str, ...] = ("eicu", "miiv", "hirid", "nwicu")
@@ -208,13 +206,13 @@ def main() -> None:
                 m = result["manifest"]
                 n_ok += 1
                 print(
-                    f" {task:18s} {dataset:6s} ok in {dt:.1f}s "
+                    f"  {task:18s} {dataset:6s} ok in {dt:.1f}s "
                     f"(n_stays={m['n_stays_total']:6d}, "
                     f"n_folds={len(m['folds'])})"
                 )
             else:
                 n_skipped += 1
-                print(f" {task:18s} {dataset:6s} SKIP — {result['reason']}")
+                print(f"  {task:18s} {dataset:6s} SKIP — {result['reason']}")
     print()
     print(
         f"=== Done in {time.perf_counter() - total_start:.1f}s ({n_ok} ok, {n_skipped} skipped) ==="
@@ -223,3 +221,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+if __name__ == "__main__":
+    main()
+

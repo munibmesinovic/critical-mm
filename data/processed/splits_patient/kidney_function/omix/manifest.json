@@ -1,0 +1,244 @@
+{
+  "cohort": "kidney_function",
+  "dataset": "omix",
+  "grouping": "patient",
+  "n_patients": 1257,
+  "n_stays_total": 1282,
+  "n_stays": 1282,
+  "n_positive": null,
+  "classification": false,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "f6c33fb07d2121c5ef5936eaa48a61bddb66c04e9b698b2f43c521cda0378c9a",
+  "dyn_content_sha256": "ae46b6972e1e46e7901fabdbc183d0e975e11b0432efc6c35511088618cb3685",
+  "outc_content_sha256": "a7380c9408558bb342c27ea504b43d7a7a5c923389b97650134b8d3da31c44db",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_0_fold_0.parquet",
+      "n_train": 820,
+      "n_val": 205,
+      "n_test": 257,
+      "content_sha256": "596bcb554a0b46fbb970e5ae8535871a300c408bb8fad4b15d8e394ba6806714"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_0_fold_1.parquet",
+      "n_train": 822,
+      "n_val": 203,
+      "n_test": 257,
+      "content_sha256": "9e082fa267218e7ff6aa861f255c98fa79ad9396997ec53598819c578703dea6"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_0_fold_2.parquet",
+      "n_train": 818,
+      "n_val": 207,
+      "n_test": 257,
+      "content_sha256": "9e18ad7c1dd2a4e0a0ad0b8226198cb8b312b6b9c6aea72376475f2f9138d2f4"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_0_fold_3.parquet",
+      "n_train": 819,
+      "n_val": 206,
+      "n_test": 257,
+      "content_sha256": "461401f66f40721b88c01bf4446453f275dd82365b17343598544eacb286324c"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_0_fold_4.parquet",
+      "n_train": 821,
+      "n_val": 204,
+      "n_test": 257,
+      "content_sha256": "ae7b4873960d86a9129c1a7eb0e910f53f07265a916a6d4be66e724c3067db91"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_1_fold_0.parquet",
+      "n_train": 820,
+      "n_val": 205,
+      "n_test": 257,
+      "content_sha256": "fa1655501c2532a60c6911efd51f881654ee178f05fccc3b6f99e3a9ed434d1f"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_1_fold_1.parquet",
+      "n_train": 821,
+      "n_val": 204,
+      "n_test": 257,
+      "content_sha256": "81a1f47ed510ede70c7deab936ca964644cf8c2db6d9bc2744f9ba4451bc5734"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_1_fold_2.parquet",
+      "n_train": 822,
+      "n_val": 203,
+      "n_test": 257,
+      "content_sha256": "84fc75ab26c871e4bb6312dbcc2e3c9a16f6fbaa3cc7edf90bb2a29a59f7c870"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_1_fold_3.parquet",
+      "n_train": 818,
+      "n_val": 207,
+      "n_test": 257,
+      "content_sha256": "4bcebb94fd8be6a77fb6b27879d786747785b8ed5e95ddfecb3bc3b0b6dafd79"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_1_fold_4.parquet",
+      "n_train": 819,
+      "n_val": 206,
+      "n_test": 257,
+      "content_sha256": "c60ef2e6ed5850de5e5fa145cc5e0b1c915759a2c335130e7beb99037e92d5a5"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_2_fold_0.parquet",
+      "n_train": 816,
+      "n_val": 208,
+      "n_test": 258,
+      "content_sha256": "b54af6c5340d081768f45a59a671b46509f635c979166a9ff6cc394fb4e85820"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_2_fold_1.parquet",
+      "n_train": 820,
+      "n_val": 204,
+      "n_test": 258,
+      "content_sha256": "91cec61d9902ba5e8594e4fd9dac0b10126a17aac97673a0154aec18bba72988"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_2_fold_2.parquet",
+      "n_train": 821,
+      "n_val": 203,
+      "n_test": 258,
+      "content_sha256": "51ee01a3bb7d1e6711ff38486e7b48257a14d1dfc2b4dcba361e204a7ae0281a"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_2_fold_3.parquet",
+      "n_train": 817,
+      "n_val": 207,
+      "n_test": 258,
+      "content_sha256": "593d91b400a42cd699ae10e6d4731ede836ab628bf30655109e42f3a7c317405"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_2_fold_4.parquet",
+      "n_train": 822,
+      "n_val": 202,
+      "n_test": 258,
+      "content_sha256": "ad198ebb53e3eb36722a6c5a7c462272afd0abae24b46767ba48ce40643d8861"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_3_fold_0.parquet",
+      "n_train": 822,
+      "n_val": 207,
+      "n_test": 253,
+      "content_sha256": "96eba8551cda15b067a2a53749cba0c348c3f1631e976f1bb081afef7b35b171"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_3_fold_1.parquet",
+      "n_train": 822,
+      "n_val": 207,
+      "n_test": 253,
+      "content_sha256": "1e40d97bdc803f1536736290e70e25ee8c5cf56b9f97a896712a35392ac4d18a"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_3_fold_2.parquet",
+      "n_train": 824,
+      "n_val": 205,
+      "n_test": 253,
+      "content_sha256": "cff8d69f93bae063717e1917498a7bacc4423c005b327c633285485e38b33116"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_3_fold_3.parquet",
+      "n_train": 824,
+      "n_val": 205,
+      "n_test": 253,
+      "content_sha256": "30a7b639e566d0e35a17ee33a41532286d73d04cf91ca9a4b527b7302b5faeec"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_3_fold_4.parquet",
+      "n_train": 824,
+      "n_val": 205,
+      "n_test": 253,
+      "content_sha256": "b24b70f6dba9bb6e6c287c36ac1f3464e6bfc9ece5fa43a24d27222813ffefa4"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_4_fold_0.parquet",
+      "n_train": 818,
+      "n_val": 207,
+      "n_test": 257,
+      "content_sha256": "d5054d5eaa0aac87ffd8edbcdcbf59c054305d2fa52fcd0ee63d385e187b6e59"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_4_fold_1.parquet",
+      "n_train": 824,
+      "n_val": 201,
+      "n_test": 257,
+      "content_sha256": "f32633ad5c8180da2b76f34fabbbddd2e5b31e3aef70219be054a21d2ec63059"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_4_fold_2.parquet",
+      "n_train": 818,
+      "n_val": 207,
+      "n_test": 257,
+      "content_sha256": "831f83dc1edd3b6282520a324d0d771dd81d6deb92ea5ac3a9723c479f2e423a"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_4_fold_3.parquet",
+      "n_train": 822,
+      "n_val": 203,
+      "n_test": 257,
+      "content_sha256": "b23eeaea42b7c9e20207bbfe49f7fcafdcbf1f7865722e41d14c560500ae8177"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/omix/cv_rep_4_fold_4.parquet",
+      "n_train": 818,
+      "n_val": 207,
+      "n_test": 257,
+      "content_sha256": "ef0138c752100cf661f717aefc46a4e2253102e017bfc945a97e7380d0a41e9c"
+    }
+  ]
+}

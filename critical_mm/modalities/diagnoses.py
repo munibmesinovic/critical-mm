@@ -26,6 +26,7 @@ class DiagnosesModalityReader(ModalityReader):
     _EICU_ANCHOR: ClassVar[_dt.datetime] = _dt.datetime(2014, 1, 1, tzinfo=_dt.UTC)
     _OMIX_ANCHOR: ClassVar[_dt.datetime] = _dt.datetime(2012, 1, 1, tzinfo=_dt.UTC)
     _SICDB_ANCHOR: ClassVar[_dt.datetime] = _dt.datetime(2013, 1, 1, tzinfo=_dt.UTC)
+    _ZIGONG_ANCHOR: ClassVar[_dt.datetime] = _dt.datetime(2019, 1, 1, tzinfo=_dt.UTC)
 
     def __init__(self, *, repo_root: Path) -> None:
         self.repo_root = Path(repo_root)
@@ -41,6 +42,8 @@ class DiagnosesModalityReader(ModalityReader):
             return self._omix()
         if dataset == "sicdb":
             return self._sicdb()
+        if dataset == "zigong":
+            return self._zigong()
         if dataset == "synthetic":
             return self._synthetic()
         return empty_timed()
@@ -282,3 +285,33 @@ class DiagnosesModalityReader(ModalityReader):
             )
             .select(list(TIMED_SCHEMA.keys()))
         )
+
+    def _zigong(self) -> pl.LazyFrame:
+        """Zigong dtICD = the per-stay billing diagnoses (Chinese ICD-10 roots).
+
+        The codes carry no per-diagnosis timestamp, so ``knowable_time`` is
+        anchored at the reader's synthetic origin (2019-01-01). Every stay's
+        ``admit_time`` is ``anchor + admit_hours`` with ``admit_hours >= 0``, so
+        ``knowable_time <= intime`` holds for all stays — the modality is
+        leakage-safe. Source = the harmonised interim (``stay_id`` already
+        canonical ``zigong_<INP_NO>``). Stay-bound (per-admission anchored).
+        """
+        dx_path = self.repo_root / "data" / "interim" / "zigong" / "diagnoses.parquet"
+        if not dx_path.exists():
+            return empty_timed()
+        anchor = pl.lit(self._ZIGONG_ANCHOR).cast(_DT_UTC)
+        return (
+            pl.scan_parquet(dx_path)
+            .filter(pl.col("icd_code").is_not_null())
+            .with_columns(
+                pl.col("patient_id").cast(pl.Utf8),
+                pl.col("stay_id").cast(pl.Utf8).alias("bound_stay_id"),
+                pl.col("stay_id").cast(pl.Utf8).alias("source_admission_id"),
+                pl.col("icd_code").cast(pl.Utf8).alias("code"),
+                pl.lit("icd10").alias("code_system"),
+                anchor.alias("knowable_time"),
+                pl.lit("admission_dx").alias("origin"),
+            )
+            .select(list(TIMED_SCHEMA.keys()))
+        )
+

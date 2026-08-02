@@ -1,0 +1,244 @@
+{
+  "cohort": "los",
+  "dataset": "zigong",
+  "grouping": "patient",
+  "n_patients": 2174,
+  "n_stays_total": 2174,
+  "n_stays": 2174,
+  "n_positive": null,
+  "classification": false,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "626b2a17d7305e7234a2830c5c7dc14fd0d87f548665620560c809325150e56c",
+  "dyn_content_sha256": "b792666328d7d9c79cebf93311b56446d8615d687f84f3f3f08f8b8a3d46c337",
+  "outc_content_sha256": "b1fa9d9f72a2a22e4720f5a66d9064fab2173204b9ff4158bd99f7220413a17a",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_0_fold_0.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "cd805c9b3dd59f284139a473517b57f30e8c324c1372a84e446a9be21b5c0565"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_0_fold_1.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "85e9ded755f9e0d36e2a14772121dcb892bbf27991be9e610d0d4cae2417168d"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_0_fold_2.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "4e4ed90512ae7876a8a8294edac353c4e651ccc79072bbc5edd2205d88f3f562"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_0_fold_3.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "008e394eb6b9570908deb750f18cc7ad2a31d7ee08454d8c6760d02931db0d33"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_0_fold_4.parquet",
+      "n_train": 1392,
+      "n_val": 347,
+      "n_test": 435,
+      "content_sha256": "88405a60aed300e0ac0534bee8186579774a5120cd64fcf24267469d310baf41"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_1_fold_0.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "07241d2029c19e0bf5a87b5f0cdeb6d1cd7adfe8dce37f4c3052f43fe7679e72"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_1_fold_1.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "950cc1438337a0231ab6e7dff49b59978704c5e9ae6647449f71600f4c6cc141"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_1_fold_2.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "d1ea21b33657d0c0eb1ea6e008c1d3c4fda33ac3876b82402690eed70e8cf2d7"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_1_fold_3.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "b834bc0183d1156216fb7975c8638c95be24d13a84783802a68a6289cee06eff"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_1_fold_4.parquet",
+      "n_train": 1392,
+      "n_val": 347,
+      "n_test": 435,
+      "content_sha256": "fdc49b6a15e50f4cd609f4ea14581cdb26d6218dad4d3c710700100a0e56da11"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_2_fold_0.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "b06abd8dcc65a7e68d40e70808d64220b8a77e67fcc875737c5710dfc7fbff7f"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_2_fold_1.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "cfbdc193d3aaa96daf872f021d7210d97bc3b7539095f248c51cd82de751bc45"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_2_fold_2.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "0969faf41b7d3497dbaf86a11eff0abd1fb08a37c5e5b4b8fc0a9e5bdd1d82a6"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_2_fold_3.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "5d4e29a60eb531b839ef7bbfdaaa3c8970eda6b356760fd3dbfffb88c9debc72"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_2_fold_4.parquet",
+      "n_train": 1392,
+      "n_val": 347,
+      "n_test": 435,
+      "content_sha256": "2a873017677696aa35af345d66d5bac392ac654747a9343c2707091afa51d0c6"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_3_fold_0.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "92c704a28a18ddb0dcd4059dc54fa961acd145aa91c01afa0017ac3e4af3e7a2"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_3_fold_1.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "75c5a8953378ad74e3122d6c92ce03122439b241bb946f794a321e77c639ed36"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_3_fold_2.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "bd86327ad87aeb9cb19726dceac12ea2016e3702d2f415f8ecd7b1a6f6f479c3"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_3_fold_3.parquet",
+      "n_train": 1391,
+      "n_val": 348,
+      "n_test": 435,
+      "content_sha256": "a2c79da83ddde1c3b73f8ffb5276dde67b5251068c621937b5321e5266fa73a1"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_3_fold_4.parquet",
+      "n_train": 1392,
+      "n_val": 347,
+      "n_test": 435,
+      "content_sha256": "3bf5cb7095ac60c7cf2ad934e19972acb7d5da287a44215ca50fdea164b23959"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_4_fold_0.parquet",
+      "n_train": 1392,
+      "n_val": 348,
+      "n_test": 434,
+      "content_sha256": "e6ae4cc040128a137cf8979d40ab0f1547f59b5da8dba1f28d8dddac577f28d3"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_4_fold_1.parquet",
+      "n_train": 1392,
+      "n_val": 348,
+      "n_test": 434,
+      "content_sha256": "e914ad60a9a4ad177adef2ebf812bf0abfbf4602d517b0da0994ae1440af222a"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_4_fold_2.parquet",
+      "n_train": 1392,
+      "n_val": 348,
+      "n_test": 434,
+      "content_sha256": "c5d48bb649522ed9ceb3015813b8ec6f470683628e790d884450d12379593bac"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_4_fold_3.parquet",
+      "n_train": 1392,
+      "n_val": 348,
+      "n_test": 434,
+      "content_sha256": "0c5248726fd55846eb05950ec628ba550e5e169b871af2b23115319f69d7f043"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/los/zigong/cv_rep_4_fold_4.parquet",
+      "n_train": 1392,
+      "n_val": 348,
+      "n_test": 434,
+      "content_sha256": "ca3b9a93df53d8d902fc217942afa43fb5c737140a6a6ecd4933e34d1c67d0ef"
+    }
+  ]
+}

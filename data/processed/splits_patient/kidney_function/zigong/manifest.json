@@ -1,0 +1,244 @@
+{
+  "cohort": "kidney_function",
+  "dataset": "zigong",
+  "grouping": "patient",
+  "n_patients": 1069,
+  "n_stays_total": 1069,
+  "n_stays": 1069,
+  "n_positive": null,
+  "classification": false,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "4d6132eb65cc03e1ab67c01e7352e6c8a82a2672e354532155cb4847bece92e3",
+  "dyn_content_sha256": "ac07749811bd51b4d66c89c5e1de3fa5f590f4bff6116644130f8b94df2bbc8b",
+  "outc_content_sha256": "bdce4ce29e12d69f4c5456fa8c919727ab1aacdf659de92208f7cf9c51dee06a",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_0_fold_0.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "47de366f6fbb32755f59c7701dcaeacec7e5441f5ea72964f4da8de8f2ea0c4a"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_0_fold_1.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "bcf464ec0056a2aa18b98fd3abf74e648a8820499158441d5871398e62f0f8ad"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_0_fold_2.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "91fd60a8ac21d0a8eadd5b3aef6dfff08888fae31f4416b022b9ca33d8c48603"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_0_fold_3.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "db53cbcc2dd393d52fb1f04a4cfb7f3dee20e4b61cfa5513e39bfa1310885c94"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_0_fold_4.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "1bd1161fcf708620ec49dc34d95e181490a17b95c7cbdf7fbb1a73745ab93409"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_1_fold_0.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "1134d8d1c8f0b64abccde614e5b0c418d30ffaab6d0bed7a69b844f16721c3b9"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_1_fold_1.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "7d3814177e7f642a95b671d1abfc43e5dc55868e7a87552f2f7b42839d8488f2"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_1_fold_2.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "face92c70e6ba6d7c38c117540e9edf507f726b5b5dbd869c4b059b2112580c6"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_1_fold_3.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "4b0b2f83a3d7657d7b0365f961ba0db4c72e0c4d2a6fb1a262eebc0cd3129e24"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_1_fold_4.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "d8392d50f8134a5dea698131960e72b43a17c01eadf5f1efebbc5c550cadbbb8"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_2_fold_0.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "40cc39774d7469f762693c5af12d7d1f14ce9137e5313ffc7494b4e76c1d835e"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_2_fold_1.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "a0f849b02de2154af7a381ae6a8fa9b32d59e596168241fb73158f9d1721b5f3"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_2_fold_2.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "a79e7cdcccd481daa635e80a2eb21f2dcc1ef91efac1920b71c17df41091ff6f"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_2_fold_3.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "beb69ed073ef23cad230bd9c3800c3a0c07fb0fc9c2bec3d9a192c62b48ae9a0"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_2_fold_4.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "1f147a89249dc1a1d633d73368a2884e9bc6f4a3650b32e1b7156453cfa899a1"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_3_fold_0.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "5542d15b2885d0d61aa1600a6072e534687e4a0a1d3fff409124fefb535fa48e"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_3_fold_1.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "31073026c439b1d076e041c95b2b3ddf54707b6357bc3eaa4da8072068b0f178"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_3_fold_2.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "8c03cc0b6b9e5db1072f972e4b794e03b1bc3124704ebcab4599af6206ce8cfd"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_3_fold_3.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "3d62542ee9f998b40e246178d1998d87a3e7ed1afe165ceec2b8f60e11b2915a"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_3_fold_4.parquet",
+      "n_train": 684,
+      "n_val": 171,
+      "n_test": 214,
+      "content_sha256": "056d43f78afd44fdfbf1c8ff88fc41048d37f4da9fac9fc41057bfa882de60d3"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_4_fold_0.parquet",
+      "n_train": 684,
+      "n_val": 172,
+      "n_test": 213,
+      "content_sha256": "15b3119a2a8575afbcfcf484ac0d2fd44a53969dec2814fed3fbb1e92fff2c96"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_4_fold_1.parquet",
+      "n_train": 685,
+      "n_val": 171,
+      "n_test": 213,
+      "content_sha256": "09cbed4ae199ab18a5ac21811b857f1769c329c4303fb3ad8c486a0f5ec6da6b"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_4_fold_2.parquet",
+      "n_train": 685,
+      "n_val": 171,
+      "n_test": 213,
+      "content_sha256": "c1ae6086f142ee7c0bff9724854f20146d3c46bd82cf94c2fc54cc84b97c3f1b"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_4_fold_3.parquet",
+      "n_train": 685,
+      "n_val": 171,
+      "n_test": 213,
+      "content_sha256": "8e3458c8bbab2d1d891dbd4e95aa460a6ff402ae3733f423a52ca68495540266"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/kidney_function/zigong/cv_rep_4_fold_4.parquet",
+      "n_train": 685,
+      "n_val": 171,
+      "n_test": 213,
+      "content_sha256": "a5aa70c90f1b832043ba57e815633b6ee8ce40fd63f6d2ce82622e478855afba"
+    }
+  ]
+}

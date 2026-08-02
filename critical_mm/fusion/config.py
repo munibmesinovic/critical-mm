@@ -13,7 +13,9 @@ import json
 import math
 from dataclasses import dataclass, field
 
-RUNGS: tuple[str, ...] = ("structured", "icd", "icd_notes", "notes")
+RUNGS: tuple[str, ...] = (
+    "structured", "icd", "icd_notes", "notes", "treatments", "treatments_dose",
+)
 
 DEFAULT_ENCODERS: dict[str, str] = {
     "miiv": "modernbert_clinical_en@main",
@@ -40,6 +42,7 @@ class FusionConfig:
     icd_repr: str = "multihot"
     icd_pca_dim: int | None = None
     icd_strategy: str = "feature_augmentation"
+    treatment_dose: bool = False
     encoders: dict[str, str] = field(default_factory=lambda: dict(DEFAULT_ENCODERS))
 
     def __post_init__(self) -> None:
@@ -53,6 +56,10 @@ class FusionConfig:
     @property
     def uses_notes(self) -> bool:
         return self.rung in ("icd_notes", "notes")
+
+    @property
+    def uses_treatments(self) -> bool:
+        return self.rung in ("treatments", "treatments_dose")
 
     def model_suffix(self) -> str:
         """Oracle model-name suffix. Rung-1 (structured) reuses the plain name."""
@@ -74,6 +81,8 @@ class FusionConfig:
             payload["notes_half_life"] = (
                 "inf" if math.isinf(self.notes_half_life) else self.notes_half_life
             )
+        if self.rung in ("treatments", "treatments_dose"):
+            payload["treatment_dose"] = self.treatment_dose
         return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()[:16]
 
     def to_metadata(self) -> dict[str, object]:
@@ -92,6 +101,8 @@ class FusionConfig:
             md["notes_half_life"] = (
                 "inf" if math.isinf(self.notes_half_life) else self.notes_half_life
             )
+        if self.rung in ("treatments", "treatments_dose"):
+            md["treatment_dose"] = self.treatment_dose
         return md
 
     def variant_tag(self) -> str:
@@ -100,6 +111,8 @@ class FusionConfig:
             hl = "inf" if math.isinf(self.notes_half_life) else _fmt_hl(self.notes_half_life)
             pca = "_raw" if self.pca_dim is None else str(self.pca_dim)
             return f"notes_hl{hl}_pca{pca}"
+        if self.rung in ("treatments", "treatments_dose"):
+            return "treatments_dose" if self.treatment_dose else "treatments"
         grp = "icd10root" if self.icd_group == "icd10_root" else self.icd_group
         k = "kall" if self.icd_top_k is None else f"k{self.icd_top_k}"
         parts = [grp, k, self.icd_repr]
@@ -109,3 +122,4 @@ class FusionConfig:
         if self.icd_strategy == "icd_only":
             tag = "only" + tag
         return tag
+

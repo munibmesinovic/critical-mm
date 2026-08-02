@@ -1,0 +1,244 @@
+{
+  "cohort": "los",
+  "dataset": "eicu",
+  "grouping": "patient",
+  "n_patients": 135047,
+  "n_stays_total": 182168,
+  "n_stays": 182168,
+  "n_positive": null,
+  "classification": false,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "b9edb512b86e0c1b272b03fed75c83bc6f26ea6eb537338b67d9ba4d12fbecbb",
+  "dyn_content_sha256": "1b8490c7fab88c074d361672659ed82f5d53d289cfe05a8bdeee898da42d0311",
+  "outc_content_sha256": "ed94018790ed3c0e1509ea8a0cfc24b34d56ce948dd17ca8e0bbbf90786ef456",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_0_fold_0.parquet",
+      "n_train": 116491,
+      "n_val": 29085,
+      "n_test": 36592,
+      "content_sha256": "13ba31170bf8a24f226391ba89f3e06a3a4ee1d25cd661c57488e28854439126"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_0_fold_1.parquet",
+      "n_train": 116555,
+      "n_val": 29021,
+      "n_test": 36592,
+      "content_sha256": "86de30ef401509d4194a0d994d835c9900b175c1cd32b6261f5fea9e7763d69a"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_0_fold_2.parquet",
+      "n_train": 116440,
+      "n_val": 29136,
+      "n_test": 36592,
+      "content_sha256": "b3b66c85f6a4125c6b5827e3a5ebf6c45c78089fef578796a5e193186e963c85"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_0_fold_3.parquet",
+      "n_train": 116478,
+      "n_val": 29098,
+      "n_test": 36592,
+      "content_sha256": "137d7b5b6aec06e8e83b863b666aa751ad8c222a59ada3ccfadc5e12bf784de6"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_0_fold_4.parquet",
+      "n_train": 116340,
+      "n_val": 29236,
+      "n_test": 36592,
+      "content_sha256": "5d2c1311a7fa1a4893d1388983317f75acdd6d1f67578019977bfa2b94590eeb"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_1_fold_0.parquet",
+      "n_train": 116852,
+      "n_val": 29049,
+      "n_test": 36267,
+      "content_sha256": "fd7184700c26e9fba7647e5f3941a033014de71ccc978b39a34c860a21b16dc5"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_1_fold_1.parquet",
+      "n_train": 116736,
+      "n_val": 29165,
+      "n_test": 36267,
+      "content_sha256": "e23589b4668c23a6f3ac34fae14ea3c90bc2c9e3b854bf0f39cdcaf71c9272f7"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_1_fold_2.parquet",
+      "n_train": 116686,
+      "n_val": 29215,
+      "n_test": 36267,
+      "content_sha256": "39fc750a124690e830a152ac379ede6ea247d5abc621b2cce5a806e75a2c7ba7"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_1_fold_3.parquet",
+      "n_train": 116611,
+      "n_val": 29290,
+      "n_test": 36267,
+      "content_sha256": "967fb5943b9447c905342c83950dabf5574732cca28ea4e0096fde727e8762a5"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_1_fold_4.parquet",
+      "n_train": 116719,
+      "n_val": 29182,
+      "n_test": 36267,
+      "content_sha256": "df91c4139a35e0ad36224ca06590383863b91fe00d0858ddbed151485ebbe36c"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_2_fold_0.parquet",
+      "n_train": 116626,
+      "n_val": 29145,
+      "n_test": 36397,
+      "content_sha256": "d083828140990213355894d2179d5a001f5acd0725927d8af8444510a804f849"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_2_fold_1.parquet",
+      "n_train": 116697,
+      "n_val": 29074,
+      "n_test": 36397,
+      "content_sha256": "68cbd36c35ded7f76e3e4d49c68cae4ccb541a955d409beb354d85829ddcbac9"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_2_fold_2.parquet",
+      "n_train": 116619,
+      "n_val": 29152,
+      "n_test": 36397,
+      "content_sha256": "e8380f0f090a67005cbbdcaed69a653977beeeb878e6e065fc5a4f7ab59bdaac"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_2_fold_3.parquet",
+      "n_train": 116505,
+      "n_val": 29266,
+      "n_test": 36397,
+      "content_sha256": "7c7ce22f69cb27f874db0bcc261cc08092183cfc6c7f3e1a23c7a8c372432c5d"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_2_fold_4.parquet",
+      "n_train": 116637,
+      "n_val": 29134,
+      "n_test": 36397,
+      "content_sha256": "4818a29123d6aa37446a006688657e657017ccd71d5807b87dd815dcce9a9aca"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_3_fold_0.parquet",
+      "n_train": 116411,
+      "n_val": 29330,
+      "n_test": 36427,
+      "content_sha256": "51fb9f2da890c6dc840745dc0a911b10cf057cc036817c958d6070f45d72000e"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_3_fold_1.parquet",
+      "n_train": 116837,
+      "n_val": 28904,
+      "n_test": 36427,
+      "content_sha256": "355cf29beb483200c3180fef4680060fc32b4843992f63384a7f0f7e59d3e9a4"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_3_fold_2.parquet",
+      "n_train": 116654,
+      "n_val": 29087,
+      "n_test": 36427,
+      "content_sha256": "6d197e6d128d669747f7493b9699becf4a04c463f72050f4df9ea05b97344daf"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_3_fold_3.parquet",
+      "n_train": 116514,
+      "n_val": 29227,
+      "n_test": 36427,
+      "content_sha256": "97a1cfaa9078ef7cb432b023ae584daf408d010673514749f0ddf806825932b1"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_3_fold_4.parquet",
+      "n_train": 116548,
+      "n_val": 29193,
+      "n_test": 36427,
+      "content_sha256": "629db9bd203c2009f44c644683c5a4df8cc09e86040a1466513d1dd6bc45e4a2"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_4_fold_0.parquet",
+      "n_train": 116506,
+      "n_val": 29177,
+      "n_test": 36485,
+      "content_sha256": "49416a5992a059346501e5b7d758228b4c19c674bd59ba053336ca9e7a07ce33"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_4_fold_1.parquet",
+      "n_train": 116913,
+      "n_val": 28770,
+      "n_test": 36485,
+      "content_sha256": "b9a504338a1ea3af552d9b70d6262fd59430259b1fca86c448894118ff84fb87"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_4_fold_2.parquet",
+      "n_train": 116470,
+      "n_val": 29213,
+      "n_test": 36485,
+      "content_sha256": "0061bea6c25fbfd94d18c021928d7845599ded9b95afbd4094d19139b5f26fdd"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_4_fold_3.parquet",
+      "n_train": 116474,
+      "n_val": 29209,
+      "n_test": 36485,
+      "content_sha256": "5f53ce85119f3c0742284ac0700dedb74239f893f0e873df30d9eec55cd408a1"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/los/eicu/cv_rep_4_fold_4.parquet",
+      "n_train": 116369,
+      "n_val": 29314,
+      "n_test": 36485,
+      "content_sha256": "7c7df1e5f9315d6f2f03ae80404f9450d12f1412b390f92aceabd475b2921a8a"
+    }
+  ]
+}

@@ -44,6 +44,34 @@ def empty_timed() -> pl.LazyFrame:
     """Zero-row LazyFrame with the canonical timed schema."""
     return pl.LazyFrame(schema=TIMED_SCHEMA)
 
+TREATMENT_TIMED: Schema = {
+    "patient_id": pl.Utf8(),
+    "bound_stay_id": pl.Utf8(),
+    "source_admission_id": pl.Utf8(),
+    "treatment": pl.Utf8(),
+    "start_time": _DT_UTC,
+    "end_time": _DT_UTC,
+    "dose": pl.Float32(),
+    "dose_unit": pl.Utf8(),
+    "knowable_time": _DT_UTC,
+    "origin": pl.Utf8(),
+}
+
+TREATMENT_ALIGNED: Schema = {
+    "stay_id": pl.Utf8(),
+    "treatment": pl.Utf8(),
+    "dose": pl.Float32(),
+    "dose_unit": pl.Utf8(),
+    "origin": pl.Utf8(),
+    "delta_h": pl.Float64(),
+    "end_delta_h": pl.Float64(),
+    "prior_visit_idx": pl.Int32(),
+}
+
+def empty_treatment_timed() -> pl.LazyFrame:
+    """Zero-row LazyFrame with the canonical treatment timed schema."""
+    return pl.LazyFrame(schema=TREATMENT_TIMED)
+
 class ModalityReader(ABC):
     """Contract: produce a task-independent timed frame for one modality."""
 
@@ -52,3 +80,4 @@ class ModalityReader(ABC):
     @abstractmethod
     def read_timed(self, dataset: str) -> pl.LazyFrame:
         """Return the TIMED_SCHEMA frame for ``dataset`` (or ``empty_timed()``)."""
+

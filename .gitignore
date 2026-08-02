@@ -1,8 +1,22 @@
 # Data (delivered out-of-band as a bundle; see README) and caches
-data/
 *.parquet
 *.ckpt
 *.joblib
+
+# Ignore data/ level by level rather than as a whole directory: git will not descend into an
+# excluded directory, so a plain `data/` makes the re-includes below unreachable.
+data/*
+!data/processed/
+data/processed/*
+!data/processed/splits_patient/
+data/processed/splits_patient/*
+!data/processed/splits_patient/*/
+data/processed/splits_patient/*/*
+!data/processed/splits_patient/*/*/
+data/processed/splits_patient/*/*/*
+# The locked split manifests carry content hashes and row counts only -- no identifiers -- and are
+# what lets you verify a split tree you regenerated matches ours.
+!data/processed/splits_patient/*/*/manifest.json
 
 # Python build / cache artifacts
 __pycache__/

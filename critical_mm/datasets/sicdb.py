@@ -9,8 +9,7 @@ actual ICU admission and is non-zero for 55% of stays, so this reader anchors
 urine/CSF/effusion twins under similar strings), vitals via `DataID`, using the
 hourly `Val` directly (already means for vitals, sums for volumes).
 
-Spec: 
-Audit: reports/sicdb_dataset_audit.md · Template: critical_mm/datasets/omix.py
+Audit: reports/sicdb_dataset_audit.md  ·  Template: critical_mm/datasets/omix.py
 """
 
 from __future__ import annotations
@@ -330,3 +329,4 @@ def _apply_unit_conversion_sicdb(events: pl.LazyFrame) -> pl.LazyFrame:
             & pl.col("value").is_not_null()
         )
     )
+

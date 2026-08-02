@@ -22,6 +22,7 @@ _DATASET_DIRS: dict[str, str] = {
         "sicdb/salzburg-intensive-care-database-sicdb-a-freely-accessible"
         "-intensive-care-database-1.0.8"
     ),
+    "zigong": "zigong/DataTables",
 }
 
 def data_root() -> Path:
@@ -58,3 +59,4 @@ def interim_path(dataset: str, table: str) -> Path:
 def processed_path(task: str, dataset: str, filename: str) -> Path:
     """Return `data_root()/processed/<task>/<dataset>/<filename>`."""
     return data_root() / "processed" / task / dataset / filename
+

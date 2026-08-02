@@ -1,0 +1,244 @@
+{
+  "cohort": "sepsis_simple",
+  "dataset": "eicu",
+  "grouping": "patient",
+  "n_patients": 94521,
+  "n_stays_total": 125320,
+  "n_stays": 125320,
+  "n_positive": 8056,
+  "classification": true,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "41070a36809af505cdb5f8da612b17625ba60af4a59b5723a83741469a96a479",
+  "dyn_content_sha256": "f00813da3e31916c871cdffe7b950f9e86d80c9fbc837f29c072f5850759b1e5",
+  "outc_content_sha256": "18c37c41a83ed3a48637b6db48b1e99a08f8ea00dd0df6dc1f115c11ae999be4",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_0_fold_0.parquet",
+      "n_train": 80353,
+      "n_val": 20075,
+      "n_test": 24892,
+      "content_sha256": "2898642554e8178d5c3dbe3656cd4dda0cf950d1684d5d414185724f63ed294b"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_0_fold_1.parquet",
+      "n_train": 80436,
+      "n_val": 19992,
+      "n_test": 24892,
+      "content_sha256": "e02869321bc0874c64b4bb9c412e556a9a30441861f4f1cd5a5bfb5b96e03bda"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_0_fold_2.parquet",
+      "n_train": 80207,
+      "n_val": 20221,
+      "n_test": 24892,
+      "content_sha256": "a69df5d25142606b9fa44a5753505dcd240aebdedb8e0708ff151d2e64840116"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_0_fold_3.parquet",
+      "n_train": 80376,
+      "n_val": 20052,
+      "n_test": 24892,
+      "content_sha256": "b4e5361675404b75b5286a544d1de9097cc4ac8845d65711f64597236c227338"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_0_fold_4.parquet",
+      "n_train": 80340,
+      "n_val": 20088,
+      "n_test": 24892,
+      "content_sha256": "54e163383db23531b3b0bbd2685f93d56819ca6bf217cb13bd5f78acda53b409"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_1_fold_0.parquet",
+      "n_train": 80188,
+      "n_val": 20105,
+      "n_test": 25027,
+      "content_sha256": "96b740fb25fd3080c3345bbe60e565e8f28f44638fc7f629459c5cce7af9228a"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_1_fold_1.parquet",
+      "n_train": 80220,
+      "n_val": 20073,
+      "n_test": 25027,
+      "content_sha256": "6763a1fef6a5c21de33c61de506220c756c85f2117816ace6d062bcf44f3a15e"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_1_fold_2.parquet",
+      "n_train": 80240,
+      "n_val": 20053,
+      "n_test": 25027,
+      "content_sha256": "b1e4c772471504af8c53d2a710c299240d63097101933fcd0f83cfd87bffa76b"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_1_fold_3.parquet",
+      "n_train": 80106,
+      "n_val": 20187,
+      "n_test": 25027,
+      "content_sha256": "79895e8289b82231b8354215586914b187b91bc1f74eb56ecc1d8e0da85ed090"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_1_fold_4.parquet",
+      "n_train": 80418,
+      "n_val": 19875,
+      "n_test": 25027,
+      "content_sha256": "eae640d8b3da6dc8ef3ff6da3f4f98efe26ccb002fcfd63de2fd5909000a143f"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_2_fold_0.parquet",
+      "n_train": 80061,
+      "n_val": 20159,
+      "n_test": 25100,
+      "content_sha256": "cfcd0bc87b16bffa59463273b489c5b779a506d3f52009a394e210acbbf014ae"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_2_fold_1.parquet",
+      "n_train": 80195,
+      "n_val": 20025,
+      "n_test": 25100,
+      "content_sha256": "47e41bb2880502a81aee37a7dbdad3bd5ed1a8371c785cccf1bc04690c019e87"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_2_fold_2.parquet",
+      "n_train": 80294,
+      "n_val": 19926,
+      "n_test": 25100,
+      "content_sha256": "ef73f0ff1027ff05f9a477e165e0a719dd690302629c88a251165d5011669405"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_2_fold_3.parquet",
+      "n_train": 80089,
+      "n_val": 20131,
+      "n_test": 25100,
+      "content_sha256": "c9e6936cfbf85e59c94cddb74ba873b71e1b800e9736dd21262762e8f578a5ba"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_2_fold_4.parquet",
+      "n_train": 80241,
+      "n_val": 19979,
+      "n_test": 25100,
+      "content_sha256": "c01b74901452f8ed41b4d1da57e99ee02691c0f0a3390f2224edb5d27000a6b8"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_3_fold_0.parquet",
+      "n_train": 80264,
+      "n_val": 19961,
+      "n_test": 25095,
+      "content_sha256": "52c1812fda89f773b7a6091bcb172bcb3e0a7473fd8daa551c6669e391fa3255"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_3_fold_1.parquet",
+      "n_train": 80159,
+      "n_val": 20066,
+      "n_test": 25095,
+      "content_sha256": "e41375bb61ccb393ea221e2ecbbd12263e08ef62aaba74f649c437ad073e6c55"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_3_fold_2.parquet",
+      "n_train": 80102,
+      "n_val": 20123,
+      "n_test": 25095,
+      "content_sha256": "e4ece8f7b744c2ce957a3c1dab007179d113dcf5b22ddd55d688e23cfd84d3cc"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_3_fold_3.parquet",
+      "n_train": 80086,
+      "n_val": 20139,
+      "n_test": 25095,
+      "content_sha256": "b2dd1d92a5eeb2ef74b7fd5784ca142c73c3fd3f02f34c886711e22509df667e"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_3_fold_4.parquet",
+      "n_train": 80289,
+      "n_val": 19936,
+      "n_test": 25095,
+      "content_sha256": "d26303472fefeb02446d96a5c755d296d919bf06d11fcf09df22452832525732"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_4_fold_0.parquet",
+      "n_train": 80009,
+      "n_val": 20105,
+      "n_test": 25206,
+      "content_sha256": "a882ac3458b483ef84f34790489d7fdd4ee62c3395581d23b9389959413514ee"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_4_fold_1.parquet",
+      "n_train": 80087,
+      "n_val": 20027,
+      "n_test": 25206,
+      "content_sha256": "5e72ee98d4c4c0978a720b9d5be9b5c5093fd2f420538471c82f254c1ba537b0"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_4_fold_2.parquet",
+      "n_train": 80108,
+      "n_val": 20006,
+      "n_test": 25206,
+      "content_sha256": "dc9f17428b02ea26fea381a1b56c3341b108aaa8f3cba25c7bc4e6108811a848"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_4_fold_3.parquet",
+      "n_train": 80086,
+      "n_val": 20028,
+      "n_test": 25206,
+      "content_sha256": "a99020175e4c23ceb15a1307019b5d6b9230dd2551e733f918f923ce14a705b3"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis_simple/eicu/cv_rep_4_fold_4.parquet",
+      "n_train": 80166,
+      "n_val": 19948,
+      "n_test": 25206,
+      "content_sha256": "878536a1034733fed66defef522d74e972bafcd2573afa748a069a13a8d6fb23"
+    }
+  ]
+}

@@ -1,0 +1,244 @@
+{
+  "cohort": "mortality24",
+  "dataset": "sicdb",
+  "grouping": "patient",
+  "n_patients": 11929,
+  "n_stays_total": 13610,
+  "n_stays": 13610,
+  "n_positive": 631,
+  "classification": true,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "c65a4d6518ef98e62cf642cc035fbae19d1a2fbbb4254b22c70e3f3e776a4a0c",
+  "dyn_content_sha256": "2b0aa8d7029a235592013b2444eea23e42f9b55c8065f182174525b3fd8775c2",
+  "outc_content_sha256": "e3cddb2bfcc21cc29067dda091481846f68cdf3753487bcfac20e209b2b3bd6b",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_0_fold_0.parquet",
+      "n_train": 8754,
+      "n_val": 2128,
+      "n_test": 2728,
+      "content_sha256": "ed5d263eb39f6dabbffa49b6c947ed1acaecddccb0f5714d82e0a9dda7642eed"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_0_fold_1.parquet",
+      "n_train": 8717,
+      "n_val": 2165,
+      "n_test": 2728,
+      "content_sha256": "090f1d07ca870ef5aec71daa5353d13c62e6bfad4181de9f4b311601fb56efca"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_0_fold_2.parquet",
+      "n_train": 8706,
+      "n_val": 2176,
+      "n_test": 2728,
+      "content_sha256": "cf0fefb527b184b5365fcad2e7e8cb2e54a242ad62b878148a16393f9eb81e86"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_0_fold_3.parquet",
+      "n_train": 8688,
+      "n_val": 2194,
+      "n_test": 2728,
+      "content_sha256": "da106a4ce12d8de4b4e37652145b37fc213d135d9870c3faa84429bcb39600a4"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_0_fold_4.parquet",
+      "n_train": 8663,
+      "n_val": 2219,
+      "n_test": 2728,
+      "content_sha256": "a7da8dc039721e2bc01c7163eb4792709f2d867fb742eafed6bbc70a73ed19b1"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_1_fold_0.parquet",
+      "n_train": 8691,
+      "n_val": 2204,
+      "n_test": 2715,
+      "content_sha256": "e5e5fa575b6ad48f3891b7c1a348330e126a5887fb740d032737102105a1d18e"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_1_fold_1.parquet",
+      "n_train": 8717,
+      "n_val": 2178,
+      "n_test": 2715,
+      "content_sha256": "c4bb0cdfdbdbb8e4406976c19e7b6a53ea3a4a141f7b9d3494ed933dc4785ea0"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_1_fold_2.parquet",
+      "n_train": 8700,
+      "n_val": 2195,
+      "n_test": 2715,
+      "content_sha256": "5cc36ff876b3e617db921a19851152371298cbe52390e54757897e696d4eb1ed"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_1_fold_3.parquet",
+      "n_train": 8756,
+      "n_val": 2139,
+      "n_test": 2715,
+      "content_sha256": "ac72dd1409fd82902e693b28853b35eaba171f970fbcf720c66cb1922f05f24d"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_1_fold_4.parquet",
+      "n_train": 8716,
+      "n_val": 2179,
+      "n_test": 2715,
+      "content_sha256": "991e703f9147708cee5e3d9563682c6cc30c930db20b40631bb33a80c0198a83"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_2_fold_0.parquet",
+      "n_train": 8725,
+      "n_val": 2186,
+      "n_test": 2699,
+      "content_sha256": "dc4cdcb9536f4f5182a67542478dbe0a2ec11abe78e17336c7e7774196fcd7ca"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_2_fold_1.parquet",
+      "n_train": 8730,
+      "n_val": 2181,
+      "n_test": 2699,
+      "content_sha256": "44235b8c71f4ce543a20c5effc88faffa090299fb11d7484c78e38ad080ea5c9"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_2_fold_2.parquet",
+      "n_train": 8712,
+      "n_val": 2199,
+      "n_test": 2699,
+      "content_sha256": "90cfcfd8b5894da923660f6433e14d76104056854847b1fc3c70bbf83952bf0e"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_2_fold_3.parquet",
+      "n_train": 8759,
+      "n_val": 2152,
+      "n_test": 2699,
+      "content_sha256": "09fe2ddc81a9460ac0ff0144139570da88dacbb2e73505277c8b6bc8a25d47c1"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_2_fold_4.parquet",
+      "n_train": 8718,
+      "n_val": 2193,
+      "n_test": 2699,
+      "content_sha256": "ec7c3030b43d1c45d95ea1f420ee52e627712fbd4fae6c39f118e875e38924e9"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_3_fold_0.parquet",
+      "n_train": 8707,
+      "n_val": 2168,
+      "n_test": 2735,
+      "content_sha256": "7f478226c5bb957654eba7309878fd59283744cb619081e0d5f31c3c7fc2d97a"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_3_fold_1.parquet",
+      "n_train": 8685,
+      "n_val": 2190,
+      "n_test": 2735,
+      "content_sha256": "6a11283b52429e580477afaaa49fdbfc57acfab86673412419be8ed504d70430"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_3_fold_2.parquet",
+      "n_train": 8707,
+      "n_val": 2168,
+      "n_test": 2735,
+      "content_sha256": "7b03584f45a37438a01df19cb5c09ecb8dcf03a6a86cd378d3754cd635a7401a"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_3_fold_3.parquet",
+      "n_train": 8690,
+      "n_val": 2185,
+      "n_test": 2735,
+      "content_sha256": "d6cffe23469e2c0ac14479580a72a2996502b072c1eaf90e2e0f73ea5a38be5c"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_3_fold_4.parquet",
+      "n_train": 8711,
+      "n_val": 2164,
+      "n_test": 2735,
+      "content_sha256": "ca49dac560bf420b8e00da9ee7651111f76c46c201084554c9d66dd24ae57435"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_4_fold_0.parquet",
+      "n_train": 8742,
+      "n_val": 2135,
+      "n_test": 2733,
+      "content_sha256": "b999c6a44f100ca799b54f4727d0c9304dcf688869575b46a6abb39ddb833df6"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_4_fold_1.parquet",
+      "n_train": 8688,
+      "n_val": 2189,
+      "n_test": 2733,
+      "content_sha256": "9cdd503ac8f626ae647430a89f83eb034c6a47bcfab525e025becdf93f601431"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_4_fold_2.parquet",
+      "n_train": 8712,
+      "n_val": 2165,
+      "n_test": 2733,
+      "content_sha256": "077a567b872012f0adb39042bb3015ac0fe03c2aad173e03caf6f91a85b11854"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_4_fold_3.parquet",
+      "n_train": 8691,
+      "n_val": 2186,
+      "n_test": 2733,
+      "content_sha256": "698159ade4073a6662f0ab10a0f361efd3e9f2029902a81dcea83e3c50500789"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/mortality24/sicdb/cv_rep_4_fold_4.parquet",
+      "n_train": 8675,
+      "n_val": 2202,
+      "n_test": 2733,
+      "content_sha256": "60a00b3bfa91a1913bf254c14446057c67ba890b0dcb68fef24aee0e8ac50112"
+    }
+  ]
+}

@@ -5,8 +5,7 @@ Built from `data/raw/hirid-1.1.1/hirid_variable_reference.csv` (712 entries,
 
 48 of 49 numeric v1 concepts have HiRID variableids; the missing one is
 bili_dir (HiRID has total bilirubin only). Band cells (bnd) are tracked
-via variableid 24000557 ("Band form neutrophils %"). Audit round 5
-(2026-05-15) un-conflated this from the `neut` mapping.
+via variableid 24000557 ("Band form neutrophils %"). un-conflated this from the `neut` mapping.
 
 Sources without a HiRID encoding (genuine v1.1.1 gaps):
 - RRT/CRRT/dialysis — no variableid in `hirid_variable_reference.csv`
@@ -258,3 +257,4 @@ HIRID_VARIABLEID_CONVERSIONS: dict[int, tuple[str, float]] = {
     24000548: ("g/L", 0.1),
     20000900: ("g/L", 0.1),
 }
+

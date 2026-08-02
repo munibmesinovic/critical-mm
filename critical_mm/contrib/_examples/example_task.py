@@ -74,3 +74,4 @@ class _ExampleMortality48(Task):
                 "label_value": pl.Int8,
             }
         )
+

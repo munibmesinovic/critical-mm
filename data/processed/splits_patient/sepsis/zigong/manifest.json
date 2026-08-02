@@ -1,0 +1,244 @@
+{
+  "cohort": "sepsis",
+  "dataset": "zigong",
+  "grouping": "patient",
+  "n_patients": 1929,
+  "n_stays_total": 1929,
+  "n_stays": 1929,
+  "n_positive": 123,
+  "classification": true,
+  "split_seed": 42,
+  "cv_reps": 5,
+  "cv_folds": 5,
+  "data_git_sha": "25b1be47",
+  "sta_content_sha256": "0a1e2e8b07a5319807b15fb60d80f0f045cfb4610814ac20a3e70ef292d14294",
+  "dyn_content_sha256": "5a8e806d4c56a31d6d796fa751ffbca53288762eb6934a02e24e5f2d7958d298",
+  "outc_content_sha256": "b0a4bab8b9a823d58205282524a2351617b4dce5aa8b8acb018fae777f687e39",
+  "folds": [
+    {
+      "cv_rep": 0,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_0_fold_0.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "8d5c6066b7c863d54e4684bdfdf04285a42817bad2d633fc7cc8e30e8f883a18"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_0_fold_1.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "6131b889947ef3459feefa1bbacbf0d3d38f521fb7f0fc13d2ff7f4660adc21d"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_0_fold_2.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "75b93bf15cd58f2c6ff491e07b08fc143966c44defb89965cae45c12b37ec9c3"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_0_fold_3.parquet",
+      "n_train": 1235,
+      "n_val": 308,
+      "n_test": 386,
+      "content_sha256": "33d0a6a9ff5cdf723ab486efbff7f2645c8f355b2b74a7094d928b349276ce66"
+    },
+    {
+      "cv_rep": 0,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_0_fold_4.parquet",
+      "n_train": 1235,
+      "n_val": 308,
+      "n_test": 386,
+      "content_sha256": "06048557942ceb017a282d8e741f704a23464d62e4d3cfe7e1465d739e0141a0"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_1_fold_0.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "15ae6c4423ec2b3830aee5c98214abfb4524cbfc5abe70d713385c7948857004"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_1_fold_1.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "a141298382b8d5d2ba4fa79b3360cfb6d860804511c1c0b0188d5fe7fe7a3dbc"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_1_fold_2.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "adc522ea5bdec44ab1aa73d43a751d005abcfdc1ab13c22dc8a36c446335dc68"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_1_fold_3.parquet",
+      "n_train": 1235,
+      "n_val": 308,
+      "n_test": 386,
+      "content_sha256": "516524b597d6c72e547f83b8793a47c7e4d2297e3c4cd5c30f327d93927204a0"
+    },
+    {
+      "cv_rep": 1,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_1_fold_4.parquet",
+      "n_train": 1235,
+      "n_val": 308,
+      "n_test": 386,
+      "content_sha256": "c47783b1524c04ce2586af7766bc694f29f79525853d7f03a126bb3ecd4e99fe"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_2_fold_0.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "2d7a4e9da0e139336087781137eafd77d5d237d6bcaf46fd34232c47bf8d2010"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_2_fold_1.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "2abd3898356c415210469008dd98d52c1b4ac18c6238dd726fc961dafa9f115b"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_2_fold_2.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "cc3bf33edbcf7bd2e96521e71940b3ae687c51fcda39d11f8a36d01d1c422d0e"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_2_fold_3.parquet",
+      "n_train": 1235,
+      "n_val": 308,
+      "n_test": 386,
+      "content_sha256": "9c4c8daeefcf7cd68e3d061f9f1bf498f86768502e245cf160b6ceead101f540"
+    },
+    {
+      "cv_rep": 2,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_2_fold_4.parquet",
+      "n_train": 1235,
+      "n_val": 308,
+      "n_test": 386,
+      "content_sha256": "ab00dd60407390bdf0ea9c093b7c5beb30c69a913c9ca9f9fda0d96f40c1fa34"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_3_fold_0.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "9e256de1a955a2706fb6805ac2520a3668f37acf06acb9dd71dfb737986f642f"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_3_fold_1.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "1faf78817e89f909f9d88daef34ec4d04353f9c5a2832d1b50017f2c94e0ece4"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_3_fold_2.parquet",
+      "n_train": 1234,
+      "n_val": 309,
+      "n_test": 386,
+      "content_sha256": "17a8e419d9f3960538cde9a7b9ece8995beaaa15a3cb2af3f81cc1f4c4c64504"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_3_fold_3.parquet",
+      "n_train": 1235,
+      "n_val": 308,
+      "n_test": 386,
+      "content_sha256": "4fd55f87cf1e83afd7f0a16fe63fc25ce5b2b91c5392dce0cf6e2c73058f111d"
+    },
+    {
+      "cv_rep": 3,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_3_fold_4.parquet",
+      "n_train": 1235,
+      "n_val": 308,
+      "n_test": 386,
+      "content_sha256": "05b561fcb3a4d5e2b9e6d442cd6601c80bed9178af876e2093f066570b57789a"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 0,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_4_fold_0.parquet",
+      "n_train": 1235,
+      "n_val": 309,
+      "n_test": 385,
+      "content_sha256": "5db1af8c52e37a1254c6d77797a003961e4c36a4711a4c9cb74bea2e204092ff"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 1,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_4_fold_1.parquet",
+      "n_train": 1235,
+      "n_val": 309,
+      "n_test": 385,
+      "content_sha256": "0e49ac576e7860839ffacd9b6096d09cac20ac1cb559f9f7d310fb323337c8ba"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 2,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_4_fold_2.parquet",
+      "n_train": 1235,
+      "n_val": 309,
+      "n_test": 385,
+      "content_sha256": "13d9e94f8de089eac91fa1471994f01455cb855a0ae83388e65b9e2d6e3691e5"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 3,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_4_fold_3.parquet",
+      "n_train": 1235,
+      "n_val": 309,
+      "n_test": 385,
+      "content_sha256": "6ccaeb786276541980a0965f1cfb307c2e71ed7b12e5b451b2549f63b9e884f9"
+    },
+    {
+      "cv_rep": 4,
+      "fold": 4,
+      "path": "data/processed/splits_patient/sepsis/zigong/cv_rep_4_fold_4.parquet",
+      "n_train": 1236,
+      "n_val": 308,
+      "n_test": 385,
+      "content_sha256": "f80e91f1000358812b17a90b81e09061ebb39f44965814cb57a3b649e52f0ffb"
+    }
+  ]
+}

@@ -27,7 +27,7 @@ Cohort exclusions (re-verified against YAIB-cohorts/R/aki.R lines 95-125):
 - excl6: for eICU only, drop stays whose hospital_id has zero AKI cases
   (multi-hospital prevalence filter).
 
-Per-hour outc shape (YAIB-cohorts parity, audit round 2026-05-15):
+Per-hour outc shape (YAIB-cohorts parity, review-05-15):
 - One row per (stay, hour) for hour in 0..floor(los_hours). Cumulative
   semantics: `label_value` flips from 0 to 1 at the hour bucket
   containing onset_time, and stays 1 for the rest of the stay. Stays
@@ -84,7 +84,7 @@ class AKI(Task):
     prediction_horizon_hours: ClassVar[int] = 6
 
     def supports_urine_arm(self, dataset: str) -> bool:
-        return dataset not in {"nwicu", "omix"}
+        return dataset not in {"nwicu", "omix", "zigong"}
 
     def _dyn_max_hour_per_stay(self, cohort: pl.DataFrame) -> pl.DataFrame:
         return cohort.select(
@@ -131,7 +131,7 @@ class AKI(Task):
         return _per_hour_outc_from_onsets(base_cohort, onsets)
 
     def build(self, **kwargs: object) -> TaskBuildResult:
-        result = super().build(**kwargs) # type: ignore[arg-type]
+        result = super().build(**kwargs)
         dataset = str(kwargs["dataset"])
         deviations_path = result["sta_path"].parent / "deviations.csv"
         deviations: list[tuple[str, str]] = []
@@ -216,9 +216,10 @@ def _exclude_high_baseline_crea(
     if crea.height == 0:
         return base_cohort
     baseline = (
-        crea.sort("stay_id", "charttime")
-        .group_by("stay_id", maintain_order=True)
-        .agg(pl.col("value").cast(pl.Float64).first().alias("_baseline_crea"))
+        crea.with_columns(pl.col("charttime").min().over("stay_id").alias("_first_ct"))
+        .filter(pl.col("charttime") == pl.col("_first_ct"))
+        .group_by("stay_id")
+        .agg(pl.col("value").cast(pl.Float64).min().alias("_baseline_crea"))
     )
     excluded = baseline.filter(pl.col("_baseline_crea") > _BASELINE_CREA_EXCLUSION_MGDL).select(
         "stay_id"
@@ -336,7 +337,7 @@ def _aki_urine_arm(
 ) -> pl.DataFrame:
     """Return positive stays + onset time (first qualifying urine measurement).
 
-    Faithful port of ricu's `kdigo_urine` callback (audit round 10s,
+    Faithful port of ricu's `kdigo_urine` callback (review,
     2026-05-20) — verbatim from
     `reproductions/yaib_cohorts_pinned/ricu-extensions/callbacks/
     callback-kdigo.R::kdigo_urine` + `urine_rate`.
