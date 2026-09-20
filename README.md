@@ -130,11 +130,6 @@ tasks, models, the fusion interface, and the reference numbers to compare
 against. It is not a one-command reproduction of every published table — the
 cross-dataset transfer and foundation-model arms are not included here.
 
-## Extending further
-
-See [`docs/extending/`](docs/extending/) for the task, dataset, concept, and
-model contracts.
-
 ## License
 
 MIT. See [LICENSE](LICENSE).
