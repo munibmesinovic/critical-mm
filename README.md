@@ -40,8 +40,7 @@ export CRITICAL_MM_DATA_ROOT=/path/to/data-root
 `CRITICAL_MM_DATA_ROOT` governs the cohort and modality paths resolved by
 `critical_mm/io/paths.py` — `data/processed/...` and
 `data/processed/_modalities/...`. It does **not** govern where splits and
-checkpoints are read from; those are passed explicitly, as below. With no bundle
-you can still smoke-test on the bundled `synthetic` dataset.
+checkpoints are read from; those are passed explicitly, as below.
 
 > **Data-use note:** these databases are separately credentialed.
 
