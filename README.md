@@ -43,9 +43,7 @@ export CRITICAL_MM_DATA_ROOT=/path/to/data-root
 checkpoints are read from; those are passed explicitly, as below. With no bundle
 you can still smoke-test on the bundled `synthetic` dataset.
 
-> **Data-use note:** these databases are separately credentialed — MIMIC-IV and
-> eICU via PhysioNet, and HiRID, NWICU, OMIX, SICdb and Zigong under their own
-> agreements. Confirm your access terms before redistributing any derived tensors.
+> **Data-use note:** these databases are separately credentialed.
 
 ## Splits are patient-grouped
 
